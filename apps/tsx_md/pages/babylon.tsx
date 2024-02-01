@@ -1,10 +1,7 @@
 import React from 'react'
 import { FreeCamera, Vector3, HemisphericLight, MeshBuilder } from '@babylonjs/core'
 import SceneComponent from 'babylonjs-hook'
-import { Scene, Mesh } from '@babylonjs/core'
-import { CubeTexture } from '@babylonjs/core/Materials/Textures/CubeTexture'
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
-import { Color3 } from '@babylonjs/core/Maths/math.color'
+import { Scene, Mesh, CubeTexture } from '@babylonjs/core'
 
 // import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
 // import './App.css'
