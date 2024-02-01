@@ -109,16 +109,15 @@ ${code('typescript', props.sourceCode)}
 
 export const getStaticProps = async () => {
   const fileContents = await fs.readFile(path.join(process.cwd(), 'pages/blog/index.tsx'), 'utf8')
-  console.log(fileContents)
 
   const functionText = extractFunctionSource(fileContents, 'getStaticProps') ?? ''
 
   // format using prettier
-  const niceCode = await prettier.format(functionText, { parser: 'typescript' })
+  const prettyCode = await prettier.format(functionText, { parser: 'typescript' })
 
   return {
     props: {
-      sourceCode: niceCode,
+      sourceCode: prettyCode,
     },
   }
 }
