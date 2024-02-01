@@ -1,0 +1,14 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#043243",
+    "titleBar.activeBackground": "#06455E",
+    "titleBar.activeForeground": "#F5FCFE"
+  },
+
+  "[typescript][javascript][typescriptreact][javascriptreact][jsonl][jsonc][json]": {
+    // Use just prettier for formatting
+    "editor.formatOnSave": true,
+    // "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

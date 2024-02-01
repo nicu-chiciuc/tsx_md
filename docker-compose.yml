@@ -1,0 +1,67 @@
+version: '3'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./apps/ailegis_api/Dockerfile
+
+    # Rely on published image instead of building locally when deploying to production
+    #
+    # `:-local` means use `local` as the default value if `DEPLOY_IMAGE_TAG` is not set
+    # Otherwise there's a build error when running `docker compose build` locally
+    image: ghcr.io/nicu-chiciuc/ailegis_aiserver:${DEPLOY_IMAGE_TAG:-local}
+
+    env_file:
+      - ./apps/ailegis_api/.env
+
+    environment:
+      - SERVER_PORT=80
+
+    labels:
+      traefik.enable: 'true'
+
+      traefik.http.routers.server.rule: ${DEPLOY_TRAEFIK_HOST}
+      traefik.http.routers.server.entrypoints: 'websecure'
+      traefik.http.routers.server.tls.certresolver: 'myresolver'
+
+      traefik.http.services.server-service.loadbalancer.server.port: '80'
+
+      # Make it available on localhost
+      traefik.http.routers.server-local.rule: 'Host(`localhost`)'
+      traefik.http.routers.server-local.service: 'server-service'
+
+    volumes:
+      # Bind mount to sync application code between the host and the container
+      - .:/usr/src/app
+
+      # A named volume for node_modules to prevent it from being overwritten by the bind mount above. Ensures the containerized app uses its own set of dependencies, isolated from the host.
+      - /usr/src/app/node_modules
+
+      # A named volume for pnpm's store. This prevents the store from being overwritten by the bind mount, keeping the downloaded package content used by pnpm isolated from the host.
+      # - /usr/src/app/.pnpm-store
+
+  traefik:
+    image: traefik:v2.4
+    command:
+      - '--api.insecure=true'
+
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+
+      - '--certificatesresolvers.myresolver.acme.httpchallenge=true'
+      - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
+      - '--certificatesresolvers.myresolver.acme.email=nicu.dev@gmail.com'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+
+      - '--accesslog.filepath=/var/log/traefik/access.log'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - './letsencrypt:/letsencrypt'
+      - './logs:/var/log/traefik'

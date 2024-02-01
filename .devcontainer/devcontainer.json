@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+  "name": "Alpine",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  // "dockerFile": "Dockerfile",
+
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // The non-root user from 'javscript-node' image
+  "remoteUser": "node",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Orta.vscode-jest",
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint",
+        "bmalehorn.vscode-fish",
+        "GitHub.copilot",
+        "GitHub.vscode-pull-request-github",
+        "GitHub.copilot-chat",
+        "github.vscode-github-actions",
+        "ziyasal.vscode-open-in-github",
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "formulahendry.docker-explorer",
+        "ms-azuretools.vscode-docker",
+        "adamvoss.vscode-languagetool-en",
+        "oderwat.indent-rainbow",
+        "adamvoss.vscode-languagetool",
+        "ms-vscode.live-server",
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced",
+        "unifiedjs.vscode-mdx",
+        "bierner.color-info",
+        "Postman.postman-for-vscode"
+      ]
+    }
+  }
+}
