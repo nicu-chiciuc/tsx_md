@@ -1,0 +1,11 @@
+{
+  "crons": [
+    {
+      // The keys is used so that the function cannot be triggered by anyone
+      "path": "/api/raw/__cron_add_new?key=cUidLVek7XibJguR7usYNkHmDgUmjvR8gtvRV7ecr9gqxbygeNqEGvqYd6MsP",
+
+      // Run every day at 13:00
+      "schedule": "0 13 * * *"
+    }
+  ]
+}

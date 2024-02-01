@@ -1,0 +1,34 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.9
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.1
+          cache: 'pnpm'
+
+      - run: pnpm install
+
+      # These could be handled by turborepo
+      # Theoretically, it should be possible to just run `pnpm run build`
+      # But NextJs requires that some env variables are setup
+      - run: pnpm run build -F @aaa/ui
+
+      - run: pnpm run build -F dependent-ts
+      # - run: pnpm run build -F ailegis_api
+
+      # - run: pnpm -F nextjs-ailegis run tsc:ci
+      - run: pnpm -F nextjs-ailegis run test
+      - run: pnpm run pack:list-mismatch

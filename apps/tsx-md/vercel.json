@@ -1,0 +1,9 @@
+{
+  "crons": [
+    {
+      "path": "/api/raw/__cron_add_new?key=cUidLVek7XibJguR7usYNkHmDgUmjvR8gtvRV7ecr9gqxbygeNqEGvqYd6MsP",
+
+      "schedule": "0 13 * * *"
+    }
+  ]
+}

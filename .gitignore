@@ -1,0 +1,16 @@
+# ignore all files ".env*" except for ".env.template"
+.env*
+!.env.template
+
+.DS_Store
+node_modules
+.turbo
+*.log
+.next
+dist
+dist-ssr
+*.local
+.cache
+server/dist
+public/dist
+.vercel

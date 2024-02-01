@@ -1,0 +1,190 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      DEPLOY_HOST:
+        description: '
+          Host to deploy to.
+          Can be retrieved from Digital Ocean dashboard for a droplet.
+
+          @example: "123.456.22.22"
+          '
+        type: string
+        required: true
+
+      DEPLOY_USER:
+        description: "
+          User to deploy as.
+          For DigitalOcean droplets, it is usually 'root'
+
+          @example: 'root'
+          "
+        type: string
+        required: true
+
+      DEPLOY_TRAEFIK_HOST:
+        description: "
+          Passed to traefik for SSL routing.
+          The `Host` part is necessary since docker compose doesn't support
+          interpolations for strings. So the whole value has to be passed
+
+          @example: 'Host(`processing-staging.robolex.io`)'
+          "
+        type: string
+        required: true
+
+      OTEL_SERVICE_NAME:
+        description: "
+          A string that will be used by HoneyComb (OpenTelemetry) to
+          differentiate between different services when capturing traces.
+
+          @example: 'api_otel_staging'
+          "
+        type: string
+        required: true
+
+      DEPLOY_KEY_FINGERPRINT:
+        description: 'Used just for debugging purposes'
+        type: string
+
+    secrets:
+      DEPLOY_SSH_PRIVATE_KEY:
+        description: 'SSH private key for deploy'
+        required: true
+
+      MONGODB_URI:
+        description: 'MongoDB URI'
+        required: true
+
+      CLERK_SECRET_KEY:
+        description: 'Clerk Secret Key'
+        required: true
+
+      AZURE_FORM_RECOGNIZER_KEY:
+        description: 'Azure Form Recognizer Key'
+        required: false
+
+      OPENAI_API_KEY:
+        description: 'Open AI API Key'
+        required: false
+
+      HONEYCOMB_API_KEY:
+        description: '
+          Honeycomb API Key
+          Used for sending OpenTelemetry traces
+          '
+        required: false
+
+      NEON_DB_BASE_URL:
+        description: 'Neon DB Base URL'
+        required: true
+
+jobs:
+  build_and_deploy:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      # Login to Github Container Registry
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Image
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./apps/ailegis_api/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}_aiserver:${{ github.sha }}
+
+      # The files are needed for the docker compose file.
+      - name: Copy files via scp
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ inputs.DEPLOY_HOST }}
+          username: ${{ inputs.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          port: 22
+          source: './*'
+          overwrite: true
+          target: 'ailegis_monorepo'
+
+      - name: Rebuild and restart containers
+        uses: appleboy/ssh-action@master
+
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          OTEL_SERVICE_NAME: ${{ inputs.OTEL_SERVICE_NAME }}
+          AZURE_FORM_RECOGNIZER_KEY: ${{ secrets.AZURE_FORM_RECOGNIZER_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HONEYCOMB_API_KEY: ${{ secrets.HONEYCOMB_API_KEY }}
+          DEPLOY_TRAEFIK_HOST: ${{ inputs.DEPLOY_TRAEFIK_HOST }}
+          NEON_DB_BASE_URL: ${{ secrets.NEON_DB_BASE_URL }}
+
+        with:
+          host: ${{ inputs.DEPLOY_HOST }}
+          username: ${{ inputs.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          port: 22
+          script_stop: true
+
+          # list of env var names to pass into remote shell
+          envs: >
+            MONGODB_URI,
+            CLERK_SECRET_KEY,
+            OTEL_SERVICE_NAME,
+            AZURE_FORM_RECOGNIZER_KEY,
+            OPENAI_API_KEY,
+            HONEYCOMB_API_KEY,
+            DEPLOY_TRAEFIK_HOST,
+            NEON_DB_BASE_URL
+
+          script: |
+            cd ~/ailegis_monorepo/apps/ailegis_api
+
+            cp .env.template .env
+
+
+            # It's very important to add a newline before the echos
+            # Otherwise the first echo can be written on the same line as the last line of the template
+            # TODO: Find a better way to handle the secrets
+            echo "" >> .env
+            echo "MONGODB_URI=$MONGODB_URI" >> .env
+            echo "CLERK_SECRET_KEY=$CLERK_SECRET_KEY" >> .env
+            echo "HONEYCOMB_API_KEY=$HONEYCOMB_API_KEY" >> .env
+            echo "OTEL_SERVICE_NAME=$OTEL_SERVICE_NAME" >> .env
+            echo "NEON_DB_BASE_URL=$NEON_DB_BASE_URL" >> .env
+
+            cd ~/ailegis_monorepo
+
+
+            # Login to Github Container Registry 
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull latest version of the image from Github Container Registry 
+            docker pull ghcr.io/${{ github.repository }}_aiserver:${{ github.sha }}
+
+            # set environment variables for docker compose
+            export DEPLOY_TRAEFIK_HOST=$DEPLOY_TRAEFIK_HOST
+            export DEPLOY_IMAGE_TAG=${{ github.sha }}
+
+            echo "DEPLOY_TRAEFIK_HOST=$DEPLOY_TRAEFIK_HOST"
+            echo "DEPLOY_IMAGE_TAG=$DEPLOY_IMAGE_TAG"
+
+            docker compose down
+            docker compose up --no-build -d
+
+            # We don't have that much space on the VM
+            docker system prune --all --force

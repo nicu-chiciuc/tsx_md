@@ -1,0 +1,30 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug ailegis_api",
+      "request": "launch",
+      "type": "node",
+      "program": "${workspaceFolder}/apps/ailegis_api/dist/server.js",
+      "envFile": "${workspaceFolder}/apps/ailegis_api/.env",
+
+      // TODO: In order to run something like `tsc --watch` (or tspc in our case)
+      // We need to define a task in tasks.json and then reference it here.
+      // "preLaunchTask": "tspc --watch ",
+
+      // IMPORTANT: tsconfig has also set `"sourceMap": true`
+      "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Current Repl File",
+      "program": "${file}",
+      // I use this specific project since `.env` has to be loaded
+      "cwd": "${workspaceFolder}/apps/db"
+    }
+  ]
+}
