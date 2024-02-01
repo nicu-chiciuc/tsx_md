@@ -1,9 +1,23 @@
+import Ztext from 'react-ztext'
+
 const IndexPage: React.FC = () => {
   return (
     <div className="flex h-screen items-center justify-center">
-      <h1 className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-9xl text-transparent">
+      <Ztext
+        depth="1rem"
+        direction="both"
+        event="pointer"
+        eventRotation="30deg"
+        eventDirection="default"
+        fade={false}
+        layers={10}
+        perspective="400px"
+        style={{
+          fontSize: '12rem',
+        }}
+      >
         tsx.md
-      </h1>
+      </Ztext>
     </div>
   )
 }

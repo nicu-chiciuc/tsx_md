@@ -1,11 +1,10 @@
 import Md from 'react-markdown'
 import ts from 'typescript'
 import prettier from 'prettier'
-import fs from 'fs/promises'
-import path from 'path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { InferGetStaticPropsType } from 'next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-// import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 // Utility function to trim empty lines.
 const trimEmptyLines = (str: string) => str.replace(/^\s*[\r\n]/gm, '')
@@ -27,8 +26,8 @@ function isAnyDeclaration(node: ts.Node): node is ts.DeclarationStatement {
 
 // Function that will traverse the AST of a given piece of code and return as string.
 const extractFunctionSource = (sourceCode: string, functionName: string): string | null => {
-  console.log('here 01')
   let sourceFile: ts.SourceFile
+
   try {
     sourceFile = ts.createSourceFile(
       'code.ts', // Filename is arbitrary for parsing purposes.
@@ -40,7 +39,6 @@ const extractFunctionSource = (sourceCode: string, functionName: string): string
     console.log(e)
     throw new Error('Could not parse source code.')
   }
-  console.log('here 02')
 
   let functionText: string | null = null
 
@@ -110,7 +108,7 @@ ${code('typescript', props.sourceCode)}
 export const getStaticProps = async () => {
   const fileContents = await fs.readFile(path.join(process.cwd(), 'pages/blog/index.tsx'), 'utf8')
 
-  const functionText = extractFunctionSource(fileContents, 'getStaticProps') ?? ''
+  const functionText = extractFunctionSource(fileContents, getStaticProps.name) ?? ''
 
   // format using prettier
   const prettyCode = await prettier.format(functionText, { parser: 'typescript' })
