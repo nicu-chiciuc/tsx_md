@@ -6,6 +6,7 @@ import path from 'node:path'
 import { InferGetStaticPropsType } from 'next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import Editor from '@monaco-editor/react'
+import { MyEditor } from '@/my_components/monacoEditor'
 
 // Utility function to trim empty lines.
 const trimEmptyLines = (str: string) => str.replace(/^\s*[\r\n]/gm, '')
@@ -101,7 +102,7 @@ This is a paragraph
 
 
 `}</Md>
-        <Editor height="500px" width={'600px'} defaultLanguage="typescript" defaultValue={props.sourceCode} />
+        <MyEditor defaultValue={props.sourceCode} />
 
         <Md>{`
 Something else here
