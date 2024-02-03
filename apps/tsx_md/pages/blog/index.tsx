@@ -5,6 +5,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { InferGetStaticPropsType } from 'next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import Editor from '@monaco-editor/react'
 
 // Utility function to trim empty lines.
 const trimEmptyLines = (str: string) => str.replace(/^\s*[\r\n]/gm, '')
@@ -98,8 +99,13 @@ This is a paragraph
 - This is a list
 - This is another list item
 
-${code('typescript', props.sourceCode)}
+
 `}</Md>
+        <Editor height="500px" width={'600px'} defaultLanguage="typescript" defaultValue={props.sourceCode} />
+
+        <Md>{`
+Something else here
+        `}</Md>
       </div>
     </div>
   )
