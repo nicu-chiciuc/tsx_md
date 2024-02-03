@@ -3,13 +3,18 @@
   "extends": "tsconfig/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
+
+    "paths": {
+      "@/*": ["./src/*"],
+    },
+
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "esModuleInterop": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
   },
-  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts", "pages", "app", "lib"]
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts", "pages", "app", "lib"],
 }
