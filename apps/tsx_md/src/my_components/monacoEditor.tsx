@@ -2,60 +2,29 @@ import React, { useEffect, useMemo } from 'react'
 import Editor, { useMonaco, BeforeMount } from '@monaco-editor/react'
 // import * as monaco from 'monaco-editor'
 
-export const MyEditor = (props: { defaultValue: string }) => {
+export const MyEditor = (props: { defaultValue: string; projectFiles: { path: string; content: string }[] }) => {
   // const monaco = useMonaco()
 
   const willMount: BeforeMount = monaco => {
     // Configuration for TypeScript
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-      noLib: true,
-      allowNonTsExtensions: true,
       target: monaco.languages.typescript.ScriptTarget.ES2015,
+      allowNonTsExtensions: true,
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-      module: monaco.languages.typescript.ModuleKind.ES2015,
-      allowJs: true,
+      baseUrl: 'file://', // This should match the prefix used in your file URIs
+      paths: {
+        '@robolex/sure': ['file:///node_modules/@robolex/sure/*'],
+
+        // Add paths mapping here if your imports are not directly to the file paths
+      },
     })
 
-    // Adding custom type definitions
-    const libSource = `
-                declare module 'myModule' {
-                    export function myFunction(): void;
-                }
-            `
-    const libUri = 'ts:filename/myModule.d.ts'
-    monaco.languages.typescript.typescriptDefaults.addExtraLib(libSource, libUri)
+    // monaco.languages.typescript.typescriptDefaults.addExtraLib(
 
-    // You can add as many extra libs as you want, e.g., for other modules
-
-    // Ensure to adjust paths and module resolution as per your project structure
+    props.projectFiles.forEach(file => {
+      monaco.languages.typescript.typescriptDefaults.addExtraLib(file.content, `file:///${file.path}`)
+    })
   }
-
-  // useEffect(() => {
-  //   if (monaco) {
-  //     // Configuration for TypeScript
-  //     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-  //       noLib: true,
-  //       allowNonTsExtensions: true,
-  //       target: monaco.languages.typescript.ScriptTarget.ES2015,
-  //       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-  //       module: monaco.languages.typescript.ModuleKind.ES2015,
-  //       allowJs: true,
-  //     })
-
-  //     // Adding custom type definitions
-  //     const libSource = `
-  //               declare module 'myModule' {
-  //                   export function myFunction(): void;
-  //               }
-  //           `
-  //     const libUri = 'ts:filename/myModule.d.ts'
-  //     monaco.languages.typescript.typescriptDefaults.addExtraLib(libSource, libUri)
-
-  //     // You can add as many extra libs as you want, e.g., for other modules
-
-  //     // Ensure to adjust paths and module resolution as per your project structure
-  //   }
-  // }, [])
 
   return (
     <Editor
@@ -63,9 +32,9 @@ export const MyEditor = (props: { defaultValue: string }) => {
       defaultLanguage="typescript"
       beforeMount={willMount}
       defaultValue={`
-import { myFunction } from 'myModule'
+import { good } from '@robolex/sure'
 
-const myVar = myFunction()
+const myVar = good(34)
 
 console.log(myVar)
     `}

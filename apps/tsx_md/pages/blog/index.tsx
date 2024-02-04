@@ -1,12 +1,12 @@
 import Md from 'react-markdown'
 import ts from 'typescript'
 import prettier from 'prettier'
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import path from 'path'
+import fs from 'fs/promises'
 import { InferGetStaticPropsType } from 'next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import Editor from '@monaco-editor/react'
 import { MyEditor } from '@/my_components/monacoEditor'
+import { readProjectFiles } from '@/server/main'
 
 // Utility function to trim empty lines.
 const trimEmptyLines = (str: string) => str.replace(/^\s*[\r\n]/gm, '')
@@ -102,7 +102,7 @@ This is a paragraph
 
 
 `}</Md>
-        <MyEditor defaultValue={props.sourceCode} />
+        <MyEditor projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
 
         <Md>{`
 Something else here
@@ -114,14 +114,18 @@ Something else here
 
 export const getStaticProps = async () => {
   const fileContents = await fs.readFile(path.join(process.cwd(), 'pages/blog/index.tsx'), 'utf8')
-
   const functionText = extractFunctionSource(fileContents, getStaticProps.name) ?? ''
 
   // format using prettier
   const prettyCode = await prettier.format(functionText, { parser: 'typescript' })
 
+  const value = await readProjectFiles()
+
+  console.log(value)
+
   return {
     props: {
+      projectFiles: value,
       sourceCode: prettyCode,
     },
   }
