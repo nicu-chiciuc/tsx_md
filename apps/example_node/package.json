@@ -1,0 +1,11 @@
+{
+  "name": "node-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@robolex/sure": "^0.8.3"
+  }
+}

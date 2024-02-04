@@ -21,6 +21,12 @@ importers:
         specifier: 1.10.16
         version: 1.10.16
 
+  apps/example_node:
+    dependencies:
+      '@robolex/sure':
+        specifier: ^0.8.3
+        version: 0.8.3
+
   apps/tsx_md:
     dependencies:
       '@aaa/ui':
@@ -3047,6 +3053,10 @@ packages:
 
   /@robolex/sure@0.7.2:
     resolution: {integrity: sha512-aEu7MfCbYbSxx1Io3kHbzVKreIhGLa+Paw/jZ2S/jGCzyD9xUj+ZsOJRAUTfquh9Dtso5ZveIPwFZt2lIXXZkQ==}
+    dev: false
+
+  /@robolex/sure@0.8.3:
+    resolution: {integrity: sha512-CdvVLFB5U3lbxdD8WTS+kHMht1dLkL40JfMJe263nrQFbBkGa/GS6RPbWj/6RhKhQhowK3a1nqJYywLVSVGyYw==}
     dev: false
 
   /@rollup/pluginutils@4.2.1:
