@@ -1,50 +1,78 @@
 import sdk from '@stackblitz/sdk'
 import { useEffect, useRef } from 'react'
 
-const divId = 'myDiv'
-const ghSlug = 'nicu-chiciuc/stackblitz-starters-5fj1s6'
+const FILE_divId = 'myDiv'
+const FILE_ghSlug = 'nicu-chiciuc/stackblitz-starters-5fj1s6'
 
 function createEmbedGithub() {
-  return sdk.embedGithubProject(divId, ghSlug, {
+  return sdk.embedGithubProject(FILE_divId, FILE_ghSlug, {
     openFile: 'src/index.js',
     hideDevTools: true,
   })
 }
 
-function createEmbedProject() {
-  const embedId = 'my-embed-id'
-
+function createEmbedProject({ embedId, divId, codeSource }: { divId: string; embedId: string; codeSource: string }) {
   return sdk.embedProject(
     divId,
 
     {
       files: {
-        'index.js': 'console.log("Hello, world!")',
+        'index.ts': codeSource,
+        'package.json': JSON.stringify({
+          type: 'module',
+          dependencies: {
+            '@robolex/sure': '0.9.5',
+          },
+        }),
       },
       title: embedId,
       description: `ArkType ${embedId} demo`,
-      template: 'typescript',
-      dependencies: {
-        '@robolex/sure': '0.8.0',
-      },
+      template: 'node',
+
       settings: {
         compile: {
           clearConsole: false,
           trigger: 'keystroke',
         },
       },
+    },
+
+    {
+      openFile: 'index.ts',
+      view: 'editor',
+      showSidebar: false,
+
+      // hide activity bar
+      hideExplorer: true,
+
+      // hide tab bar
+      hideNavigation: true,
     }
   )
 }
 
-export default function Page() {
+export const EditCode = (props: { divId: string; codeSource: string }) => {
   useEffect(() => {
-    createEmbedProject()
+    createEmbedProject({
+      embedId: 'something',
+
+      ...props,
+    })
   }, [])
+
+  return <div id={FILE_divId} />
+}
+
+export default function Page() {
+  const sourceCode = `
+import { good } from '@robolex/sure'
+
+const myVar = good(34)
+`
 
   return (
     <div className="flex h-screen items-center justify-center ">
-      <div id={divId} />
+      <EditCode divId={FILE_divId} codeSource={sourceCode} />
     </div>
   )
 }
@@ -55,7 +83,7 @@ export async function getStaticProps() {
 
   const files = ['.gitignore', '.prettierrc.json', 'index.js', 'package-lock.json', 'package.json', 'README.md']
 
-  const url = 'https://raw.githubusercontent.com/' + ghSlug + '/main/index.js'
+  const url = 'https://raw.githubusercontent.com/' + FILE_ghSlug + '/main/index.js'
   // const result = await fetch(url)
   // const text = await result.text()
 
