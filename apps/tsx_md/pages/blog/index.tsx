@@ -102,6 +102,20 @@ This is a paragraph
 
 
 `}</Md>
+        <iframe
+          src="https://codesandbox.io/p/github/nicu-chiciuc/stackblitz-starters-5fj1s6/main?file=%2Findex.js&embed=1"
+          style={{
+            width: '500px',
+            height: '500px',
+            border: 0,
+            borderRadius: '4px',
+            overflow: 'hidden',
+          }}
+          title="nicu-chiciuc/stackblitz-starters-5fj1s6/main"
+          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+          sandbox="hidenavigation allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts "
+        ></iframe>
+
         <MyEditor projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
 
         <Md>{`
