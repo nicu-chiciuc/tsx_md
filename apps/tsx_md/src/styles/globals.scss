@@ -74,3 +74,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 
+ * Stackblitz editor
+ */
+
+/* select divs data-react-component="App" */
+
+div[data-react-component='App'] {
+  .mosaic-root {
+    background-color: 'red';
+    color: var(--foreground);
+  }
+}

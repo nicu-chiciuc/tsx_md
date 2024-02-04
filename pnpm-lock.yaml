@@ -78,11 +78,11 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.2.37)(react@18.2.0)
       '@robolex/dependent':
-        specifier: ^0.0.2
-        version: 0.0.2
+        specifier: 0.0.5
+        version: 0.0.5
       '@robolex/sure':
-        specifier: 0.7.2
-        version: 0.7.2
+        specifier: ^0.8.3
+        version: 0.8.3
       '@stackblitz/sdk':
         specifier: ^1.9.0
         version: 1.9.0
@@ -166,7 +166,7 @@ importers:
         version: 4.17.1
       next:
         specifier: 14.0.2
-        version: 14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+        version: 14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
       next-mdx-remote:
         specifier: ^4.4.1
         version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
@@ -203,6 +203,9 @@ importers:
       react-ztext:
         specifier: ^1.0.3
         version: 1.0.3(@babel/core@7.22.5)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+      sass:
+        specifier: ^1.70.0
+        version: 1.70.0
       simplebar-react:
         specifier: 3.2.4
         version: 3.2.4(react@18.2.0)
@@ -3087,12 +3090,8 @@ packages:
       '@babel/runtime': 7.23.2
     dev: false
 
-  /@robolex/dependent@0.0.2:
-    resolution: {integrity: sha512-QTAx/KkZIZAOqUnr88wu/B/rGtIpgpKIieeByc45NjqDL5DmGGZakEzj0iZq3+bS0qE6QzzMMhrMZxpqQG32lg==}
-    dev: false
-
-  /@robolex/sure@0.7.2:
-    resolution: {integrity: sha512-aEu7MfCbYbSxx1Io3kHbzVKreIhGLa+Paw/jZ2S/jGCzyD9xUj+ZsOJRAUTfquh9Dtso5ZveIPwFZt2lIXXZkQ==}
+  /@robolex/dependent@0.0.5:
+    resolution: {integrity: sha512-I3v98qvUI3eRd5/8+LtfPhtUUqccLsMttqrb8KTXkYNI89zBaqulolEFBfHdDkpt6hbesJyy83JaUA7ar6sVNg==}
     dev: false
 
   /@robolex/sure@0.8.3:
@@ -3629,7 +3628,7 @@ packages:
       '@trpc/client': 10.43.3(@trpc/server@10.43.3)
       '@trpc/react-query': 10.43.3(@tanstack/react-query@4.36.1)(@trpc/client@10.43.3)(@trpc/server@10.43.3)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server': 10.43.3
-      next: 14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+      next: 14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
@@ -6892,6 +6891,10 @@ packages:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
 
+  /immutable@4.3.5:
+    resolution: {integrity: sha512-8eabxkth9gZatlwl5TBuJnCsoTADlL6ftEr7A4qgdaTsPyreilDSnUk57SO+jfKcNtxPa22U5KK6DSeAYhpBJw==}
+    dev: false
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -8801,7 +8804,7 @@ packages:
       - supports-color
     dev: false
 
-  /next@14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0):
+  /next@14.0.2(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0):
     resolution: {integrity: sha512-jsAU2CkYS40GaQYOiLl9m93RTv2DA/tTJ0NRlmZIBIL87YwQ/xR8k796z7IqgM3jydI8G25dXvyYMC9VDIevIg==}
     engines: {node: '>=18.17.0'}
     hasBin: true
@@ -8823,6 +8826,7 @@ packages:
       postcss: 8.4.31
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+      sass: 1.70.0
       styled-jsx: 5.1.1(@babel/core@7.22.5)(react@18.2.0)
       watchpack: 2.4.0
     optionalDependencies:
@@ -9970,6 +9974,16 @@ packages:
       call-bind: 1.0.5
       get-intrinsic: 1.2.2
       is-regex: 1.1.4
+    dev: false
+
+  /sass@1.70.0:
+    resolution: {integrity: sha512-uUxNQ3zAHeAx5nRFskBnrWzDUJrrvpCPD5FNAoRvTi0WwremlheES3tg+56PaVtCs5QDRX5CBLxxKMDJMEa1WQ==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.5
+      source-map-js: 1.0.2
     dev: false
 
   /scheduler@0.23.0:

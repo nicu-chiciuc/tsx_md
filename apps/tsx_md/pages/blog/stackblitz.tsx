@@ -1,18 +1,25 @@
 import sdk from '@stackblitz/sdk'
 import { useEffect, useRef } from 'react'
+import { arrayOf } from '@robolex/dependent'
 
-const FILE_divId = 'myDiv'
 const FILE_ghSlug = 'nicu-chiciuc/stackblitz-starters-5fj1s6'
 
-function createEmbedGithub() {
-  return sdk.embedGithubProject(FILE_divId, FILE_ghSlug, {
-    openFile: 'src/index.js',
-    hideDevTools: true,
-  })
-}
+async function createEmbedProject({
+  embedId,
+  divId,
+  codeSource,
+}: {
+  divId: string
+  embedId: string
+  codeSource: string
+}) {
+  const depsOptions = {
+    dependencies: {
+      '@robolex/sure': '0.9.5',
+    },
+  }
 
-function createEmbedProject({ embedId, divId, codeSource }: { divId: string; embedId: string; codeSource: string }) {
-  return sdk.embedProject(
+  const vm = await sdk.embedProject(
     divId,
 
     {
@@ -20,13 +27,15 @@ function createEmbedProject({ embedId, divId, codeSource }: { divId: string; emb
         'index.ts': codeSource,
         'package.json': JSON.stringify({
           type: 'module',
-          dependencies: {
-            '@robolex/sure': '0.9.5',
-          },
+          ...depsOptions,
         }),
       },
       title: embedId,
       description: `ArkType ${embedId} demo`,
+
+      // https://blog.stackblitz.com/posts/announcing-native-package-manager-support/
+      // The EngineBlock is using Turbo, so it's deprecated
+      // and has issue installing @robolex/sure
       template: 'node',
 
       settings: {
@@ -47,8 +56,17 @@ function createEmbedProject({ embedId, divId, codeSource }: { divId: string; emb
 
       // hide tab bar
       hideNavigation: true,
+
+      hideDevTools: true,
+
+      terminalHeight: 0,
     }
   )
+
+  // close terminal
+  const editor = vm.editor
+
+  // editor.
 }
 
 export const EditCode = (props: { divId: string; codeSource: string }) => {
@@ -60,7 +78,7 @@ export const EditCode = (props: { divId: string; codeSource: string }) => {
     })
   }, [])
 
-  return <div id={FILE_divId} />
+  return <div id={props.divId} />
 }
 
 export default function Page() {
@@ -71,8 +89,16 @@ const myVar = good(34)
 `
 
   return (
-    <div className="flex h-screen items-center justify-center ">
-      <EditCode divId={FILE_divId} codeSource={sourceCode} />
+    // fle downwards
+    // <div className="flex flex-col items-center justify-center h-screen ">
+    <div className="flex h-screen flex-col items-center justify-center ">
+      {arrayOf(10, null).map((_, i) => {
+        console.log({
+          i,
+        })
+
+        return <EditCode key={i} divId={`div_id_${i}`} codeSource={sourceCode} />
+      })}
     </div>
   )
 }
