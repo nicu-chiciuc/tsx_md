@@ -61,5 +61,22 @@ export const readProjectFiles = async () => {
 
   const contents = await readFileContents(value)
 
-  return contents
+  const cut = contents.map(data => {
+    // remove '/Users/nicu/dev/important/tsx_md/apps/example_node/'
+
+    let withoutPrefix = data.path.replace('/Users/nicu/dev/important/tsx_md/apps/example_node/', '')
+
+    withoutPrefix = withoutPrefix.replace(
+      '/Users/nicu/dev/important/tsx_md/node_modules/.pnpm/@robolex+sure@0.8.3/',
+      ''
+    )
+
+    return {
+      small: withoutPrefix,
+
+      ...data,
+    }
+  })
+
+  return cut
 }

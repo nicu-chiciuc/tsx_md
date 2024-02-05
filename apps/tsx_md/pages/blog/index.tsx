@@ -6,6 +6,7 @@ import fs from 'fs/promises'
 import { InferGetStaticPropsType } from 'next'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { MyEditor } from '@/my_components/monacoEditor'
+import { arrayOf } from '@robolex/dependent'
 import { readProjectFiles } from '@/server/main'
 
 // Utility function to trim empty lines.
@@ -116,7 +117,9 @@ This is a paragraph
           sandbox="hidenavigation allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts "
         ></iframe> */}
 
-        <MyEditor projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
+        {arrayOf(10, null).map((_, i) => {
+          return <MyEditor key={i} projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
+        })}
 
         <Md>{`
 Something else here
@@ -134,8 +137,6 @@ export const getStaticProps = async () => {
   const prettyCode = await prettier.format(functionText, { parser: 'typescript' })
 
   const value = await readProjectFiles()
-
-  console.log(value)
 
   return {
     props: {
