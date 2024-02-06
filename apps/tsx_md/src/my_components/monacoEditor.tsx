@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import type { BeforeMount } from '@monaco-editor/react'
+import { setupEditorATA } from './monaco_types/setupEditor'
 
 import Editor from '@monaco-editor/react'
 
@@ -15,12 +16,6 @@ export const MyEditor = (props: { defaultValue: string; projectFiles: { small: s
       target: monaco.languages.typescript.ScriptTarget.ES2015,
       allowNonTsExtensions: true,
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-      // baseUrl: 'file://', // This should match the prefix used in your file URIs
-      // paths: {
-      //   '@robolex/sure': ['file:///node_modules/@robolex/sure/*'],
-
-      //   // Add paths mapping here if your imports are not directly to the file paths
-      // },
     })
 
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(
@@ -28,14 +23,15 @@ export const MyEditor = (props: { defaultValue: string; projectFiles: { small: s
 
     // @robolex/sure
 
-    const mainFileName = 'node_modules/@robolex/sure/src/index.ts'
+    // const mainFileName = 'node_modules/@robolex/sure/src/index.ts'
 
-    const mainFile = props.projectFiles.find(file => file.small === mainFileName)
-    if (!mainFile) throw new Error('Could not find main file.')
+    // const mainFile = props.projectFiles.find(file => file.small === mainFileName)
+    // if (!mainFile) throw new Error('Could not find main file.')
 
-    monaco.languages.typescript.typescriptDefaults.addExtraLib(mainFile.content, '@robolex/sure')
+    // monaco.languages.typescript.typescriptDefaults.addExtraLib(mainFile.content, '@robolex/sure')
 
     props.projectFiles.forEach(file => {
+      console.log(file.small)
       monaco.languages.typescript.typescriptDefaults.addExtraLib(file.content, `${file.small}`)
     })
 
@@ -46,17 +42,33 @@ export const MyEditor = (props: { defaultValue: string; projectFiles: { small: s
 
   return (
     <Editor
-      height="90vh"
+      // height="90vh"
+      options={{
+        // hide sidebar
+        minimap: { enabled: false },
+
+        // disable scrollbar
+        scrollbar: { vertical: 'hidden', horizontal: 'hidden' },
+
+        // disable scrolling
+        scrollBeyondLastLine: false,
+
+        // disable line numbers
+        lineNumbers: 'off',
+      }}
       width={'600px'}
       defaultLanguage="typescript"
       beforeMount={willMount}
+      defaultPath="index.tsx"
+      path="index.tsx"
+      onMount={setupEditorATA}
       defaultValue={`
-import { good } from '@robolex/sure'
+      import { good } from '@robolex/sure'
 
-const myVar = good(34)
+      const myVar = good(34)
 
-console.log(myVar)
-    `}
+      console.log(myVar)
+          `}
 
       // {...props}
     />

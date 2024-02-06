@@ -6,6 +6,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@robolex/sure": "^0.8.3"
+    "@robolex/sure": "0.9.6"
   }
 }

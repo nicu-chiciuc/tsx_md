@@ -67,7 +67,7 @@ export const readProjectFiles = async () => {
     let withoutPrefix = data.path.replace('/Users/nicu/dev/important/tsx_md/apps/example_node/', '')
 
     withoutPrefix = withoutPrefix.replace(
-      '/Users/nicu/dev/important/tsx_md/node_modules/.pnpm/@robolex+sure@0.8.3/',
+      '/Users/nicu/dev/important/tsx_md/node_modules/.pnpm/@robolex+sure@0.9.6/',
       ''
     )
 

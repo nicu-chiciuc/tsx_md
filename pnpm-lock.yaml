@@ -24,8 +24,8 @@ importers:
   apps/example_node:
     dependencies:
       '@robolex/sure':
-        specifier: ^0.8.3
-        version: 0.8.3
+        specifier: 0.9.6
+        version: 0.9.6
 
   apps/tsx_md:
     dependencies:
@@ -116,6 +116,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.15
         version: 18.2.15
+      '@typescript/ata':
+        specifier: ^0.9.4
+        version: 0.9.4(typescript@5.3.0-beta)
       apexcharts:
         specifier: 3.44.0
         version: 3.44.0
@@ -3101,6 +3104,10 @@ packages:
     resolution: {integrity: sha512-CdvVLFB5U3lbxdD8WTS+kHMht1dLkL40JfMJe263nrQFbBkGa/GS6RPbWj/6RhKhQhowK3a1nqJYywLVSVGyYw==}
     dev: false
 
+  /@robolex/sure@0.9.6:
+    resolution: {integrity: sha512-ommSlnl+EDvExTzRsNXt/qGyXm3vuGnUypM7DEGSNGAhVTzcz7fl1O2X6mxbi0FnbJulWnZmxuvHaC0ToZjYrQ==}
+    dev: false
+
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
@@ -4095,6 +4102,14 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.59.11
       eslint-visitor-keys: 3.4.3
+    dev: false
+
+  /@typescript/ata@0.9.4(typescript@5.3.0-beta):
+    resolution: {integrity: sha512-PaJ16WouPV/SaA+c0tnOKIqYq24+m93ipl/e0Dkxuianer+ibc5b0/6ZgfCFF8J7QEp57dySMSP9nWOFaCfJnw==}
+    peerDependencies:
+      typescript: ^4.4.4
+    dependencies:
+      typescript: 5.3.0-beta
     dev: false
 
   /@ungap/structured-clone@1.2.0:

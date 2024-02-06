@@ -117,7 +117,7 @@ This is a paragraph
           sandbox="hidenavigation allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts "
         ></iframe> */}
 
-        {arrayOf(10, null).map((_, i) => {
+        {arrayOf(1, null).map((_, i) => {
           return <MyEditor key={i} projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
         })}
 
@@ -138,9 +138,13 @@ export const getStaticProps = async () => {
 
   const value = await readProjectFiles()
 
+  // INFO: Doesn't lower the bundle size that much
+  // filter files that are not package.json or .d.ts
+  const filteredFiles = value.filter(file => !file.small.endsWith('package.json') && !file.small.endsWith('.d.ts'))
+
   return {
     props: {
-      projectFiles: value,
+      projectFiles: filteredFiles,
       sourceCode: prettyCode,
     },
   }
