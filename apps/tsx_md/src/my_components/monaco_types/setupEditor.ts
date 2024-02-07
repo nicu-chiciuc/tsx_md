@@ -61,13 +61,7 @@ export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['on
 
   typeHelper.addListener('receivedFile', addLibraryToRuntime)
 
-  typeHelper.acquireType(`
-import { good } from '@robolex/sure'
-
-const myVar = good(34)
-
-console.log(myVar)
-  `)
+  typeHelper.acquireType(editor.getValue())
 
   // auto adjust the height fits the content
   const element = editor.getDomNode()

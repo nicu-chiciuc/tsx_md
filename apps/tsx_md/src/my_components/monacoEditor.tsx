@@ -46,8 +46,8 @@ export const MyEditor = (props: {
         lineNumbers: 'off',
       }}
       theme="vs-dark"
-      height={'100px'}
-      width={'400px'}
+      // height={'100px'}
+      // width={'400px'}
       // width={'600px'}
       defaultLanguage="typescript"
       // beforeMount={willMount}

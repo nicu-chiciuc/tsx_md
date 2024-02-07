@@ -23,12 +23,15 @@ I have these requirements and I need to represent them.
 * if the `individual_type` is `'organization"` then the `national_id` is required
 
 so a well formatted form json should look like this:
+
 ```ts
+
 type FormValue = {
 	name: string
 	national_id: string
 	individual_type: "individual" | "organization"
 }
+
 ```
 
 You may think that the `national_id` should be `string | undefined`, but the value of a text form should be `""` (an empty string) by default. So the type would look like this theoretically `string | ""`, but of course Typescript transforms this to `string` automatically.
@@ -41,6 +44,7 @@ In case some of the requirements aren't met, the form should contain helpful, cu
 I've asked ChatGPT 4 (through the API) to write this in Yup.
 
 ```ts
+
 import * as yup from 'yup';
 
 const FormSchema = yup.object().shape({
@@ -57,9 +61,11 @@ const FormSchema = yup.object().shape({
     individual_type: yup.string()
         .oneOf(['individual', 'organization'], `Individual type must either be "individual" or "organization"`).required(),
 });
+
 ```
 
 ```ts
+
 import { z } from 'zod';
 
 const FormValue = z.object({
@@ -83,6 +89,7 @@ const FormValue = z.object({
 });
 
 export type IFormValue = z.infer<typeof FormValue>;
+
 ```
 
 Note that our actual form contained ~22 properteis (some where just booleans or enums) grouped in some nested objects.
@@ -93,13 +100,17 @@ Even for such a seemingly small type with 3 properties, the moment we decide to 
 ## string | '' | undefined
 Even for seemigly simple things like `string()`
 there are some complex differences:
-```
- name: yup.string()
+
+```ts
+import yup from 'yup'
+
+yup.string()
         .required('Name is required'),
 
-...
+// vs
 
-name: z.string().nonempty('Name is required.'),
+
+z.string().nonempty('Name is required.'),
 ```
 
 The main differences between pre-Typescript libraries and post-Typescript (yup and zod) is the way they treat empty strings.
@@ -120,7 +131,8 @@ since it requires deep knowledge on how the system (zod) behaves under the hood.
 
 #### 03
 Fortunately, since the requirement that a string is not empty is quite common, zod provides
-```
+
+```ts
 string().nonempty()
 ```
 
