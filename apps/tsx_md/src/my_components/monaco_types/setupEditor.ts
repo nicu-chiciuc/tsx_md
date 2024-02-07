@@ -1,8 +1,37 @@
-import { Editor } from '@monaco-editor/react'
+import { Editor, EditorProps } from '@monaco-editor/react'
 import { createATA } from './ata'
 import { JsxEmit } from 'typescript'
 
 export const typeHelper = createATA()
+
+const editorWidth = 400
+
+export const onEditorMount: EditorProps['onMount'] = (editor, monaco) => {
+  setupEditorATA(editor, monaco)
+
+  let ignoreEvent = false
+
+  const updateHeight = () => {
+    const container = editor.getDomNode()
+    if (!container) return
+
+    // const width = container?.clientWidth ?? '500px'
+
+    const contentHeight = Math.min(1000, editor.getContentHeight())
+
+    container.style.width = `${editorWidth}px`
+    container.style.height = `${contentHeight}px`
+
+    try {
+      ignoreEvent = true
+      editor.layout({ width: editorWidth, height: contentHeight })
+    } finally {
+      ignoreEvent = false
+    }
+  }
+  editor.onDidContentSizeChange(updateHeight)
+  updateHeight()
+}
 
 export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['onMount']> = (editor, monaco) => {
   // acquireType on initial load

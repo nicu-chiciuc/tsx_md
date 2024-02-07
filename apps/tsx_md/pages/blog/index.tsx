@@ -103,6 +103,28 @@ This is a paragraph
 
 
 `}</Md>
+        <MyEditor
+          file="sample1.ts"
+          lang="typescript"
+          projectFiles={props.projectFiles}
+          defaultValue={`
+import { good } from '@robolex/sure';
+
+const myVar = good(99);
+`}
+        />
+
+        <MyEditor
+          file="sample2.ts"
+          lang="javascript"
+          projectFiles={props.projectFiles}
+          defaultValue={`
+import { bad } from '@robolex/sure';
+
+const myVar = bad(34);
+`}
+        />
+
         {/* <iframe
           src="https://codesandbox.io/p/github/nicu-chiciuc/stackblitz-starters-5fj1s6/main?file=%2Findex.js&embed=1"
           style={{
@@ -117,7 +139,7 @@ This is a paragraph
           sandbox="hidenavigation allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts "
         ></iframe> */}
 
-        {arrayOf(1, null).map((_, i) => {
+        {arrayOf(0, null).map((_, i) => {
           return <MyEditor key={i} projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
         })}
 
