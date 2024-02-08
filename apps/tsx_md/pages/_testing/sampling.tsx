@@ -18,13 +18,7 @@ export default function RemoteMdxPage({ mdxSource }: Props) {
   return (
     // more margin on top and bottom
     <div className="m-9 flex items-center justify-center">
-      <div
-        className={
-          'prose lg:prose-xl' +
-          //  {/* disable the styling for code and pre tag */}
-          ''
-        }
-      >
+      <div className={'prose lg:prose-l'}>
         <Md
           components={{
             code(props) {
@@ -35,15 +29,23 @@ export default function RemoteMdxPage({ mdxSource }: Props) {
 
               if (!match) {
                 return (
-                  <code {...rest} className={className}>
+                  // make it beautiful with tw, just little bolder and add the backticks back
+                  <code {...rest} className={className + ' '}>
                     {children}
                   </code>
                 )
               }
 
-              const source = String(children).replace(/\n$/, '')
+              const source = '\n' + String(children).replace(/\n$/, '') + '\n'
 
-              return <MyEditor defaultValue={source} file={`file${codeRef.current++}.ts`} projectFiles={[]} />
+              return (
+                <div
+                  // make the code sit in the middle
+                  className="flex items-center justify-center"
+                >
+                  <MyEditor defaultValue={source} file={`file${codeRef.current++}.ts`} projectFiles={[]} />
+                </div>
+              )
 
               // return (
               //   <SyntaxHighlighter

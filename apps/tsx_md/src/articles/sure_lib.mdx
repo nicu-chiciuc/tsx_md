@@ -1,6 +1,4 @@
-# The sure.js library
-
-I need to create a form.
+# I need to validate a form
 
 I'm using React (with Next.js)
 
@@ -44,7 +42,6 @@ In case some of the requirements aren't met, the form should contain helpful, cu
 I've asked ChatGPT 4 (through the API) to write this in Yup.
 
 ```ts
-
 import * as yup from 'yup';
 
 const FormSchema = yup.object().shape({
@@ -61,11 +58,11 @@ const FormSchema = yup.object().shape({
     individual_type: yup.string()
         .oneOf(['individual', 'organization'], `Individual type must either be "individual" or "organization"`).required(),
 });
-
 ```
 
-```ts
+then in Zod
 
+```ts
 import { z } from 'zod';
 
 const FormValue = z.object({
@@ -89,13 +86,12 @@ const FormValue = z.object({
 });
 
 export type IFormValue = z.infer<typeof FormValue>;
-
 ```
 
-Note that our actual form contained ~22 properteis (some where just booleans or enums) grouped in some nested objects.
+Note that our actual form contained ~22 properties (some where just booleans or enums) grouped in some nested objects.
 
 !! review please
-Even for such a seemingly small type with 3 properties, the moment we decide to add some actual business requirements, all the beauty of both Zod's and Yup's api flow out the window.
+Even for such a seemingly small type with 3 properties, the moment we decide to add some actual business requirements, all the beauty of both Zod's and Yup's api go out the window.
 
 ## string | '' | undefined
 Even for seemigly simple things like `string()`
@@ -103,12 +99,11 @@ there are some complex differences:
 
 ```ts
 import yup from 'yup'
+import z from 'zod'
 
-yup.string()
-        .required('Name is required'),
+yup.string().required('Name is required'),
 
 // vs
-
 
 z.string().nonempty('Name is required.'),
 ```
@@ -133,11 +128,12 @@ since it requires deep knowledge on how the system (zod) behaves under the hood.
 Fortunately, since the requirement that a string is not empty is quite common, zod provides
 
 ```ts
+import { string } from 'zod'
+
 string().nonempty()
 ```
 
 Now guess how these libraries behave when `'  '` (a string with just 3 space characters).
-
 
 
 ## Conditionals and refinements
@@ -158,14 +154,17 @@ const something = object({
 	})
 
 type InferSomething = Infer<typeof something>
+
 ```
 
 and we assume that we'd get this type
-```
+
+```ts
 type InferSomething = {
 	name: string;
 	age: number | undefined
 }
+
 ```
 
 
@@ -175,11 +174,13 @@ By default the input type is considered `unknown`.
 But the moment we add refinement or any kind of piping, the input type is not `unknown` anymore.
 
 Think about:
+
 ```ts
 national_id: z.string().refine(val => val.length === 13 || val === '', {
 		message: "National ID must be 13 digits.",
 		path: ['national_id']
 	}),
+
 ```
 
 We can correctly (almost) assume that the `val` value in the `refine` function is `string`.
@@ -193,23 +194,30 @@ Even
 
 ## How to validate a `type="date"` input field
 https://github.com/colinhacks/zod/discussions/879#discussioncomment-4646183
-```
+
+```ts
 const stringToDate = z.string().pipe( z.coerce.date() )
 ```
 
 here's how to do it in `sure`
-```
-const dateString = sure(val => {
-if (typeof val === 'string' && <check if datestring>) {
-	return good(val)
-}
 
-return evil('not datestring' as const)
+```ts
+import { pure } from '@robolex/sure'
+
+const dateString = pure(val => {
+	if (typeof val === 'string' && <check if datestring>) {
+		return good(val)
+	}
+
+	return evil('not datestring' as const)
 })
 ```
 
 and you can even do "piping"
-```
+
+```ts
+import { sure, after } from '@robolex/sure'
+
 const dateString = after(string, str => {
 	return isDate(str) ? good(str) : evl ('not date string' as const)
 })
