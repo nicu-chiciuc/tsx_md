@@ -26,9 +26,6 @@ jobs:
       # But NextJs requires that some env variables are setup
       - run: pnpm run build -F @aaa/ui
 
-      - run: pnpm run build -F dependent-ts
-      # - run: pnpm run build -F ailegis_api
-
-      # - run: pnpm -F nextjs-ailegis run tsc:ci
-      - run: pnpm -F nextjs-ailegis run test
+      - run: pnpm -F tsx_md run tsc:ci
+      # - run: pnpm -F tsx_md run test:ci
       - run: pnpm run pack:list-mismatch
