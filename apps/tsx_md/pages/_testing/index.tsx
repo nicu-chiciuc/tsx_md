@@ -140,7 +140,7 @@ const myVar = bad(34);
         ></iframe> */}
 
         {arrayOf(0, null).map((_, i) => {
-          return <MyEditor key={i} projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
+          return <MyEditor file="sample.ts" key={i} projectFiles={props.projectFiles} defaultValue={props.sourceCode} />
         })}
 
         <Md>{`
