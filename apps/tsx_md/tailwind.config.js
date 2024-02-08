@@ -1,9 +1,23 @@
 const { fontFamily } = require('tailwindcss/defaultTheme')
 
+// https://github.com/tailwindlabs/tailwindcss-typography/issues/32#issuecomment-757353336
+const disabledCss = {
+  'code::before': false,
+  'code::after': false,
+  'blockquote p:first-of-type::before': false,
+  'blockquote p:last-of-type::after': false,
+  pre: false,
+  code: false,
+  'pre code': false,
+  'code::before': false,
+  'code::after': false,
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+
   theme: {
     container: {
       center: true,
@@ -13,6 +27,14 @@ module.exports = {
       },
     },
     extend: {
+      // https://github.com/tailwindlabs/tailwindcss-typography/issues/32#issuecomment-757353336
+      typography: {
+        DEFAULT: { css: disabledCss },
+        sm: { css: disabledCss },
+        lg: { css: disabledCss },
+        xl: { css: disabledCss },
+        '2xl': { css: disabledCss },
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
