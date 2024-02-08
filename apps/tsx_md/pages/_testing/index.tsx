@@ -152,7 +152,7 @@ Something else here
 }
 
 export const getStaticProps = async () => {
-  const fileContents = await fs.readFile(path.join(process.cwd(), 'pages/blog/index.tsx'), 'utf8')
+  const fileContents = await fs.readFile(path.join(process.cwd(), 'pages/_testing/index.tsx'), 'utf8')
   const functionText = extractFunctionSource(fileContents, getStaticProps.name) ?? ''
 
   // format using prettier
