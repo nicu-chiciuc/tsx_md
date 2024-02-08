@@ -68,7 +68,7 @@ export default function RemoteMdxPage({ mdxSource }: Props) {
 }
 
 export async function getStaticProps() {
-  const projectPath = path.join(process.cwd(), 'src/articles/sure_lib.mdx')
+  const projectPath = path.join(process.cwd(), 'articles/sure_lib.mdx')
   const mdxText = await fs.readFile(projectPath, 'utf8')
 
   console.log(mdxText)
