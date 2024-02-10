@@ -2,6 +2,7 @@ import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'ne
 import Md from 'react-markdown'
 import path from 'path'
 import fs from 'fs/promises'
+import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 
 type Repo = {
   name: string
@@ -36,7 +37,7 @@ export const getStaticProps = async (context: any) => {
   const fileName = context.params?.slug as string
 
   const projectPath = path.join(process.cwd(), 'articles', `${fileName}.md`)
-  console.log(projectPath)
+
   const mdxText = await fs.readFile(projectPath, 'utf8')
 
   return {
@@ -50,7 +51,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
   return (
     <div className="flex items-center justify-center ">
       <div className="prose lg:prose-xl">
-        <Md>{props.mdxText}</Md>
+        <Md components={MarkdownComponentsMonaco}>{props.mdxText}</Md>
       </div>
     </div>
   )

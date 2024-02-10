@@ -2,10 +2,49 @@ import React, { useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import type { BeforeMount } from '@monaco-editor/react'
 import { setupEditorATA, onEditorMount } from './monaco_types/setupEditor'
+import type { Components } from 'react-markdown'
 
 import Editor from '@monaco-editor/react'
 
-// const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false })
+// Increase when a new editor is created
+// This is used to give a unique file name to the editor
+// Otherwise repeats the content in the editors.
+//
+// TOOD: Reasearch and check if this is the correct way to do it
+let EditorId = 0
+
+/**
+To be used by the <Md /> component in the react-markdown components prop
+
+Configures the usage of monaco editor in the markdown
+*/
+export const MarkdownComponentsMonaco: Components = {
+  code(props) {
+    const { children, className, ...rest } = props
+
+    const match = /language-(\w+)/.exec(className || '')
+
+    if (!match) {
+      return (
+        // make it beautiful with tw, just little bolder and add the backticks back
+        <code {...rest} className={className + ' '}>
+          {children}
+        </code>
+      )
+    }
+
+    const source = '\n' + String(children).replace(/\n$/, '') + '\n'
+
+    return (
+      <div
+        // make the code sit in the middle
+        className="flex items-center justify-center"
+      >
+        <MyEditor defaultValue={source} file={`file${EditorId++}.ts`} projectFiles={[]} />
+      </div>
+    )
+  },
+}
 
 export const MyEditor = (props: {
   lang?: string

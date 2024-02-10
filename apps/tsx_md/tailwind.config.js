@@ -2,15 +2,15 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 
 // https://github.com/tailwindlabs/tailwindcss-typography/issues/32#issuecomment-757353336
 const disabledCss = {
-  'code::before': false,
-  'code::after': false,
-  'blockquote p:first-of-type::before': false,
-  'blockquote p:last-of-type::after': false,
+  // 'code::before': false,
+  // 'code::after': false,
+  // 'blockquote p:first-of-type::before': false,
+  // 'blockquote p:last-of-type::after': false,
   pre: false,
-  code: false,
-  'pre code': false,
-  'code::before': false,
-  'code::after': false,
+  // code: false,
+  // 'pre code': false,
+  // 'code::before': false,
+  // 'code::after': false,
 }
 
 /** @type {import('tailwindcss').Config} */
