@@ -5,6 +5,7 @@ import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 import { serialize } from 'next-mdx-remote/serialize'
 import { assertArticleFrontmatter } from '@/my_components/frontmatter'
+import Link from 'next/link'
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { knownFiles } = props
@@ -21,7 +22,9 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
             {knownFiles.map(file => (
               // nicely formated links using tailwind
               <li key={file.name}>
-                <a href={`/blog/${file.name}`}>{file.title}</a>
+                <Link href={`/blog/${file.name}`} className="text-blue-900 hover:underline">
+                  {file.title}
+                </Link>
 
                 <p>{file.description}</p>
               </li>
