@@ -1,19 +1,10 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { InferGetStaticPropsType } from 'next'
 import path from 'path'
 import fs from 'fs/promises'
-import { notEmpty } from '@robolex/dependent'
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
-import Link from 'next/link'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
+import { serialize } from 'next-mdx-remote/serialize'
+import { assertArticleFrontmatter } from '@/my_components/frontmatter'
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { knownFiles } = props
@@ -29,8 +20,10 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
           <ul>
             {knownFiles.map(file => (
               // nicely formated links using tailwind
-              <li key={file}>
-                <a href={`/blog/${file}`}>{file}</a>
+              <li key={file.name}>
+                <a href={`/blog/${file.name}`}>{file.title}</a>
+
+                <p>{file.description}</p>
               </li>
             ))}
           </ul>
@@ -44,11 +37,26 @@ export const getStaticProps = async () => {
   const projectPath = path.join(process.cwd(), 'articles')
   const files = await fs.readdir(projectPath)
 
-  const withoutExtension = files.map(file => file.split('.')[0]).filter(notEmpty)
+  // parse frontmatter from all files
+  const frontmatters = await Promise.all(
+    files.map(async file => {
+      const mdxText = await fs.readFile(path.join(projectPath, file), 'utf8')
+
+      const mdxSerialized = await serialize(mdxText, {
+        parseFrontmatter: true,
+      })
+
+      const valid = assertArticleFrontmatter(mdxSerialized.frontmatter)
+
+      const [name, extension] = file.split('.')
+
+      return { ...valid, name, extension }
+    })
+  )
 
   return {
     props: {
-      knownFiles: withoutExtension,
+      knownFiles: frontmatters,
     },
   }
 }
