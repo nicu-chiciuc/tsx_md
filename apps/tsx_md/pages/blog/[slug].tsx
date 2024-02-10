@@ -1,5 +1,6 @@
 import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'next'
-import Md from 'react-markdown'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
 import path from 'path'
 import fs from 'fs/promises'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
@@ -43,10 +44,13 @@ export const getStaticProps = async (context: any) => {
 
   const mdxText = await fs.readFile(projectPath, 'utf8')
 
+  const mdxSerialized = await serialize(mdxText)
+
   return {
     props: {
       fileName,
-      mdxText,
+      // mdxText,
+      mdxSerialized,
     },
   }
 }
@@ -60,7 +64,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
       <div className="flex items-center justify-center ">
         <div className="prose lg:prose-xl">
-          <Md components={MarkdownComponentsMonaco}>{props.mdxText}</Md>
+          <MDXRemote {...props.mdxSerialized} components={MarkdownComponentsMonaco} />
         </div>
       </div>
     </div>

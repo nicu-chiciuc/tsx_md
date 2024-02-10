@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
-import dynamic from 'next/dynamic'
+import React from 'react'
 import type { BeforeMount } from '@monaco-editor/react'
-import { setupEditorATA, onEditorMount } from './monaco_types/setupEditor'
-import type { Components } from 'react-markdown'
+import { onEditorMount } from './monaco_types/setupEditor'
+import type { MDXRemoteProps } from 'next-mdx-remote'
 
 import Editor from '@monaco-editor/react'
 
@@ -15,10 +14,11 @@ let EditorId = 0
 
 /**
 To be used by the <Md /> component in the react-markdown components prop
+or by the <MDXRemote /> component in the components prop
 
 Configures the usage of monaco editor in the markdown
 */
-export const MarkdownComponentsMonaco: Components = {
+export const MarkdownComponentsMonaco: MDXRemoteProps['components'] = {
   code(props) {
     const { children, className, ...rest } = props
 
