@@ -3,7 +3,6 @@ import path from 'path'
 
 async function getFilesRecursive(dir: string): Promise<string[]> {
   const dirents = await fs.readdir(dir, { withFileTypes: true })
-  console.log(dirents)
 
   const filesPromises = dirents.map(async dirent => {
     let res = path.resolve(dir, dirent.name)
