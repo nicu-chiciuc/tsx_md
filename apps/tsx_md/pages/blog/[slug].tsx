@@ -3,6 +3,7 @@ import Md from 'react-markdown'
 import path from 'path'
 import fs from 'fs/promises'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
+import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 
 type Repo = {
   name: string
@@ -49,9 +50,13 @@ export const getStaticProps = async (context: any) => {
 }
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <div className="flex items-center justify-center ">
-      <div className="prose lg:prose-xl">
-        <Md components={MarkdownComponentsMonaco}>{props.mdxText}</Md>
+    <div className="flex flex-col items-center">
+      <MainNavigationMenu />
+
+      <div className="flex items-center justify-center ">
+        <div className="prose lg:prose-xl">
+          <Md components={MarkdownComponentsMonaco}>{props.mdxText}</Md>
+        </div>
       </div>
     </div>
   )
