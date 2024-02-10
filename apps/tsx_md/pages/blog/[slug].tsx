@@ -12,7 +12,6 @@ export const getStaticPaths = (async () => {
   // read all files from ./posts
 
   const projectPath = path.join(process.cwd(), 'articles')
-
   const files = await fs.readdir(projectPath)
 
   const withoutExtension = files.map(file => file.split('.')[0])
