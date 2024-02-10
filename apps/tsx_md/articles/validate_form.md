@@ -1,3 +1,8 @@
+---
+title: I need to validate a form
+description: I'm pushing the idea that validation libraries are too complex
+---
+
 > This article is still a work in progress
 
 # I need to validate a form

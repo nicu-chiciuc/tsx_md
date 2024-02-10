@@ -7,6 +7,8 @@ import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 import { MAIN_REPO } from '@/constants'
+import { assertArticleFrontmatter, sureArticleFrontmatter } from '@/my_components/frontmatter'
+import { useEffect } from 'react'
 
 type Repo = {
   name: string
@@ -44,7 +46,9 @@ export const getStaticProps = async (context: any) => {
 
   const mdxText = await fs.readFile(projectPath, 'utf8')
 
-  const mdxSerialized = await serialize(mdxText)
+  const mdxSerialized = await serialize(mdxText, {
+    parseFrontmatter: true,
+  })
 
   return {
     props: {
@@ -56,6 +60,8 @@ export const getStaticProps = async (context: any) => {
 }
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const link = `${MAIN_REPO}/blob/main/apps/tsx_md/articles/${props.fileName}.md`
+
+  const fm = assertArticleFrontmatter(props.mdxSerialized.frontmatter)
 
   return (
     <div className="flex flex-col items-center">

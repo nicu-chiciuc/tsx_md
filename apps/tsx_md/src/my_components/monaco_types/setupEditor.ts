@@ -4,7 +4,7 @@ import { JsxEmit } from 'typescript'
 
 export const typeHelper = createATA()
 
-const editorWidth = 600
+export const editorWidth = 650
 
 export const onEditorMount: EditorProps['onMount'] = (editor, monaco) => {
   setupEditorATA(editor, monaco)

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BeforeMount } from '@monaco-editor/react'
-import { onEditorMount } from './monaco_types/setupEditor'
+import { editorWidth, onEditorMount } from './monaco_types/setupEditor'
 import type { MDXRemoteProps } from 'next-mdx-remote'
 
 import Editor from '@monaco-editor/react'
@@ -87,7 +87,7 @@ export const MyEditor = (props: {
       theme="vs-dark"
       // height={'100px'}
       // width={'400px'}
-      width={900}
+      width={editorWidth}
       defaultLanguage="typescript"
       // beforeMount={willMount}
       defaultPath={props.file}
