@@ -13,12 +13,14 @@ import {
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
+import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { knownFiles } = props
 
   return (
     <div className="flex flex-col items-center">
+      <GithubIcon />
       <MainNavigationMenu />
 
       <div className="flex items-center justify-center ">

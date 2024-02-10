@@ -4,6 +4,8 @@ import path from 'path'
 import fs from 'fs/promises'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
+import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
+import { MAIN_REPO } from '@/constants'
 
 type Repo = {
   name: string
@@ -49,8 +51,11 @@ export const getStaticProps = async (context: any) => {
   }
 }
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const link = `${MAIN_REPO}/blob/main/apps/tsx_md/articles/${props.fileName}.md`
+
   return (
     <div className="flex flex-col items-center">
+      <GithubIcon href={link} />
       <MainNavigationMenu />
 
       <div className="flex items-center justify-center ">
