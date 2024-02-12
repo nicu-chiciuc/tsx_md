@@ -11,7 +11,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
   const { knownFiles } = props
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="container flex flex-col items-center overflow-hidden">
       <GithubIcon />
       <MainNavigationMenu />
 

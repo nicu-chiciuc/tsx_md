@@ -1,14 +1,13 @@
-import type { InferGetStaticPropsType, GetStaticProps, GetStaticPaths } from 'next'
+import type { InferGetStaticPropsType, GetStaticPaths } from 'next'
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import path from 'path'
 import fs from 'fs/promises'
-import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 import { MAIN_REPO } from '@/constants'
-import { assertArticleFrontmatter, sureArticleFrontmatter } from '@/my_components/frontmatter'
-import { useEffect } from 'react'
+import { assertArticleFrontmatter } from '@/my_components/frontmatter'
+import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 
 type Repo = {
   name: string
@@ -64,15 +63,15 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
   const fm = assertArticleFrontmatter(props.mdxSerialized.frontmatter)
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-full flex-col items-center ">
       <GithubIcon href={link} />
       <MainNavigationMenu />
 
-      <div className="flex items-center justify-center ">
-        <div className="prose lg:prose-xl">
+      <main className="w-full p-5">
+        <article className="prose mx-auto break-words">
           <MDXRemote {...props.mdxSerialized} components={MarkdownComponentsMonaco} />
-        </div>
-      </div>
+        </article>
+      </main>
     </div>
   )
 }
