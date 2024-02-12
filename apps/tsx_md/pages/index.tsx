@@ -11,30 +11,31 @@ const IndexPage: React.FC = () => {
   }, [])
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex max-h-screen w-full flex-col items-center">
       <GithubIcon />
-
       <MainNavigationMenu />
 
-      <div className="flex h-screen items-center justify-center">
-        {showText && (
-          <Ztext
-            depth="1rem"
-            direction="both"
-            event="pointer"
-            eventRotation="30deg"
-            eventDirection="default"
-            fade={false}
-            layers={10}
-            perspective="400px"
-            style={{
-              fontSize: '12rem',
-            }}
-          >
-            tsx.md
-          </Ztext>
-        )}
-      </div>
+      <main className="w-full">
+        <div className="flex h-screen items-center justify-center overflow-hidden">
+          {showText && (
+            <Ztext
+              depth="1rem"
+              direction="both"
+              event="pointer"
+              eventRotation="30deg"
+              eventDirection="default"
+              fade={false}
+              layers={10}
+              perspective="400px"
+              style={{
+                fontSize: '5rem',
+              }}
+            >
+              tsx.md
+            </Ztext>
+          )}
+        </div>
+      </main>
     </div>
   )
 }
