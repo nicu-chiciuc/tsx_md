@@ -1,6 +1,6 @@
 import React from 'react'
 import type { BeforeMount } from '@monaco-editor/react'
-import { editorWidth, onEditorMount } from './monaco_types/setupEditor'
+import { onEditorMount } from './monaco_types/setupEditor'
 import type { MDXRemoteProps } from 'next-mdx-remote'
 
 import Editor from '@monaco-editor/react'
@@ -73,13 +73,20 @@ export const MyEditor = (props: {
         minimap: { enabled: false },
 
         // disable scrollbar
-        scrollbar: { vertical: 'hidden', horizontal: 'hidden' },
+        // scrollbar: { vertical: 'hidden', horizontal: 'hidden' },
+        //
+        scrollbar: {
+          // handleMouseWheel: false,
+
+          // So that it's possible to scroll down the page, when the mouse is over the editor
+          alwaysConsumeMouseWheel: false,
+        },
 
         // disable scrolling
         scrollBeyondLastLine: false,
 
-        wordWrap: 'on',
-        wrappingStrategy: 'advanced',
+        // wordWrap: 'on',
+        // wrappingStrategy: 'advanced',
 
         // disable line numbers
         lineNumbers: 'off',
@@ -87,7 +94,7 @@ export const MyEditor = (props: {
       theme="vs-dark"
       // height={'100px'}
       // width={'400px'}
-      width={editorWidth}
+      // width={editorWidth}
       defaultLanguage="typescript"
       // beforeMount={willMount}
       defaultPath={props.file}

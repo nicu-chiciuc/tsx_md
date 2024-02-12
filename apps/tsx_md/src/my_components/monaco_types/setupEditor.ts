@@ -4,30 +4,16 @@ import { JsxEmit } from 'typescript'
 
 export const typeHelper = createATA()
 
-export const editorWidth = 650
-
 export const onEditorMount: EditorProps['onMount'] = (editor, monaco) => {
   setupEditorATA(editor, monaco)
-
-  let ignoreEvent = false
 
   const updateHeight = () => {
     const container = editor.getDomNode()
     if (!container) return
 
-    // const width = container?.clientWidth ?? '500px'
-
     const contentHeight = Math.min(1000, editor.getContentHeight())
 
-    container.style.width = `${editorWidth}px`
     container.style.height = `${contentHeight}px`
-
-    try {
-      ignoreEvent = true
-      editor.layout({ width: editorWidth, height: contentHeight })
-    } finally {
-      ignoreEvent = false
-    }
   }
   editor.onDidContentSizeChange(updateHeight)
   updateHeight()
