@@ -15,8 +15,8 @@ const IndexPage: React.FC = () => {
       <GithubIcon />
       <MainNavigationMenu />
 
-      <main className="w-full">
-        <div className="flex h-screen items-center justify-center overflow-hidden">
+      <main className="h-full ">
+        <div className="flex items-center justify-center overflow-hidden">
           {showText && (
             <Ztext
               depth="1rem"
