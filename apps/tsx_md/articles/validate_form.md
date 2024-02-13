@@ -30,13 +30,11 @@ I have these requirements and I need to represent them.
 so a well formatted form json should look like this:
 
 ```ts
-
 type FormValue = {
 	name: string
 	national_id: string
 	individual_type: "individual" | "organization"
 }
-
 ```
 
 You may think that the `national_id` should be `string | undefined`, but the value of a text form should be `""` (an empty string) by default. So the type would look like this theoretically `string | ""`, but of course Typescript transforms this to `string` automatically.
@@ -49,50 +47,50 @@ In case some of the requirements aren't met, the form should contain helpful, cu
 I've asked ChatGPT 4 (through the API) to write this in Yup.
 
 ```ts
-import * as yup from 'yup';
+import { object, string } from 'yup'
 
-const FormSchema = yup.object().shape({
-    name: yup.string()
+const FormSchema = object().shape({
+    name: string()
         .required('Name is required'),
     
-    national_id: yup.string()
+    national_id: string()
         .when('individual_type', {
             is: 'organization',
-            then: yup.string().matches(/^\d{13}$/, 'National ID must be 13 digits').required('National ID is required for organizations'),
-            otherwise: yup.string().matches(/^\d{13}$/, 'National ID must be 13 digits')
+            then: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits').required('National ID is required for organizations'),
+            otherwise: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits')
         }),
         
-    individual_type: yup.string()
+    individual_type: string()
         .oneOf(['individual', 'organization'], `Individual type must either be "individual" or "organization"`).required(),
-});
+})
 ```
 
 then in Zod
 
 ```ts
-import { z } from 'zod';
+import { z, object, string, union, literal } from 'zod'
 
-const FormValue = z.object({
-	name: z.string().nonempty('Name is required.'),
-	national_id: z.string().refine(val => val.length === 13 || val === '', {
+const FormValue = object({
+	name: string().nonempty('Name is required.'),
+	national_id: string().refine(val => val.length === 13 || val === '', {
 		message: "National ID must be 13 digits.",
 		path: ['national_id']
 	}),
-	individual_type: z.union([
-		z.literal("individual"),
-		z.literal("organization")
+	individual_type: union([
+		literal("individual"),
+		literal("organization")
     ]).refine((val, ctx) => {
         if (val === 'organization' && ctx.parent.national_id === '') {
-            return false;
+            return false
         }
-        return true;
+        return true
     }, {
         message: "National ID is required for organization type.",
         path: ['individual_type']
     })
-});
+})
 
-export type IFormValue = z.infer<typeof FormValue>;
+export type IFormValue = z.infer<typeof FormValue>
 ```
 
 Note that our actual form contained ~22 properties (some where just booleans or enums) grouped in some nested objects.
@@ -108,11 +106,15 @@ there are some complex differences:
 import yup from 'yup'
 import z from 'zod'
 
-yup.string().required('Name is required'),
+yup.string().required('Name is required')
 
 // vs
 
-z.string().nonempty('Name is required.'),
+z.string().nonempty('Name is required.')
+
+// at this time `.min(1)` is preferred over `.nonempty()`
+
+z.string().min(1, 'Name is required.')
 ```
 
 The main differences between pre-Typescript libraries and post-Typescript (yup and zod) is the way they treat empty strings.
@@ -155,23 +157,23 @@ Using Zod for custom scenarios seemed too complex for me.
 When we think about a validation library there's usually only 1 type we care about.
 When we write
 ```ts
+import { z, object, string, number } from 'zod'
+
 const something = object({
 	name: string(),
 	age: number().optional()
 	})
 
-type InferSomething = Infer<typeof something>
-
+type InferSomething = z.infer<typeof something>
 ```
 
 and we assume that we'd get this type
 
 ```ts
 type InferSomething = {
-	name: string;
+	name: string
 	age: number | undefined
 }
-
 ```
 
 
@@ -183,11 +185,12 @@ But the moment we add refinement or any kind of piping, the input type is not `u
 Think about:
 
 ```ts
-national_id: z.string().refine(val => val.length === 13 || val === '', {
+import { string } from 'zod'
+
+const national_id = string().refine(val => val.length === 13 || val === '', {
 		message: "National ID must be 13 digits.",
 		path: ['national_id']
-	}),
-
+	})
 ```
 
 We can correctly (almost) assume that the `val` value in the `refine` function is `string`.
@@ -197,36 +200,42 @@ That makes implementing the refinement easier since we don't have to check if va
 
 
 ### What about the `error` type
-Even 
+
+
 
 ## How to validate a `type="date"` input field
 https://github.com/colinhacks/zod/discussions/879#discussioncomment-4646183
 
 ```ts
-const stringToDate = z.string().pipe( z.coerce.date() )
+import { string, coerce } from 'zod'
+
+const stringToDate = string().pipe( coerce.date() )
 ```
 
 here's how to do it in `sure`
 
 ```ts
-import { pure } from '@robolex/sure'
+import { pure, good, bad } from '@robolex/sure'
+import { isDate } from 'validator'
 
-const dateString = pure(val => {
-	if (typeof val === 'string' && <check if datestring>) {
+const dateString = val => {
+	if (typeof val === 'string' && isDate(val)) {
 		return good(val)
 	}
 
-	return evil('not datestring' as const)
-})
+	return bad('not datestring')
+}
 ```
 
 and you can even do "piping"
 
 ```ts
-import { sure, after } from '@robolex/sure'
+import { sure, after, string, good, bad } from '@robolex/sure'
+import { isDate } from 'validator'
+
 
 const dateString = after(string, str => {
-	return isDate(str) ? good(str) : evl ('not date string' as const)
+	return isDate(str) ? good(str) : bad('not date string')
 })
 ```
 
