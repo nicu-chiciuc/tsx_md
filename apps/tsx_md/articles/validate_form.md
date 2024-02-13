@@ -14,26 +14,27 @@ They are one of most SEOed results.
 
 But I also know about zod, I've used it and like how I get type-safety by default.
 
-----
+---
 
 Now here's a question for you.
 
 I have these requirements and I need to represent them.
 
 ### Requirements
-* the `name` required text (this one should have lots of tutorials (include link))
-* the `national_id` (here it's called IDNO or IDNP) is optional
-* an id is a number comprised of 13 digits
-* the `individual_type` can either be `"individual"` or `"organization"`
-* if the `individual_type` is `'organization"` then the `national_id` is required
+
+- the `name` required text (this one should have lots of tutorials (include link))
+- the `national_id` (here it's called IDNO or IDNP) is optional
+- an id is a number comprised of 13 digits
+- the `individual_type` can either be `"individual"` or `"organization"`
+- if the `individual_type` is `'organization"` then the `national_id` is required
 
 so a well formatted form json should look like this:
 
 ```ts
 type FormValue = {
-	name: string
-	national_id: string
-	individual_type: "individual" | "organization"
+  name: string
+  national_id: string
+  individual_type: 'individual' | 'organization'
 }
 ```
 
@@ -50,18 +51,18 @@ I've asked ChatGPT 4 (through the API) to write this in Yup.
 import { object, string } from 'yup'
 
 const FormSchema = object().shape({
-    name: string()
-        .required('Name is required'),
-    
-    national_id: string()
-        .when('individual_type', {
-            is: 'organization',
-            then: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits').required('National ID is required for organizations'),
-            otherwise: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits')
-        }),
-        
-    individual_type: string()
-        .oneOf(['individual', 'organization'], `Individual type must either be "individual" or "organization"`).required(),
+  name: string().required('Name is required'),
+
+  national_id: string().when('individual_type', {
+    is: 'organization',
+    then: schema =>
+      schema.matches(/^\d{13}$/, 'National ID must be 13 digits').required('National ID is required for organizations'),
+    otherwise: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits'),
+  }),
+
+  individual_type: string()
+    .oneOf(['individual', 'organization'], `Individual type must either be "individual" or "organization"`)
+    .required(),
 })
 ```
 
@@ -71,23 +72,23 @@ then in Zod
 import { z, object, string, union, literal } from 'zod'
 
 const FormValue = object({
-	name: string().nonempty('Name is required.'),
-	national_id: string().refine(val => val.length === 13 || val === '', {
-		message: "National ID must be 13 digits.",
-		path: ['national_id']
-	}),
-	individual_type: union([
-		literal("individual"),
-		literal("organization")
-    ]).refine((val, ctx) => {
-        if (val === 'organization' && ctx.parent.national_id === '') {
-            return false
-        }
-        return true
-    }, {
-        message: "National ID is required for organization type.",
-        path: ['individual_type']
-    })
+  name: string().nonempty('Name is required.'),
+  national_id: string().refine(val => val.length === 13 || val === '', {
+    message: 'National ID must be 13 digits.',
+    path: ['national_id'],
+  }),
+  individual_type: union([literal('individual'), literal('organization')]).refine(
+    (val, ctx) => {
+      if (val === 'organization' && ctx.parent.national_id === '') {
+        return false
+      }
+      return true
+    },
+    {
+      message: 'National ID is required for organization type.',
+      path: ['individual_type'],
+    }
+  ),
 })
 
 export type IFormValue = z.infer<typeof FormValue>
@@ -99,6 +100,7 @@ Note that our actual form contained ~22 properties (some where just booleans or 
 Even for such a seemingly small type with 3 properties, the moment we decide to add some actual business requirements, all the beauty of both Zod's and Yup's api go out the window.
 
 ## string | '' | undefined
+
 Even for seemigly simple things like `string()`
 there are some complex differences:
 
@@ -134,6 +136,7 @@ Zod has `refine`, but it's still unintuitive: https://github.com/colinhacks/zod/
 since it requires deep knowledge on how the system (zod) behaves under the hood.
 
 #### 03
+
 Fortunately, since the requirement that a string is not empty is quite common, zod provides
 
 ```ts
@@ -144,8 +147,8 @@ string().nonempty()
 
 Now guess how these libraries behave when `'  '` (a string with just 3 space characters).
 
-
 ## Conditionals and refinements
+
 The main issue that make writing and understanding yup and zod in the previous examples is the way in which specifying custom requirements is made. Even more so when these requirements change based on other fields.
 
 Yup handles this using `when()` which doesn't provide any type of type-inference. I assume mostly because the api design was made before Typescript was mainstream. And the current version is not possible (from my personal understanding), since the reference string needs to be based on the object which causes a cyclical definition and is not possible.
@@ -154,15 +157,17 @@ Zod handles this by providing coerce, refine, transform, superRefine, pipe... ht
 Using Zod for custom scenarios seemed too complex for me.
 
 ## What actual type information does Zod/Yup hold
+
 When we think about a validation library there's usually only 1 type we care about.
 When we write
+
 ```ts
 import { z, object, string, number } from 'zod'
 
 const something = object({
-	name: string(),
-	age: number().optional()
-	})
+  name: string(),
+  age: number().optional(),
+})
 
 type InferSomething = z.infer<typeof something>
 ```
@@ -171,11 +176,10 @@ and we assume that we'd get this type
 
 ```ts
 type InferSomething = {
-	name: string
-	age: number | undefined
+  name: string
+  age: number | undefined
 }
 ```
-
 
 But actually there should be at least 2 types, the input type, and the output type.
 
@@ -188,28 +192,26 @@ Think about:
 import { string } from 'zod'
 
 const national_id = string().refine(val => val.length === 13 || val === '', {
-		message: "National ID must be 13 digits.",
-		path: ['national_id']
-	})
+  message: 'National ID must be 13 digits.',
+  path: ['national_id'],
+})
 ```
 
 We can correctly (almost) assume that the `val` value in the `refine` function is `string`.
 That makes implementing the refinement easier since we don't have to check if val is a string again.
 
-	`io-ts` has this `Input` type clearly defined, the i
-
+    `io-ts` has this `Input` type clearly defined, the i
 
 ### What about the `error` type
 
-
-
 ## How to validate a `type="date"` input field
+
 https://github.com/colinhacks/zod/discussions/879#discussioncomment-4646183
 
 ```ts
 import { string, coerce } from 'zod'
 
-const stringToDate = string().pipe( coerce.date() )
+const stringToDate = string().pipe(coerce.date())
 ```
 
 here's how to do it in `sure`
@@ -219,11 +221,11 @@ import { pure, good, bad } from '@robolex/sure'
 import { isDate } from 'validator'
 
 const dateString = val => {
-	if (typeof val === 'string' && isDate(val)) {
-		return good(val)
-	}
+  if (typeof val === 'string' && isDate(val)) {
+    return good(val)
+  }
 
-	return bad('not datestring')
+  return bad('not datestring')
 }
 ```
 
@@ -233,9 +235,8 @@ and you can even do "piping"
 import { sure, after, string, good, bad } from '@robolex/sure'
 import { isDate } from 'validator'
 
-
 const dateString = after(string, str => {
-	return isDate(str) ? good(str) : bad('not date string')
+  return isDate(str) ? good(str) : bad('not date string')
 })
 ```
 
