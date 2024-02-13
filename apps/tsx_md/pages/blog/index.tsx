@@ -38,7 +38,12 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
 export const getStaticProps = async () => {
   const projectPath = path.join(process.cwd(), 'articles')
-  const files = await fs.readdir(projectPath)
+
+  const filesToIgnore = ['.prettierrc']
+
+  const allFiles = await fs.readdir(projectPath)
+
+  const files = allFiles.filter(file => !filesToIgnore.includes(file))
 
   // parse frontmatter from all files
   const frontmatters = await Promise.all(
