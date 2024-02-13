@@ -5,6 +5,8 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
+import '../src/logRocketSetup'
+
 import { Inter as FontSans } from 'next/font/google'
 
 export const fontSans = FontSans({

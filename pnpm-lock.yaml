@@ -161,6 +161,9 @@ importers:
       lodash:
         specifier: 4.17.21
         version: 4.17.21
+      logrocket:
+        specifier: ^8.0.1
+        version: 8.0.1
       lucide-react:
         specifier: ^0.292.0
         version: 0.292.0(react@18.2.0)
@@ -8030,6 +8033,10 @@ packages:
       chalk: 4.1.2
       is-unicode-supported: 0.1.0
     dev: true
+
+  /logrocket@8.0.1:
+    resolution: {integrity: sha512-bksVbjcoNpJjwn3EfB4D0JxXBxozPTAwEkRzchfl/nnVuCMp9zlUz4pkp7DgA7FVi4rzjzH4zriam1u3vej+hg==}
+    dev: false
 
   /longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
