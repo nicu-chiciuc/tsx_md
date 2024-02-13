@@ -102,6 +102,6 @@
     "tsconfig": "workspace:*",
     "typed-css-modules": "^0.9.1",
     "typed-scss-modules": "^8.0.0",
-    "typescript": "5.3.0-beta"
+    "typescript": "5.3.3"
   }
 }

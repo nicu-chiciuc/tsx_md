@@ -1,11 +1,8 @@
 import { InferGetStaticPropsType } from 'next'
-import path from 'path'
-import fs from 'fs/promises'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
-import { serialize } from 'next-mdx-remote/serialize'
-import { assertArticleFrontmatter } from '@/my_components/frontmatter'
 import Link from 'next/link'
+import { getArticles } from '@/server/blogServing'
 
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { knownFiles } = props
@@ -23,10 +20,10 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
               // nicely formated links using tailwind
               <li key={file.name}>
                 <Link href={`/blog/${file.name}`} className="text-blue-900 hover:underline">
-                  {file.title}
+                  {file.fm.title}
                 </Link>
 
-                <p>{file.description}</p>
+                <p>{file.fm.description}</p>
               </li>
             ))}
           </ul>
@@ -37,30 +34,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 }
 
 export const getStaticProps = async () => {
-  const projectPath = path.join(process.cwd(), 'articles')
-
-  const filesToIgnore = ['.prettierrc']
-
-  const allFiles = await fs.readdir(projectPath)
-
-  const files = allFiles.filter(file => !filesToIgnore.includes(file))
-
-  // parse frontmatter from all files
-  const frontmatters = await Promise.all(
-    files.map(async file => {
-      const mdxText = await fs.readFile(path.join(projectPath, file), 'utf8')
-
-      const mdxSerialized = await serialize(mdxText, {
-        parseFrontmatter: true,
-      })
-
-      const valid = assertArticleFrontmatter(mdxSerialized.frontmatter)
-
-      const [name, extension] = file.split('.')
-
-      return { ...valid, name, extension }
-    })
-  )
+  const frontmatters = await getArticles()
 
   return {
     props: {

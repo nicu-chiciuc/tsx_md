@@ -1,66 +1,45 @@
-import type { InferGetStaticPropsType, GetStaticPaths } from 'next'
-import { serialize } from 'next-mdx-remote/serialize'
+import type { InferGetStaticPropsType, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import { MDXRemote } from 'next-mdx-remote'
-import path from 'path'
-import fs from 'fs/promises'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 import { MAIN_REPO } from '@/constants'
-import { assertArticleFrontmatter } from '@/my_components/frontmatter'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
-
-type Repo = {
-  name: string
-  stargazers_count: number
-}
+import { getArticle, getArticles } from '@/server/blogServing'
 
 export const getStaticPaths = (async () => {
-  // read all files from ./posts
-
-  const projectPath = path.join(process.cwd(), 'articles')
-  const files = await fs.readdir(projectPath)
-
-  const withoutExtension = files.map(file => file.split('.')[0])
+  const frontmatters = await getArticles()
 
   return {
-    paths: [
-      ...files.map(file => {
-        const withoutExtension = file.split('.')[0]
-
-        return {
-          params: {
-            slug: withoutExtension,
-          },
-        }
-      }),
-    ],
+    paths: frontmatters.map(file => {
+      return {
+        params: {
+          slug: file.name,
+        },
+      }
+    }),
     fallback: false, // false or "blocking"
   }
 }) satisfies GetStaticPaths
 
-export const getStaticProps = async (context: any) => {
-  const fileName = context.params?.slug as string
+export const getStaticProps = (async (context: GetStaticPropsContext<{ slug?: string }>) => {
+  const fileName = context.params?.slug
 
-  const projectPath = path.join(process.cwd(), 'articles', `${fileName}.md`)
+  if (!fileName) {
+    throw new Error('fileName is undefined')
+  }
 
-  const mdxText = await fs.readFile(projectPath, 'utf8')
-
-  const mdxSerialized = await serialize(mdxText, {
-    parseFrontmatter: true,
-  })
+  const article = await getArticle(fileName)
 
   return {
     props: {
       fileName,
-      // mdxText,
-      mdxSerialized,
+      mdxSerialized: article.mdxSerialized,
     },
   }
-}
+}) satisfies GetStaticProps
+
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const link = `${MAIN_REPO}/blob/main/apps/tsx_md/articles/${props.fileName}.md`
-
-  const fm = assertArticleFrontmatter(props.mdxSerialized.frontmatter)
 
   return (
     <div className="flex w-full flex-col items-center ">
