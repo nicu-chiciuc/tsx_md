@@ -4,6 +4,10 @@ description: I'm pushing the idea that validation libraries are too complex
 ---
 
 > This article is still a work in progress
+>
+> You can hover over the code to see real type information
+>
+> Doesn't work well on mobile, might switch to CodeMirror
 
 # I need to validate a form
 
