@@ -1,5 +1,5 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+import '@/styles/globals.css'
+import type { AppProps } from 'next/app'
 import { Inter as FontSans } from 'next/font/google'
 
 export const fontSans = FontSans({
@@ -8,7 +8,6 @@ export const fontSans = FontSans({
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-}
   return (
     /**
      * https://github.com/vercel/next.js/issues/44840#issuecomment-1442347859

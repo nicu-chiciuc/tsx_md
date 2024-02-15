@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { useFormik } from 'formik'
 import * as y from 'yup'
 import { z } from 'zod'
+import { Button } from '@/components/ui/button'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -75,6 +76,8 @@ export default function Home() {
   })
 
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>hello</main>
+    <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
+      <Button>Log values</Button>
+    </main>
   )
 }
