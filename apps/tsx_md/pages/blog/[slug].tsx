@@ -42,6 +42,19 @@ export const getStaticProps = (async (context: GetStaticPropsContext<{ slug?: st
 export default function Page(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const link = `${MAIN_REPO}/blob/main/apps/tsx_md/articles/${props.fileName}.md`
 
+  /**
+   * When commenting locally, I don't want to spam the main repo with comments.
+   */
+  const ghMapping =
+    process.env['NODE_ENV'] === 'production'
+      ? ({
+          mapping: 'pathname',
+        } as const)
+      : ({
+          mapping: 'specific',
+          term: 'dev: trying giscus',
+        } as const)
+
   return (
     <div className="flex w-full flex-col items-center ">
       <GithubIcon href={link} />
@@ -59,14 +72,13 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
             repoId="R_kgDOLMhPTQ"
             category="Announcements"
             categoryId="DIC_kwDOLMhPTc4CdQTT"
-            mapping="specific"
-            term="Welcome to @giscus/react component!"
             reactionsEnabled="1"
             emitMetadata="0"
             inputPosition="top"
             theme="preferred_color_scheme"
             lang="en"
             loading="lazy"
+            {...ghMapping}
           />
         </div>
       </main>
