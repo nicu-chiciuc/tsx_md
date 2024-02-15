@@ -5,6 +5,7 @@ import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
 import { MAIN_REPO } from '@/constants'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 import { getArticle, getArticles } from '@/server/blogServing'
+import Giscus from '@giscus/react'
 
 export const getStaticPaths = (async () => {
   const frontmatters = await getArticles()
@@ -47,9 +48,27 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
       <MainNavigationMenu />
 
       <main className="w-full p-5">
-        <article className="prose mx-auto break-words">
+        <article className="prose mx-auto mb-14 break-words">
           <MDXRemote {...props.mdxSerialized} components={MarkdownComponentsMonaco} />
         </article>
+
+        <div className="mx-auto max-w-prose">
+          <Giscus
+            id="comments"
+            repo="nicu-chiciuc/tsx_md"
+            repoId="R_kgDOLMhPTQ"
+            category="Announcements"
+            categoryId="DIC_kwDOLMhPTc4CdQTT"
+            mapping="specific"
+            term="Welcome to @giscus/react component!"
+            reactionsEnabled="1"
+            emitMetadata="0"
+            inputPosition="top"
+            theme="preferred_color_scheme"
+            lang="en"
+            loading="lazy"
+          />
+        </div>
       </main>
     </div>
   )
