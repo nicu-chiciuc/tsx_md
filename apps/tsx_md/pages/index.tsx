@@ -11,11 +11,12 @@ const IndexPage: React.FC = () => {
   }, [])
 
   return (
-    <div className="flex max-h-screen w-full flex-col items-center">
+    // in TW height: 100% is "h-full" and width: 100% is "w-full
+    <div className="flex h-full flex-col items-center">
       <GithubIcon />
       <MainNavigationMenu />
 
-      <main className="h-full ">
+      <main className="flex grow">
         <div className="flex items-center justify-center overflow-hidden">
           {showText && (
             <Ztext

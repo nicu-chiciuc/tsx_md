@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export function MainNavigationMenu() {
   return (
-    <NavigationMenu className="p-7">
+    <NavigationMenu className="grow-0 p-7">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>

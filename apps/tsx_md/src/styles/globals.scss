@@ -87,3 +87,13 @@ div[data-react-component='App'] {
     color: var(--foreground);
   }
 }
+
+/* 
+ * From the "CSS for JavaScript Developers" course
+ */
+html,
+body,
+#root, /* for create-react-app */
+#__next /* for Next.js */ {
+  height: 100%;
+}
