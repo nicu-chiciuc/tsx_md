@@ -43,7 +43,13 @@ const FormValue = z.object({
 
     // Can't use `refine`  since we need the context
     .refine(
+      // @ts-expect-error TODO
       (val, context) => {
+        console.log({
+          val,
+          context,
+        })
+
         if (val === 'organization' && context.parent.national_id === '') {
           return false
         }
