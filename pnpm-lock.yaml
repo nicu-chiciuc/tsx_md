@@ -331,6 +331,9 @@ importers:
 
   apps/validate_form:
     dependencies:
+      '@radix-ui/react-slot':
+        specifier: ^1.0.2
+        version: 1.0.2(@types/react@18.2.37)(react@18.2.0)
       '@robolex/sure':
         specifier: 0.9.6
         version: 0.9.6
