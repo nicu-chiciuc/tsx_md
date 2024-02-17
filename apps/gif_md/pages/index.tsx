@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <main className={`flex h-full grow flex-col items-center justify-between ${inter.className}`}>
+    <main className={`flex h-full items-center justify-center bg-black ${inter.className}`}>
       <img src="/dancing_baby.gif" />
     </main>
   )
