@@ -4,6 +4,7 @@ import { ErrorMessage, Field, Form, FormikProvider, useFormik } from 'formik'
 import * as y from 'yup'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
+import { TheForm } from '@/components/theForm'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -63,78 +64,47 @@ const FormValue = z.object({
     ),
 })
 
+const initialValues = {
+  name: '',
+  national_id: '',
+  individual_type: '',
+}
+
 export default function Home() {
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      national_id: '',
-      individual_type: '',
-    },
+  const formikYup = useFormik({
+    initialValues,
     validationSchema: FormSchemaYup,
-    onSubmit: values => {
-      console.log(values)
-    },
+    onSubmit: console.log,
+  })
+
+  const formikZod = useFormik({
+    initialValues,
+    validationSchema: FormSchemaYup,
+    onSubmit: console.log,
+  })
+
+  const formikSure = useFormik({
+    initialValues,
+    validationSchema: FormSchemaYup,
+    onSubmit: console.log,
   })
 
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
-      <form onSubmit={formik.handleSubmit} className="flex w-96 flex-col gap-3">
-        {/* Name */}
-        <div className="flex flex-col border border-gray-600 p-2">
-          <label htmlFor="name" className="w-12">
-            Name
-          </label>
-          <input
-            className="border-2 border-black"
-            name="name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-          />
+    <main className={`flex min-h-screen items-center justify-between p-12 ${inter.className}`}>
+      <div>
+        <span>Using Yup</span>
+        <TheForm formik={formikYup} />
+      </div>
 
-          <span className="text-red-500">{formik.errors.name && formik.touched.name && formik.errors.name}</span>
-        </div>
+      <div>
+        <span>Using Zod</span>
+        <TheForm formik={formikZod} />
+      </div>
 
-        {/* National ID */}
-        <div className="flex flex-col border border-gray-600 p-2">
-          <label htmlFor="national_id" className="w-12">
-            National ID
-          </label>
-          <input
-            className="border-2 border-black"
-            name="national_id"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.national_id}
-          />
-
-          <span className="text-red-500">
-            {formik.errors.national_id && formik.touched.national_id && formik.errors.national_id}
-          </span>
-        </div>
-
-        {/* Individual type */}
-        <div className="flex flex-col border border-gray-600 p-2">
-          <label htmlFor="individual_type" className="w-12">
-            Individual Type
-          </label>
-          <input
-            className="border-2 border-black"
-            name="individual_type"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.individual_type}
-          />
-
-          <span className="text-red-500">
-            {formik.errors.individual_type && formik.touched.individual_type && formik.errors.individual_type}
-          </span>
-        </div>
-
-        <Button type="submit" disabled={formik.isSubmitting}>
-          Submit
-        </Button>
-      </form>
+      <div>
+        <span>Using Sure</span>
+        <TheForm formik={formikSure} />
+      </div>
     </main>
   )
 }
