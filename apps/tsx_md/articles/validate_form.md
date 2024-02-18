@@ -9,6 +9,30 @@ description: I'm pushing the idea that validation libraries are too complex
 >
 > Doesn't work well on mobile, might switch to CodeMirror
 
+# Abstract
+
+I'm trying deliver as concicely and deeply as possible the issues I've encountered while trying to
+make changes to the validation rules of a form that had around 22 fields (don't judge).
+
+I was expecting to rely on the type system to guide me, since I've already had experience with
+`zod`, `io-ts` and other libraries that provided amazing type suggestions.
+
+Even with more than 10 years of coding experience, it seemed strange that I had to dig through
+documentation to do things that I thought I should alreayd know (since I have so much experince™️)
+
+Trying to have complete control and understanding of what's happening to a very small piece of a
+system (form validation) that I thought was already a solved problem, I've realised that I was
+getting blocked when trying to implement very specific business-related requirements that didn't
+care about type-safetiness or readable code or all the things we should love and admire.
+
+The format of the article was thought out almost a year ago, but only recently I managed to create
+this blog, that I can also control. The main reason was the ability to give you the ability to hover
+over the values in the codeblocks and have the same experience you'd have in VsCode (literally using
+Monaco) or WebStorm or other editors.
+
+I think I initially tried to make it as a story, since working with a specific smaller example
+seemed like a understandable teaching method.
+
 # I need to validate a form
 
 I'm using React (with Next.js)
