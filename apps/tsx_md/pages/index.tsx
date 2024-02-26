@@ -1,4 +1,4 @@
-import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
+import { GithubCorner } from '@/my_components/githubCorner/githubForkIcon'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { useEffect, useState } from 'react'
 import Ztext from 'react-ztext'
@@ -13,7 +13,7 @@ const IndexPage: React.FC = () => {
   return (
     // in TW height: 100% is "h-full" and width: 100% is "w-full
     <div className="flex h-full flex-col items-center">
-      <GithubIcon />
+      <GithubCorner />
       <MainNavigationMenu />
 
       <main className="flex grow">

@@ -1,7 +1,7 @@
 import type { InferGetStaticPropsType, GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next'
 import { MDXRemote } from 'next-mdx-remote'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
-import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
+import { GithubCorner } from '@/my_components/githubCorner/githubForkIcon'
 import { MAIN_REPO } from '@/constants'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
 import { getArticle, getArticles } from '@/server/blogServing'
@@ -57,7 +57,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
   return (
     <div className="flex w-full flex-col items-center ">
-      <GithubIcon href={link} />
+      <GithubCorner href={link} />
       <MainNavigationMenu />
 
       <main className="w-full p-5">

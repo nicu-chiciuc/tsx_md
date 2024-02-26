@@ -1,6 +1,7 @@
+import { MAIN_REPO } from '@/constants'
 import styles from './ghCorner.module.scss'
 
-export function GithubIcon({ href = 'https://github.com/nicu-chiciuc/tsx_md' }: { href?: string }) {
+export function GithubCorner({ href = MAIN_REPO }: { href?: string }) {
   return (
     <a className={styles['github-corner']} href={href}>
       <svg
