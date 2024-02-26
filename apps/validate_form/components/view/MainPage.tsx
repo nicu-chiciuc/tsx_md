@@ -6,9 +6,10 @@ import { z } from 'zod'
 import * as r from '@robolex/sure'
 import { Button } from '@/components/ui/button'
 import { TheForm } from './theForm'
-import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { toFormikValidate, toFormikValidationSchema } from 'zod-formik-adapter'
 import { FormSchemaYup } from './yupValidation'
 import { FormSchemaZod } from './zodValidation'
+import { FormSchemaSure } from './sureValidation'
 
 /**
 - the `name` required text (this one should have lots of tutorials (include link))
@@ -24,6 +25,17 @@ const initialValues = {
   individual_type: '',
 }
 
+// Copied from: https://github.com/robertLichtnow/zod-formik-adapter/blob/master/index.ts
+function createValidationResult(error: z.ZodError) {
+  const result: Record<string, string> = {}
+
+  for (const x of error.errors) {
+    result[x.path.filter(Boolean).join('.')] = x.message
+  }
+
+  return result
+}
+
 export default function MainPage() {
   const formikYup = useFormik({
     initialValues,
@@ -33,13 +45,22 @@ export default function MainPage() {
 
   const formikZod = useFormik({
     initialValues,
-    validationSchema: toFormikValidationSchema(FormSchemaZod),
+    validate: formValue => {
+      const result = FormSchemaZod.safeParse(formValue)
+
+      if (!result.success) return createValidationResult(result.error)
+    },
     onSubmit: console.log,
   })
 
   const formikSure = useFormik({
     initialValues,
     validationSchema: FormSchemaYup,
+    validate: formValue => {
+      const [isValid, value] = FormSchemaSure(formValue)
+
+      if (!isValid) return value
+    },
     onSubmit: console.log,
   })
 
