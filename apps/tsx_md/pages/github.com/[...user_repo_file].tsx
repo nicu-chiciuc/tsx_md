@@ -3,9 +3,10 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
 import { MarkdownComponentsMonaco } from '@/my_components/monacoEditor'
-import { GithubIcon } from 'lucide-react'
 import { MDXRemote } from 'next-mdx-remote'
 import { loadGithubUrl } from '@/server/githubServing'
+import { GithubCorner } from '@/my_components/githubCorner/githubForkIcon'
+import { MAIN_REPO } from '@/constants'
 
 export default function Page(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
@@ -14,13 +15,11 @@ export default function Page(props: InferGetServerSidePropsType<typeof getServer
 
   if (!isOk) return <p>Invalid URL</p>
 
-  console.log({ val })
-
-  const link = 'google.com'
+  const link = `${MAIN_REPO}/blob/main/apps/tsx_md/pages/github.com/[...user_repo_file].tsx`
 
   return (
     <div className="flex w-full flex-col items-center ">
-      <GithubIcon href={link} />
+      <GithubCorner href={link} />
       <MainNavigationMenu />
 
       <main className="w-full p-5">
