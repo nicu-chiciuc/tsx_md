@@ -1,6 +1,6 @@
 import { InferGetStaticPropsType } from 'next'
 import { MainNavigationMenu } from '@/my_components/mainNavMenu'
-import { GithubIcon } from '@/my_components/githubCorner/githubForkIcon'
+import { GithubCorner } from '@/my_components/githubCorner/githubForkIcon'
 import Link from 'next/link'
 import { getArticles } from '@/server/blogServing'
 
@@ -9,7 +9,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 
   return (
     <div className="container flex flex-col items-center overflow-hidden">
-      <GithubIcon />
+      <GithubCorner />
       <MainNavigationMenu />
 
       <div className="flex items-center justify-center ">
