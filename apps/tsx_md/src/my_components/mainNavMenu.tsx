@@ -22,6 +22,12 @@ export function MainNavigationMenu() {
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/github.com" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>github.com</NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   )

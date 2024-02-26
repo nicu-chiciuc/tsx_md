@@ -36,6 +36,25 @@ For example, the above link becomes:
 
 [tsx.md/github.com/robolex-app/public_ts/blob/main/README.md](https://tsx.md/github.com/robolex-app/public_ts/blob/main/README.md)
 
+The code will be rendered like this:
+${'```ts'}
+import { object, string, number, InferGood, InferBad } from '@robolex/sure'
+
+const schema = object({
+  name: string,
+  age: number,
+})
+
+// Hover over the types below
+type Schema = InferGood<typeof schema>
+type Issues = InferBad<typeof schema>
+
+const good: Schema = {
+  name: 'John',
+  age: '99', // error here
+}
+  
+${'```'}
   `
 
   const mdxSerialized = await serialize(
