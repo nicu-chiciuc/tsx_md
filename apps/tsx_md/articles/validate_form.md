@@ -53,7 +53,7 @@ I have these requirements and I need to represent them.
 The form has **3** fields:
 
 - `name` - The name of the person or organization
-- `national_id` - The national ID of the person or organization
+- `iban` - The national ID of the person or organization
 - `individual_type` - A choice between `"individual"` and `"organization"`
 
 The `name` is a string and is always required. A national id has 13 digits and is required for
@@ -64,7 +64,7 @@ so a well formatted form json should look like this:
 ```ts
 type FormValue = {
   name: string
-  national_id: string
+  iban: string
   individual_type: 'individual' | 'organization'
 }
 ```
@@ -259,9 +259,9 @@ Think about:
 ```ts
 import { string } from 'zod'
 
-const national_id = string().refine(val => val.length === 13 || val === '', {
+const iban = string().refine(val => val.length === 13 || val === '', {
   message: 'National ID must be 13 digits.',
-  path: ['national_id'],
+  path: ['iban'],
 })
 ```
 
@@ -286,6 +286,78 @@ user to a better understanding of what they need to do.
 Maybe the user wrote a completely correct IBAN, but we don't support that bank, or that country. We
 might want to let them now about that. And I personally would like to know about that before a
 ticket is opened by the product team, just relying on Typescript.
+
+## Remember the initial form requirements?
+
+You can check the tests cases and the validation here:
+
+Here's a glimpse of the schemas
+
+**Yup**
+
+```ts
+import { object, string } from 'yup'
+
+export const FormSchemaYup = object().shape({
+  name: string().required('Name is required'),
+
+  iban: string()
+    .nullable()
+    .matches(/^\d{13}$/, 'National ID must be 13 digits')
+    .transform((curr, orig) => (orig === '' ? null : curr))
+    .when('individual_type', {
+      is: 'organization',
+      then: schema => schema.required('National ID is required for organizations'),
+      otherwise: schema => schema,
+    }),
+
+  individual_type: string()
+    .oneOf(
+      ['individual', 'organization'],
+      `Individual type must either be "individual" or "organization"`
+    )
+    .required(),
+})
+```
+
+**Zod**
+
+```ts
+import { isNumeric } from 'validator'
+import { literal, object, string, union } from 'zod'
+
+export const FormSchemaZod = object({
+  name: string().nonempty('Name is required.'),
+
+  iban: string().refine(
+    value => {
+      if (value === '') return true
+
+      if (!isNumeric(value, { no_symbols: true })) return false
+
+      if (value.length !== 13) return false
+
+      return true
+    },
+    {
+      message: 'National ID must be 13 digits.',
+      path: ['iban'],
+    }
+  ),
+
+  individual_type: union([literal('individual'), literal('organization')]),
+}).superRefine((obj, ctx) => {
+  if (obj.individual_type === 'organization' && obj.iban === '') {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'National ID is required for organizations.',
+      path: ['iban'],
+    })
+  }
+
+  return true
+})
+```
 
 # Final thoughts
 

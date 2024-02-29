@@ -13,15 +13,15 @@ import { FormSchemaSure } from './sureValidation'
 
 /**
 - the `name` required text (this one should have lots of tutorials (include link))
-- the `national_id` (here it's called IDNO or IDNP) is optional
+- the `iban` (here it's called IDNO or IDNP) is optional
 - an id is a number comprised of 13 digits
 - the `individual_type` can either be `"individual"` or `"organization"`
-- if the `individual_type` is `'organization"` then the `national_id` is required
+- if the `individual_type` is `'organization"` then the `iban` is required
  */
 
 const initialValues = {
   name: '',
-  national_id: '',
+  iban: '',
   individual_type: '',
 }
 

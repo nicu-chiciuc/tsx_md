@@ -37,11 +37,13 @@ function checkAll(value: unknown, expected: boolean, showErrors = false) {
   expect(isValidSure).toBe(expected)
 }
 
+const sampleIBAN_md = 'MD24AG000225100013104168'
+
 describe('validat the schema', () => {
   it('base check, empty string', () => {
     const value = {
       name: '',
-      national_id: '',
+      iban: '',
       individual_type: '',
     }
 
@@ -51,17 +53,17 @@ describe('validat the schema', () => {
   it('individual with no id', () => {
     const value = {
       name: 'John',
-      national_id: '',
+      iban: '',
       individual_type: 'individual',
     }
 
-    checkAll(value, true, true)
+    checkAll(value, true)
   })
 
   it('individual with id', () => {
     const value = {
       name: 'John',
-      national_id: '1234567890123',
+      iban: sampleIBAN_md,
       individual_type: 'individual',
     }
 
@@ -71,7 +73,7 @@ describe('validat the schema', () => {
   it('individual with bad id', () => {
     const value = {
       name: 'John',
-      national_id: '123456789012',
+      iban: '123456789012',
       individual_type: 'individual',
     }
 
@@ -81,7 +83,7 @@ describe('validat the schema', () => {
   it('organization with no id', () => {
     const value = {
       name: 'John',
-      national_id: '',
+      iban: '',
       individual_type: 'organization',
     }
 
@@ -91,7 +93,7 @@ describe('validat the schema', () => {
   it('organization with id', () => {
     const value = {
       name: 'John',
-      national_id: '1234567890123',
+      iban: sampleIBAN_md,
       individual_type: 'organization',
     }
 
@@ -101,7 +103,7 @@ describe('validat the schema', () => {
   it('organization with bad id', () => {
     const value = {
       name: 'John',
-      national_id: '123456789012',
+      iban: '123456789012',
       individual_type: 'organization',
     }
 

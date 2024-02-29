@@ -1,32 +1,35 @@
-import { isNumeric } from 'validator'
+import { isIBAN } from 'validator'
 import { literal, object, string, union } from 'zod'
 
 export const FormSchemaZod = object({
   name: string().nonempty('Name is required.'),
 
-  national_id: string().refine(
+  iban: string().refine(
     value => {
       if (value === '') return true
 
-      if (!isNumeric(value, { no_symbols: true })) return false
-
-      if (value.length !== 13) return false
+      if (
+        !isIBAN(value, {
+          whitelist: ['MD'],
+        })
+      )
+        return false
 
       return true
     },
     {
-      message: 'National ID must be 13 digits.',
-      path: ['national_id'],
+      message: 'IBAN not valid',
+      path: ['iban'],
     }
   ),
 
   individual_type: union([literal('individual'), literal('organization')]),
 }).superRefine((obj, ctx) => {
-  if (obj.individual_type === 'organization' && obj.national_id === '') {
+  if (obj.individual_type === 'organization' && obj.iban === '') {
     ctx.addIssue({
       code: 'custom',
-      message: 'National ID is required for organizations.',
-      path: ['national_id'],
+      message: 'IBAN is required for organizations',
+      path: ['iban'],
     })
   }
 
