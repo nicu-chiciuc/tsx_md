@@ -1,6 +1,5 @@
 import { after, bad, good, object, pure } from '@robolex/sure'
-import { isNumeric, whitelist } from 'validator'
-import isIBAN from 'validator/lib/isIBAN'
+import { isIBAN } from 'validator'
 
 const baseSchema = object({
   name: val => {
@@ -14,7 +13,7 @@ const baseSchema = object({
     // allow empty string by default
     if (value === '') return good(value)
 
-    if (!isIBAN(value, { whitelist: ['MD'] })) return bad('not numeric string')
+    if (!isIBAN(value, { whitelist: ['MD'] })) return bad('not MD iban')
 
     return good(value)
   },

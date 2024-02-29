@@ -53,7 +53,7 @@ I have these requirements and I need to represent them.
 The form has **3** fields:
 
 - `name` - The name of the person or organization
-- `iban` - The national ID of the person or organization
+- `iban` - An IBAN (International Bank Account Number) but only for Moldova
 - `individual_type` - A choice between `"individual"` and `"organization"`
 
 The `name` is a string and is always required. A national id has 13 digits and is required for
@@ -295,16 +295,40 @@ Here's a glimpse of the schemas
 
 **Yup**
 
+Good luck reading the docs to understand the order of application of Or if there are any changes
+when the order changes.
+
+```
+string()
+    .required()
+    .nullable()
+    .transform()
+    .test()
+    .when(),
+```
+
 ```ts
 import { object, string } from 'yup'
+import { isIBAN } from 'validator'
 
 export const FormSchemaYup = object().shape({
   name: string().required('Name is required'),
 
   iban: string()
+    .required()
     .nullable()
-    .matches(/^\d{13}$/, 'National ID must be 13 digits')
     .transform((curr, orig) => (orig === '' ? null : curr))
+
+    // check if the iban is valid
+    .test('iban', 'IBAN not valid', value => {
+      // The empty string got transformed to `null` just for us
+      if (value === null) return true
+
+      if (!isIBAN(value, { whitelist: ['MD'] })) return false
+
+      return true
+    })
+
     .when('individual_type', {
       is: 'organization',
       then: schema => schema.required('National ID is required for organizations'),
@@ -322,8 +346,16 @@ export const FormSchemaYup = object().shape({
 
 **Zod**
 
+Sure if better, but if you want to validate a field based on another one, you have to use
+`superRefine` which is more complex than `.refine()`.
+
+At least you get better type-safety in the `superRefine`, although when you get to refinments, you
+get to the limits of what's safe to do in Zod.
+
+https://github.com/colinhacks/zod/issues/2474
+
 ```ts
-import { isNumeric } from 'validator'
+import { isIBAN } from 'validator'
 import { literal, object, string, union } from 'zod'
 
 export const FormSchemaZod = object({
@@ -333,14 +365,17 @@ export const FormSchemaZod = object({
     value => {
       if (value === '') return true
 
-      if (!isNumeric(value, { no_symbols: true })) return false
-
-      if (value.length !== 13) return false
+      if (
+        !isIBAN(value, {
+          whitelist: ['MD'],
+        })
+      )
+        return false
 
       return true
     },
     {
-      message: 'National ID must be 13 digits.',
+      message: 'IBAN not valid',
       path: ['iban'],
     }
   ),
@@ -350,13 +385,84 @@ export const FormSchemaZod = object({
   if (obj.individual_type === 'organization' && obj.iban === '') {
     ctx.addIssue({
       code: 'custom',
-      message: 'National ID is required for organizations.',
+      message: 'IBAN is required for organizations',
       path: ['iban'],
     })
   }
 
   return true
 })
+```
+
+**Sure**
+
+Sure replaces `refine()` with `after()` but the logic is mostly the same. Also, here's the
+implementation of `after()`
+
+https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js
+
+It's a little more hard then `string`, but basically it runs the first function, and if it's good,
+runs the second one. Otherwise it returns the bad.
+
+It also saves some metadata 🫣
+
+```ts
+export function after(first, second) {
+  return sure(
+    value => {
+      const [good, out] = first(value)
+      return good ? second(out) : bad(out)
+    },
+    {
+      first,
+      second,
+    }
+  )
+}
+```
+
+The schema
+
+```ts
+import { after, bad, good, object, pure, InferBad, InferGood } from '@robolex/sure'
+import { isIBAN } from 'validator'
+
+const baseSchema = object({
+  name: val => {
+    if (typeof val === 'string' && val !== '') return good(val)
+
+    return bad('not string')
+  },
+
+  iban: value => {
+    if (typeof value !== 'string') return bad('not string')
+    // allow empty string by default
+    if (value === '') return good(value)
+
+    if (!isIBAN(value, { whitelist: ['MD'] })) return bad('not MD iban')
+
+    return good(value)
+  },
+
+  individual_type: val => {
+    if (val === 'individual' || val === 'organization') return good(val)
+
+    return bad('not individual or organization')
+  },
+})
+
+// The after function calls the first function, then the second one
+// but you can just do it manually if you want
+export const FormSchemaSure = after(baseSchema, obj => {
+  if (obj.individual_type === 'organization' && obj.iban === '') {
+    return bad({ individual_type: 'iban is required for organization' })
+  }
+
+  return good(obj)
+})
+
+// Hover over the issues type to see what you get
+type Issues = InferBad<typeof FormSchemaSure>
 ```
 
 # Final thoughts
