@@ -73,8 +73,7 @@ type FormValue = {
 
 Even for seemigly simple things like `string()` there are some complex differences:
 
-```ts
-// apps/validate_form/components/view/something.test.ts
+```js
 it('now with undefined', () => {
   const value = undefined
 
@@ -96,6 +95,8 @@ Trying to use `yup` to allow strings that can be empty is a world of hurt.
 recommends doing something like this:
 
 ```ts
+import * as yup from 'yup'
+
 yup
   .string()
   .nullable()
@@ -142,7 +143,7 @@ This poses another question, how easy is to use validator.js with yup and zod.
 Before going forward I would like to show how can you implement `string` in `sure`:
 
 ```ts
-const isString = (val: unknown) => {
+const isString1 = (val: unknown) => {
   if (typeof val === 'string') {
     return [true, val] as const
   }
@@ -150,7 +151,7 @@ const isString = (val: unknown) => {
   return [false, 'not a string'] as const
 }
 
-const [isValid, value] = isString('hello')
+const [isValid, value] = isString1('hello')
 
 if (isValid) {
   // Hover over this to see the "expected" type
@@ -168,13 +169,15 @@ if (isValid) {
 of course, writing `as const` all day is not fun, so `@robolex/sure` provides these nice helpers:
 
 ```ts
-const isString = (val: unknown) => {
+import { bad, good } from '@robolex/sure'
+
+const isString2 = (val: unknown) => {
   if (typeof val === 'string') good(val)
 
   return bad('not a string')
 }
 
-const [isValid, value] = isString('hello')
+const [isValid, value] = isString2('hello')
 
 if (isValid) {
   // Hover over this to see the "expected" type
@@ -464,6 +467,8 @@ export const FormSchemaSure = after(baseSchema, obj => {
 // Hover over the issues type to see what you get
 type Issues = InferBad<typeof FormSchemaSure>
 ```
+
+\_
 
 # Final thoughts
 
