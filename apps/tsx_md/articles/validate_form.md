@@ -124,14 +124,14 @@ At this point I started to figure that there's too much complexity in these libr
 ### Too much complexity
 
 The implementation of `yup`'s `string` is this:
-https://github.com/jquense/yup/blob/master/src/string.ts
+[https://github.com/jquense/yup/blob/master/src/string.ts](https://github.com/jquense/yup/blob/master/src/string.ts)
 
 The implementation contains 301 lines of code. Most of the functionality (uuid, email) is usually
 better left for [validator.js](https://github.com/validatorjs/validator.js) since it's more tailored
 for string validation.
 
 Here's the implementation of `string` in `zod`:
-https://github.com/colinhacks/zod/blob/master/src/types.ts#L626
+[https://github.com/colinhacks/zod/blob/master/src/types.ts#L626](https://github.com/colinhacks/zod/blob/master/src/types.ts#L626)
 
 It sits at just 443 lines of code, which can also be mostly delegated to `validator.js`.
 
@@ -225,7 +225,10 @@ not possible (from my personal understanding), since the reference string needs 
 object which causes a cyclical definition and is not possible.
 
 Zod handles this by providing `coerce`, `refine`, `transform`, `superRefine`, `pipe`...
-https://zod.dev/?id=refine Using Zod for custom scenarios seemed too complex for me.
+
+[https://zod.dev/?id=refine](https://zod.dev/?id=refine)
+
+Using Zod for custom scenarios seemed too complex for me.
 
 ## The case for caring about the Type of errors
 
@@ -401,7 +404,7 @@ export const FormSchemaZod = object({
 Sure replaces `refine()` with `after()` but the logic is mostly the same. Also, here's the
 implementation of `after()`
 
-https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js
+[https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js](https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js)
 
 It's a little more hard then `string`, but basically it runs the first function, and if it's good,
 runs the second one. Otherwise it returns the bad.
@@ -409,6 +412,8 @@ runs the second one. Otherwise it returns the bad.
 It also saves some metadata 🫣
 
 ```ts
+import { sure, bad } from '@robolex/sure'
+
 export function after(first, second) {
   return sure(
     value => {
@@ -471,5 +476,5 @@ type Issues = InferBad<typeof FormSchemaSure>
 
 # Final thoughts
 
-There are many, many more things I'd like to talk about, but I've been dragging finish up this
-article for many months now, and I want to get it out of my system.
+There are many, many more things I'd like to talk about, but I've been dragging finishing up this
+article for many months now, and I think it's time to publish it.

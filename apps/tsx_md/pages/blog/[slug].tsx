@@ -34,7 +34,7 @@ export const getStaticProps = (async (context: GetStaticPropsContext<{ slug?: st
   return {
     props: {
       fileName,
-      mdxSerialized: article.mdxSerialized,
+      article,
     },
   }
 }) satisfies GetStaticProps
@@ -61,8 +61,11 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
       <MainNavigationMenu />
 
       <main className="w-full p-5">
+        {/* the title */}
+
         <article className="prose mx-auto mb-14 break-words">
-          <MDXRemote {...props.mdxSerialized} components={MarkdownComponentsMonaco} />
+          <h1 className="text-5xl font-bold text-gray-700">{props.article.fm.title}</h1>
+          <MDXRemote {...props.article.mdxSerialized} components={MarkdownComponentsMonaco} />
         </article>
 
         <div className="mx-auto max-w-prose">
