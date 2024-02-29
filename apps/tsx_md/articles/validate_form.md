@@ -5,9 +5,8 @@ description: I'm pushing the idea that validation libraries are too complex
 
 > This article is still a work in progress
 >
-> You can hover over the code to see real type information
->
-> Doesn't work well on mobile, might switch to CodeMirror
+> I strongly recommend you to read the article in a desktop environment, since you can hover over
+> the code to see the types.
 
 # Abstract
 
@@ -17,13 +16,13 @@ make changes to the validation rules of a form that had around 22 fields (don't 
 I was expecting to rely on the type system to guide me, since I've already had experience with
 `zod`, `io-ts` and other libraries that provided amazing type suggestions.
 
-Even with more than 10 years of coding experience, it seemed strange that I had to dig through
-documentation to do things that I thought I should alreayd know (since I have so much experince™️)
+Even with more than 10 years of *coding experience*™️, it seemed strange that I had to dig through
+documentation to do things that I thought I should alreayd know.
 
 Trying to have complete control and understanding of what's happening to a very small piece of a
 system (form validation) that I thought was already a solved problem, I've realised that I was
 getting blocked when trying to implement very specific business-related requirements that didn't
-care about type-safetiness or readable code or all the things we should love and admire.
+care about type-safetiness or readable code or all the things we love and admire.
 
 The format of the article was thought out almost a year ago, but only recently I managed to create
 this blog, that I can also control. The main reason was the ability to give you the ability to hover
