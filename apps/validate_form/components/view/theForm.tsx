@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 
 type FormikObj = typeof useFormik<{
   name: string
-  national_id: string
+  iban: string
   individual_type: string
 }>
 
@@ -26,18 +26,16 @@ export function TheForm({ formik }: { formik: ReturnType<FormikObj> }) {
 
       {/* National ID */}
       <div className="flex flex-col border border-gray-600 p-2">
-        <label htmlFor="national_id">National ID</label>
+        <label htmlFor="iban">National ID</label>
         <input
           className="border-2 border-black"
-          name="national_id"
+          name="iban"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.national_id}
+          value={formik.values.iban}
         />
 
-        <span className="text-red-500">
-          {formik.errors.national_id && formik.touched.national_id && formik.errors.national_id}
-        </span>
+        <span className="text-red-500">{formik.errors.iban && formik.touched.iban && formik.errors.iban}</span>
       </div>
 
       {/* Individual type */}
