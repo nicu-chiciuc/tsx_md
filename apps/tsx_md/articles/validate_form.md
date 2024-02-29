@@ -32,7 +32,7 @@ Monaco) or WebStorm or other editors.
 I think I initially tried to make it as a story, since working with a specific smaller example
 seemed like a understandable teaching method.
 
-# I need to validate a form
+# Introduction
 
 I'm using React (with Next.js)
 
