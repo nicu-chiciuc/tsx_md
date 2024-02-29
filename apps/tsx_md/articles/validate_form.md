@@ -455,7 +455,7 @@ const baseSchema = object({
 // but you can just do it manually if you want
 export const FormSchemaSure = after(baseSchema, obj => {
   if (obj.individual_type === 'organization' && obj.iban === '') {
-    return bad({ individual_type: 'iban is required for organization' })
+    return bad({ individual_type: 'iban is required for organization' } as const)
   }
 
   return good(obj)
