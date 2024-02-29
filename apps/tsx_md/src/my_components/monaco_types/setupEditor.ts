@@ -36,7 +36,7 @@ export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['on
     const path = 'file://' + _path
     defaults.addExtraLib(code, path)
 
-    console.log('added library to runtime', path)
+    // console.log('added library to runtime', path)
 
     // don't need to open the file in the editor
     // const uri = monaco.Uri.file(path);
