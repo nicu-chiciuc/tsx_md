@@ -55,8 +55,8 @@ The form has **3** fields:
 - `iban` - An IBAN (International Bank Account Number) but only for Moldova
 - `individual_type` - A choice between `"individual"` and `"organization"`
 
-The `name` is a string and is always required. A national id has 13 digits and is required for
-organizations, can be empty for individuals.
+The `name` is a string and is always required. An IBAN is required for 'organizations', can be empty
+for 'individuals'.
 
 so a well formatted form json should look like this:
 
@@ -212,8 +212,8 @@ export function pure(insure) {
 In the real world, besides trying to validate strings and number, we often try to validate IBANs,
 UUIDs, emails, etc.
 
-We sometimes even try to validate things which are specific to our business, like national IDs,
-phone numbers from a particular country, etc.
+We sometimes even try to validate things which are specific to our business, like IBANs, national
+ids, phone numbers from a particular country, etc.
 
 The main issue that make writing and understanding yup and zod in the previous examples is the way
 in which specifying custom requirements is made. Even more so when these requirements change based
@@ -264,9 +264,8 @@ Think about:
 ```ts
 import { string } from 'zod'
 
-const iban = string().refine(val => val.length === 13 || val === '', {
+const nationalId = string().refine(val => val.length === 13 || val === '', {
   message: 'National ID must be 13 digits.',
-  path: ['iban'],
 })
 ```
 
@@ -336,7 +335,7 @@ export const FormSchemaYup = object().shape({
 
     .when('individual_type', {
       is: 'organization',
-      then: schema => schema.required('National ID is required for organizations'),
+      then: schema => schema.required('IBAN is required for organizations'),
       otherwise: schema => schema,
     }),
 

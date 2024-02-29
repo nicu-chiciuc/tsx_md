@@ -21,7 +21,7 @@ export const FormSchemaYup = object().shape({
 
     .when('individual_type', {
       is: 'organization',
-      then: schema => schema.required('National ID is required for organizations'),
+      then: schema => schema.required('IBAN is required for organizations'),
       otherwise: schema => schema,
     }),
 

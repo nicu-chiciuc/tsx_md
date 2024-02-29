@@ -24,9 +24,9 @@ export function TheForm({ formik }: { formik: ReturnType<FormikObj> }) {
         <span className="text-red-500">{formik.errors.name && formik.touched.name && formik.errors.name}</span>
       </div>
 
-      {/* National ID */}
+      {/* IBAN */}
       <div className="flex flex-col border border-gray-600 p-2">
-        <label htmlFor="iban">National ID</label>
+        <label htmlFor="iban">IBAN</label>
         <input
           className="border-2 border-black"
           name="iban"
