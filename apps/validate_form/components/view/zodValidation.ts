@@ -6,7 +6,7 @@ export const FormSchemaZod = object({
 
   national_id: string().refine(
     value => {
-      if (typeof value !== 'string') return false
+      if (value === '') return true
 
       if (!isNumeric(value, { no_symbols: true })) return false
 
@@ -21,10 +21,14 @@ export const FormSchemaZod = object({
   ),
 
   individual_type: union([literal('individual'), literal('organization')]),
-}).refine(obj => {
-  console.log({
-    obj,
-  })
+}).superRefine((obj, ctx) => {
+  if (obj.individual_type === 'organization' && obj.national_id === '') {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'National ID is required for organizations.',
+      path: ['national_id'],
+    })
+  }
 
   return true
 })

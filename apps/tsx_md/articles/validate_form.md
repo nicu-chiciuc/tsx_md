@@ -37,9 +37,10 @@ seemed like a understandable teaching method.
 
 I'm using React (with Next.js)
 
-Formik and Yup were already used in the project. They are one of most SEOed results.
+`Formik` and `Yup` were already used in the project. They are one of most SEOed results. (at this
+time `react-hook-form` took the lead)
 
-But I also know about zod, I've used it and like how I get type-safety by default.
+But I also know about `zod`, I've used it and like how I get type-safety by default.
 
 ---
 
@@ -49,11 +50,14 @@ I have these requirements and I need to represent them.
 
 ### Requirements
 
-- the `name` required text (this one should have lots of tutorials (include link))
-- the `national_id` (here it's called IDNO or IDNP) is optional
-- an id is a number comprised of 13 digits
-- the `individual_type` can either be `"individual"` or `"organization"`
-- if the `individual_type` is `'organization"` then the `national_id` is required
+The form has **3** fields:
+
+- `name` - The name of the person or organization
+- `national_id` - The national ID of the person or organization
+- `individual_type` - A choice between `"individual"` and `"organization"`
+
+The `name` is a string and is always required. A national id has 13 digits and is required for
+organizations, can be empty for individuals.
 
 so a well formatted form json should look like this:
 
@@ -65,105 +69,59 @@ type FormValue = {
 }
 ```
 
-You may think that the `national_id` should be `string | undefined`, but the value of a text form
-should be `""` (an empty string) by default. So the type would look like this theoretically
-`string | ""`, but of course Typescript transforms this to `string` automatically. Of course a
-solution is `string & {}`. See
-[What is the purpose of `string & {}`](https://stackoverflow.com/questions/75262513/what-is-the-purpose-of-string)
-
-In case some of the requirements aren't met, the form should contain helpful, custom messages, about
-the specific issues (not just 'Not number"). These "error" messages might also need i18n in the near
-future.
-
----
-
-I've asked ChatGPT 4 (through the API) to write this in Yup.
-
-```ts
-import { object, string } from 'yup'
-
-const FormSchema = object().shape({
-  name: string().required('Name is required'),
-
-  national_id: string().when('individual_type', {
-    is: 'organization',
-    then: schema =>
-      schema
-        .matches(/^\d{13}$/, 'National ID must be 13 digits')
-        .required('National ID is required for organizations'),
-    otherwise: schema => schema.matches(/^\d{13}$/, 'National ID must be 13 digits'),
-  }),
-
-  individual_type: string()
-    .oneOf(
-      ['individual', 'organization'],
-      `Individual type must either be "individual" or "organization"`
-    )
-    .required(),
-})
-```
-
-then in Zod
-
-```ts
-import { z, object, string, union, literal } from 'zod'
-
-const FormValue = object({
-  name: string().nonempty('Name is required.'),
-  national_id: string().refine(val => val.length === 13 || val === '', {
-    message: 'National ID must be 13 digits.',
-    path: ['national_id'],
-  }),
-  individual_type: union([literal('individual'), literal('organization')]).refine(
-    (val, ctx) => {
-      if (val === 'organization' && ctx.parent.national_id === '') {
-        return false
-      }
-      return true
-    },
-    {
-      message: 'National ID is required for organization type.',
-      path: ['individual_type'],
-    }
-  ),
-})
-
-export type IFormValue = z.infer<typeof FormValue>
-```
-
-Note that our actual form contained ~22 properties (some where just booleans or enums) grouped in
-some nested objects.
-
-!! review please Even for such a seemingly small type with 3 properties, the moment we decide to add
-some actual business requirements, all the beauty of both Zod's and Yup's api go out the window.
-
-## string | '' | undefined
+## What does `required string` actually mean?
 
 Even for seemigly simple things like `string()` there are some complex differences:
 
 ```ts
-import yup from 'yup'
-import z from 'zod'
+// apps/validate_form/components/view/something.test.ts
+it('now with undefined', () => {
+  const value = undefined
 
-yup.string().required('Name is required')
+  const isValidZod = z.string().safeParse(value).success
+  const isValidYup = y.string().isValidSync(value)
+  const [isValidSure] = s.string(value)
 
-// vs
-
-z.string().nonempty('Name is required.')
-
-// at this time `.min(1)` is preferred over `.nonempty()`
-
-z.string().min(1, 'Name is required.')
+  expect(isValidZod).toBe(false)
+  expect(isValidYup).toBe(true) // Note that by default, yup allows undefined in schemas
+  expect(isValidSure).toBe(false)
+})
 ```
 
-The main differences between pre-Typescript libraries and post-Typescript (yup and zod) is the way
-they treat empty strings.
+Using `.required()` in `yup` will make it fail for `undefined`, \*but it will also fail for empty
+strings`.
 
-using yup's `string()` without required allows passing `undefined`, '' (empty string) or any other
+Trying to use `yup` to allow strings that can be empty is a world of hurt.
+[This reddit post](https://www.reddit.com/r/reactjs/comments/13sdx7b/yup_how_to_skip_validation_when_value_is_empty/)
+recommends doing something like this:
+
+```ts
+yup
+  .string()
+  .nullable()
+  .transform((curr, orig) => (orig === '' ? null : curr))
+```
+
+The main differences between pre-type-safety libraries and post-type-safety libraries (`yup` and
+`zod`) is the way they treat empty strings.
+
+Using yup's `string()` without required allows passing `undefined`, '' (empty string) or any other
 string. When `string().required()` is used, besides not allowing `undefined`, yup also shows an
 error for empty strings.
 
 When using `zod` , a `string()` by default allows an empty string and.
+
+At this point I figured I might as well do something like this:
+
+```ts
+function isString(value: unknown): value is string {
+  return typeof value === 'string'
+}
+```
+
+At this point I started to figure that there's too much complexity in these libraries.
+
+### Too much complexity
 
 The implementation of `yup`'s `string` is this:
 https://github.com/jquense/yup/blob/master/src/string.ts
@@ -172,38 +130,102 @@ The implementation contains 301 lines of code. Most of the functionality (uuid, 
 better left for [validator.js](https://github.com/validatorjs/validator.js) since it's more tailored
 for string validation.
 
+Here's the implementation of `string` in `zod`:
+https://github.com/colinhacks/zod/blob/master/src/types.ts#L626
+
+It sits at just 443 lines of code, which can also be mostly delegated to `validator.js`.
+
 This poses another question, how easy is to use validator.js with yup and zod.
 
-Zod has `refine`, but it's still unintuitive: https://github.com/colinhacks/zod/issues/2192 since it
-requires deep knowledge on how the system (zod) behaves under the hood.
+## Sure can't be _THAT_ small
 
-#### 03
-
-Fortunately, since the requirement that a string is not empty is quite common, zod provides
+Before going forward I would like to show how can you implement `string` in `sure`:
 
 ```ts
-import { string } from 'zod'
+const isString = (val: unknown) => {
+  if (typeof val === 'string') {
+    return [true, val] as const
+  }
 
-string().nonempty()
+  return [false, 'not a string'] as const
+}
+
+const [isValid, value] = isString('hello')
+
+if (isValid) {
+  // Hover over this to see the "expected" type
+  value
+
+  console.log(value)
+} else {
+  // Hover over this to see the "error" type
+  value
+
+  console.log()
+}
 ```
 
-Now guess how these libraries behave when `'  '` (a string with just 3 space characters).
+of course, writing `as const` all day is not fun, so `@robolex/sure` provides these nice helpers:
 
-## Conditionals and refinements
+```ts
+const isString = (val: unknown) => {
+  if (typeof val === 'string') good(val)
+
+  return bad('not a string')
+}
+
+const [isValid, value] = isString('hello')
+
+if (isValid) {
+  // Hover over this to see the "expected" type
+  value
+
+  console.log(value)
+} else {
+  // Hover over this to see the "error" type
+  value
+
+  console.log()
+}
+```
+
+You can use anything you wish for the error type, but I like to use strings since they are easy to
+work. At least much easier than catching errors then using `instanceof`.
+
+Of course, adding metadata and more sofisticated type-safety is possible using `pure` and `sure`,
+which are part of the core:
+
+```ts
+// https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/core.js
+export function sure(insure, meta) {
+  return Object.assign(insure, { meta })
+}
+export function pure(insure) {
+  return insure
+}
+```
+
+### Integrating actual business requirements
+
+In the real world, besides trying to validate strings and number, we often try to validate IBANs,
+UUIDs, emails, etc.
+
+We sometimes even try to validate things which are specific to our business, like national IDs,
+phone numbers from a particular country, etc.
 
 The main issue that make writing and understanding yup and zod in the previous examples is the way
 in which specifying custom requirements is made. Even more so when these requirements change based
 on other fields.
 
-Yup handles this using `when()` which doesn't provide any type of type-inference. I assume mostly
-because the api design was made before Typescript was mainstream. And the current version is not
-possible (from my personal understanding), since the reference string needs to be based on the
+Yup handles this using `when()` which _doesn't provide any real type of type-inference_.I assume
+mostly because the api design was made before Typescript was mainstream. And the current version is
+not possible (from my personal understanding), since the reference string needs to be based on the
 object which causes a cyclical definition and is not possible.
 
-Zod handles this by providing coerce, refine, transform, superRefine, pipe...
+Zod handles this by providing `coerce`, `refine`, `transform`, `superRefine`, `pipe`...
 https://zod.dev/?id=refine Using Zod for custom scenarios seemed too complex for me.
 
-## What actual type information does Zod/Yup hold
+## The case for caring about the Type of errors
 
 When we think about a validation library there's usually only 1 type we care about. When we write
 
@@ -246,44 +268,26 @@ const national_id = string().refine(val => val.length === 13 || val === '', {
 We can correctly (almost) assume that the `val` value in the `refine` function is `string`. That
 makes implementing the refinement easier since we don't have to check if val is a string again.
 
-    `io-ts` has this `Input` type clearly defined, the i
+`io-ts` takes this into account, but good luck convincing your team to use `io-ts` in a React app
+with a login form.
 
 ### What about the `error` type
 
-## How to validate a `type="date"` input field
+The error type always seems completely overlooked. We throw it around, then we catch it, then we try
+to figure out what has been thrown and somehow safely integrate it with our `i18n` library.
 
-https://github.com/colinhacks/zod/discussions/879#discussioncomment-4646183
+Any type of switch exhaustiveness or type-safety guarantees are forgotten.
 
-```ts
-import { string, coerce } from 'zod'
+**In my opinion, the error type, is usually MORE important than the expected type.**
 
-const stringToDate = string().pipe(coerce.date())
-```
+I don't even like calling it an "error". We use the issues that arise from validation to guide the
+user to a better understanding of what they need to do.
 
-here's how to do it in `sure`
+Maybe the user wrote a completely correct IBAN, but we don't support that bank, or that country. We
+might want to let them now about that. And I personally would like to know about that before a
+ticket is opened by the product team, just relying on Typescript.
 
-```ts
-import { pure, good, bad } from '@robolex/sure'
-import { isDate } from 'validator'
+# Final thoughts
 
-const dateString = val => {
-  if (typeof val === 'string' && isDate(val)) {
-    return good(val)
-  }
-
-  return bad('not datestring')
-}
-```
-
-and you can even do "piping"
-
-```ts
-import { sure, after, string, good, bad } from '@robolex/sure'
-import { isDate } from 'validator'
-
-const dateString = after(string, str => {
-  return isDate(str) ? good(str) : bad('not date string')
-})
-```
-
-the piping is not something added afterwards, it's the main mechanism.
+There are many, many more things I'd like to talk about, but I've been dragging finish up this
+article for many months now, and I want to get it out of my system.

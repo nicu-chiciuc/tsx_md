@@ -10,6 +10,9 @@ const baseSchema = object({
 
   national_id: value => {
     if (typeof value !== 'string') return bad('not string')
+    // allow empty string by default
+    if (value === '') return good(value)
+
     if (!isNumeric(value, { no_symbols: true })) return bad('not numeric string')
     if (value.length !== 13) return bad(`should be 13 digits`)
 
