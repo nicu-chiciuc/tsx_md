@@ -471,6 +471,24 @@ export const FormSchemaSure = after(baseSchema, obj => {
 type Issues = InferBad<typeof FormSchemaSure>
 ```
 
+# Conclusion
+
+Of course, `@robolex/sure` has lots of different helpers for `arrays`, `tuples`, spreaded tuples,
+optional keys, etc.
+
+> Regarding `optional`, it also supports `exactOptionalPropertyTypes` as compared to `zod` >
+> [https://github.com/colinhacks/zod/issues/635]([https://github.com/colinhacks/zod/issues/635])
+
+But all of them are implemented on this very small core.
+
+**My general direction was to put ALL the complexity in the type-system and leave the runtime as
+simple as humanly possible.**
+
+The generated code is ESM and can be easily understood.
+
+A library shouldn't be responsible for the type of errors it returns or some specific parsing it
+does to make the simple use-cases simpler but the real use-cases more complex.
+
 \_
 
 # Final thoughts
