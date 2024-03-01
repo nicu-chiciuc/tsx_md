@@ -1,6 +1,6 @@
 ---
 title: I need to validate a form
-description: I'm pushing the idea that validation libraries are too complex
+description: Type-safe validation libraries are too complex, and this has to change.
 ---
 
 > This article is still a work in progress
@@ -489,9 +489,40 @@ The generated code is ESM and can be easily understood.
 A library shouldn't be responsible for the type of errors it returns or some specific parsing it
 does to make the simple use-cases simpler but the real use-cases more complex.
 
+`@robolex/sure` is so simple that you can use it as a wrapper around `zod` or `yup` or `io-ts` or
+anything else you want.
+
+```ts
+import * as y from 'yup'
+import { good, bad, Sure, InferGood, InferBad } from '@robolex/sure'
+
+const yupString = (val => {
+  try {
+    const result = y.string().validateSync(val)
+    return good(result)
+  } catch (e) {
+    if (e instanceof y.ValidationError) {
+      return bad(e)
+    }
+    return bad('some other error')
+  }
+}) satisfies Sure
+
+type InferredGood = InferGood<typeof yupString>
+type InferredBad = InferBad<typeof yupString>
+```
+
 \_
 
 # Final thoughts
 
 There are many, many more things I'd like to talk about, but I've been dragging finishing up this
 article for many months now, and I think it's time to publish it.
+
+There's a long discussion about why I've chosen to represent an `Either` value as a tuple instead of
+and object with a `success` discriminator. Or why not a tuple where the first value is the error and
+the second is the value.
+
+There was a lot of experimentation and tests to get to this minimalistic core.
+
+But that's another story.
