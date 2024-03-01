@@ -30,6 +30,9 @@ export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['on
   defaults.setCompilerOptions({
     jsx: JsxEmit.React,
     esModuleInterop: true,
+
+    strict: true,
+    exactOptionalPropertyTypes: true,
   })
 
   const addLibraryToRuntime = (code: string, _path: string) => {
