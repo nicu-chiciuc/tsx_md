@@ -3,8 +3,6 @@ title: I need to validate a form
 description: Type-safe validation libraries are too complex, and this has to change.
 ---
 
-> This article is still a work in progress
->
 > I strongly recommend you to read the article in a desktop environment, since you can hover over
 > the code to see the types.
 
