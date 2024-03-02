@@ -288,7 +288,7 @@ opened by the product team, just relying on Typescript.
 
 The core type in `@robolex/sure` is this:
 
-```
+```ts
 export type Sure<
   //
   TBad = unknown,
