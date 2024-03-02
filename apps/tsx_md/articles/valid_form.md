@@ -71,17 +71,19 @@ type FormValue = {
 Even for seemigly simple things like `string()` there are some complex differences:
 
 ```js
-it('now with undefined', () => {
-  const value = undefined
+import { z } from 'zod'
+import * as y from 'yup'
+import * as s from '@robolex/sure'
 
-  const isValidZod = z.string().safeParse(value).success
-  const isValidYup = y.string().isValidSync(value)
-  const [isValidSure] = s.string(value)
+const value = undefined
 
-  expect(isValidZod).toBe(false)
-  expect(isValidYup).toBe(true) // Note that by default, yup allows undefined in schemas
-  expect(isValidSure).toBe(false)
-})
+const isValidZod = z.string().safeParse(value).success
+const isValidYup = y.string().isValidSync(value)
+const [isValidSure] = s.string(value)
+
+console.log(isValidZod === false)
+console.log(isValidYup === true) // Note that by default, yup allows undefined in schemas
+console.log(isValidSure === false)
 ```
 
 Using `.required()` in `yup` will make it fail for `undefined`, \*but it will also fail for empty
@@ -524,3 +526,6 @@ the second is the value.
 There was a lot of experimentation and tests to get to this minimalistic core.
 
 But that's another story.
+
+I recommend you check out the source code of `@robolex/sure` at
+[https://github.com/robolex-app/public_ts/](https://github.com/robolex-app/public_ts/)
