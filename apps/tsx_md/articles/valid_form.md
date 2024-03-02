@@ -8,27 +8,25 @@ description: Type-safe validation libraries are too complex, and this has to cha
 
 # Abstract
 
-I'm trying deliver as concicely and deeply as possible the issues I've encountered while trying to
-make changes to the validation rules of a form that had around 22 fields (don't judge).
+I'm trying to deliver as concisely and deeply as possible the issues I've encountered while trying
+to make changes to the validation rules of a form that had around 22 fields (don't judge).
 
-I was expecting to rely on the type system to guide me, since I've already had experience with
+I was expecting to rely on the type-system to guide me, since I've already had experience with
 `zod`, `io-ts` and other libraries that provided amazing type suggestions.
 
 Even with more than 10 years of *coding experience*™️, it seemed strange that I had to dig through
-documentation to do things that I thought I should alreayd know.
+documentation to do things that I thought I should already know.
 
 Trying to have complete control and understanding of what's happening to a very small piece of a
 system (form validation) that I thought was already a solved problem, I've realised that I was
 getting blocked when trying to implement very specific business-related requirements that didn't
-care about type-safetiness or readable code or all the things we love and admire.
+care about type-safeness or readable code or all the things we love and admire.
 
 The format of the article was thought out almost a year ago, but only recently I managed to create
-this blog, that I can also control. The main reason was the ability to give you the ability to hover
-over the values in the codeblocks and have the same experience you'd have in VsCode (literally using
-Monaco) or WebStorm or other editors.
-
-I think I initially tried to make it as a story, since working with a specific smaller example
-seemed like a understandable teaching method.
+this blog, that I can also control. I wanted to give you the ability to hover over the values in the
+code blocks and have the same experience you'd have in VsCode (literally using Monaco) or WebStorm
+or other editors. Thanks to [vaakian/monaco-ts](https://github.com/vaakian/monaco-ts) and
+@typescript/ata for this.
 
 # Introduction
 
@@ -41,7 +39,7 @@ But I also know about `zod`, I've used it and like how I get type-safety by defa
 
 ---
 
-Now here's a question for you.
+Now, here's a question for you.
 
 I have these requirements and I need to represent them.
 
@@ -56,7 +54,7 @@ The form has **3** fields:
 The `name` is a string and is always required. An IBAN is required for 'organizations', can be empty
 for 'individuals'.
 
-so a well formatted form json should look like this:
+so, a well formatted form json should look like this:
 
 ```ts
 type FormValue = {
@@ -68,7 +66,7 @@ type FormValue = {
 
 ## What does `required string` actually mean?
 
-Even for seemigly simple things like `string()` there are some complex differences:
+Even for seemingly simple things like `string()` there are some complex differences:
 
 ```js
 import { z } from 'zod'
@@ -105,13 +103,13 @@ yup
 The main differences between pre-type-safety libraries and post-type-safety libraries (`yup` and
 `zod`) is the way they treat empty strings.
 
-Using yup's `string()` without required allows passing `undefined`, '' (empty string) or any other
-string. When `string().required()` is used, besides not allowing `undefined`, yup also shows an
-error for empty strings.
+Using yup's `string()` without `.required()` allows passing `undefined`, '' (empty string) or any
+other string. When `string().required()` is used, besides not allowing `undefined`, yup also shows
+an error for empty strings.
 
-When using `zod` , a `string()` by default allows an empty string and.
+When using `zod`, a `string()` by default allows an empty string and.
 
-At this point I figured I might as well do something like this:
+I figured I might as well do something like this:
 
 ```ts
 function isString(value: unknown): value is string {
@@ -119,7 +117,7 @@ function isString(value: unknown): value is string {
 }
 ```
 
-At this point I started to figure that there's too much complexity in these libraries.
+At this point, I felt that there's too much complexity in these libraries.
 
 ### Too much complexity
 
@@ -192,9 +190,10 @@ if (isValid) {
 ```
 
 You can use anything you wish for the error type, but I like to use strings since they are easy to
-work. At least much easier than catching errors then using `instanceof`.
+work with. At least much easier than catching errors then using `instanceof` and praying you don't
+forget any error types.
 
-Of course, adding metadata and more sofisticated type-safety is possible using `pure` and `sure`,
+Of course, adding metadata and more sophisticated type-safety is possible using `pure` and `sure`,
 which are part of the core:
 
 ```ts
@@ -209,30 +208,26 @@ export function pure(insure) {
 
 ### Integrating actual business requirements
 
-In the real world, besides trying to validate strings and number, we often try to validate IBANs,
-UUIDs, emails, etc.
-
-We sometimes even try to validate things which are specific to our business, like IBANs, national
-ids, phone numbers from a particular country, etc.
+In the real world, besides trying to validate strings and number, we sometimes even attempt to
+validate things which are specific to our business, like IBANs, national ids, phone numbers from a
+particular country, etc.
 
 The main issue that make writing and understanding yup and zod in the previous examples is the way
 in which specifying custom requirements is made. Even more so when these requirements change based
 on other fields.
 
-Yup handles this using `when()` which _doesn't provide any real type of type-inference_.I assume
-mostly because the api design was made before Typescript was mainstream. And the current version is
-not possible (from my personal understanding), since the reference string needs to be based on the
-object which causes a cyclical definition and is not possible.
-
-Zod handles this by providing `coerce`, `refine`, `transform`, `superRefine`, `pipe`...
+Yup handles this using `when()` which _doesn't provide any valid type-safety_. I assume mostly
+because the api design was made before Typescript was mainstream. The current version cannot be
+retrofitted to allow a property to know about a different property before the whole object schema is
+defined. Zod handles this by providing `coerce`, `refine`, `transform`, `superRefine`, `pipe`...
 
 [https://zod.dev/?id=refine](https://zod.dev/?id=refine)
 
 Using Zod for custom scenarios seemed too complex for me.
 
-## The case for caring about the Type of errors
+## Input and output types
 
-When we think about a validation library there's usually only 1 type we care about. When we write
+When we think about a validation library, there's usually only 1 type we care about. When we write
 
 ```ts
 import { z, object, string, number } from 'zod'
@@ -254,9 +249,9 @@ type InferSomething = {
 }
 ```
 
-But actually there should be at least 2 types, the input type, and the output type.
+But actually, there should be at least 2 types, the input type, and the output type.
 
-By default the input type is considered `unknown`. But the moment we add refinement or any kind of
+By default, the input type is considered `unknown`. But the moment we add refinement or any kind of
 piping, the input type is not `unknown` anymore.
 
 Think about:
@@ -270,7 +265,7 @@ const nationalId = string().refine(val => val.length === 13 || val === '', {
 ```
 
 We can correctly (almost) assume that the `val` value in the `refine` function is `string`. That
-makes implementing the refinement easier since we don't have to check if val is a string again.
+makes implementing the refinement easier since we don't have to check if `val` is a string again.
 
 `io-ts` takes this into account, but good luck convincing your team to use `io-ts` in a React app
 with a login form.
@@ -287,13 +282,31 @@ Any type of switch exhaustiveness or type-safety guarantees are forgotten.
 I don't even like calling it an "error". We use the issues that arise from validation to guide the
 user to a better understanding of what they need to do.
 
-Maybe the user wrote a completely correct IBAN, but we don't support that bank, or that country. We
-might want to let them now about that. And I personally would like to know about that before a
-ticket is opened by the product team, just relying on Typescript.
+Maybe the user wrote a correct IBAN, but we don't support that bank or that country. We might want
+to let them know about that. And I personally would like to know about that before a ticket is
+opened by the product team, just relying on Typescript.
+
+The core type in `@robolex/sure` is this:
+
+```
+export type Sure<
+  //
+  TBad = unknown,
+  TGood = unknown,
+  TInput = unknown,
+  //
+  TMeta extends MetaNever | MetaObj = MetaNever | MetaObj,
+> = ((value: TInput) => Good<TGood> | Bad<TBad>) & TMeta
+```
+
+Ignore the `Meta` for now. Notice that the `TBad` is the first type parameter. I've specifically
+started with this so that I take extra care about what are the type of errors (bad things) that a
+validation might return.
 
 ## Remember the initial form requirements?
 
 You can check the tests cases and the validation here:
+[github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/components/view/form_validation.test.ts](https://github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/components/view/form_validation.test.ts)
 
 Here's a glimpse of the schemas
 
@@ -353,7 +366,7 @@ export const FormSchemaYup = object().shape({
 Sure if better, but if you want to validate a field based on another one, you have to use
 `superRefine` which is more complex than `.refine()`.
 
-At least you get better type-safety in the `superRefine`, although when you get to refinments, you
+At least you get better type-safety in the `superRefine`, although when you get to refinements, you
 get to the limits of what's safe to do in Zod.
 
 https://github.com/colinhacks/zod/issues/2474
@@ -405,8 +418,8 @@ implementation of `after()`
 
 [https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js](https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js)
 
-It's a little more hard then `string`, but basically it runs the first function, and if it's good,
-runs the second one. Otherwise it returns the bad.
+It's a little harder than `string`, but basically, it runs the first function, and if it's good,
+runs the second one. Otherwise, it returns the bad.
 
 It also saves some metadata 🫣
 
@@ -473,21 +486,23 @@ type Issues = InferBad<typeof FormSchemaSure>
 
 # Conclusion
 
-Of course, `@robolex/sure` has lots of different helpers for `arrays`, `tuples`, spreaded tuples,
-optional keys, etc.
+Of course, `@robolex/sure` has lots of different helpers for `arrays`, `tuples`, optional keys, etc.
+But the main idea is that if something is not defined yet you can easily define it yourself. In my
+real-life project I have multiple definitions that are not yet added to the core library, for
+example `orUndef` which allows a value to be `undefined`.
 
 > Regarding `optional`, it also supports `exactOptionalPropertyTypes` as compared to `zod` >
 > [https://github.com/colinhacks/zod/issues/635]([https://github.com/colinhacks/zod/issues/635])
 
-But all of them are implemented on this very small core.
+But all of them are implemented on this minuscule core.
 
 **My general direction was to put ALL the complexity in the type-system and leave the runtime as
 simple as humanly possible.**
 
 The generated code is ESM and can be easily understood.
 
-A library shouldn't be responsible for the type of errors it returns or some specific parsing it
-does to make the simple use-cases simpler but the real use-cases more complex.
+When a library focuses on trying to cover all the simpler use-cases, it often gets to a point where
+implementing real, complex use-cases much harder.
 
 `@robolex/sure` is so simple that you can use it as a wrapper around `zod` or `yup` or `io-ts` or
 anything else you want.
@@ -508,6 +523,7 @@ const yupString = (val => {
   }
 }) satisfies Sure
 
+// You get correct type inference here
 type InferredGood = InferGood<typeof yupString>
 type InferredBad = InferBad<typeof yupString>
 ```
@@ -519,13 +535,14 @@ type InferredBad = InferBad<typeof yupString>
 There are many, many more things I'd like to talk about, but I've been dragging finishing up this
 article for many months now, and I think it's time to publish it.
 
-There's a long discussion about why I've chosen to represent an `Either` value as a tuple instead of
-and object with a `success` discriminator. Or why not a tuple where the first value is the error and
-the second is the value.
+If you want to read more about `@robolex/sure` (by the way the name is not final, `sure` was already
+taken), check out the README.md
+[https://github.com/robolex-app/public_ts/](https://github.com/robolex-app/public_ts/)
+
+- There's a long discussion about why I've chosen to represent an `Either` value as a tuple instead
+  of and object with a `success` discriminator. Or why not a tuple where the first value is the
+  error and the second is the value.
 
 There was a lot of experimentation and tests to get to this minimalistic core.
 
 But that's another story.
-
-I recommend you check out the source code of `@robolex/sure` at
-[https://github.com/robolex-app/public_ts/](https://github.com/robolex-app/public_ts/)
