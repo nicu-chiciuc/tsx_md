@@ -84,8 +84,8 @@ console.log(isValidYup === true) // Note that by default, yup allows undefined i
 console.log(isValidSure === false)
 ```
 
-Using `.required()` in `yup` will make it fail for `undefined`, \*but it will also fail for empty
-strings`.
+Using `.required()` in `yup` will make it fail for `undefined`, **but it will also fail for empty
+strings**.
 
 Trying to use `yup` to allow strings that can be empty is a world of hurt.
 [This reddit post](https://www.reddit.com/r/reactjs/comments/13sdx7b/yup_how_to_skip_validation_when_value_is_empty/)
