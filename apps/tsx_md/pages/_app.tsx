@@ -38,9 +38,20 @@ function App({ Component, pageProps }: AppProps) {
         }}
       />
 
-      {/* <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head> */}
+      <Head>
+        {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
+
+        <title>Typescript-oriented blog of Nicu Chiciuc</title>
+
+        <meta
+          name="description"
+          content="Contains articles or other tools related to Typescript, JSX and Markdown. Mostly Typescript thought."
+        />
+
+        <meta name="keywords" content="typescript, jsx, markdown" />
+
+        <meta name="author" content="Nicu Chiciuc" />
+      </Head>
       <Component {...pageProps} />
     </>
   )
