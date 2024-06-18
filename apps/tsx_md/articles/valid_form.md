@@ -169,7 +169,7 @@ of course, writing `as const` all day is not fun, so `@robolex/sure` provides th
 import { bad, good } from '@robolex/sure'
 
 const isString2 = (val: unknown) => {
-  if (typeof val === 'string') good(val)
+  if (typeof val === 'string') return good(val)
 
   return bad('not a string')
 }
