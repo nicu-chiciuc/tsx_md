@@ -8,6 +8,11 @@ const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
 
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
+
   // webpack: (config, options) => {
   //   patchWebpackConfig(config, options)
 
