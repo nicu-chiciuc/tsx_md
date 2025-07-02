@@ -36,9 +36,12 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
 export const getStaticProps = async () => {
   const frontmatters = await getArticles()
 
+  // Filter out draft articles from the list
+  const publishedArticles = frontmatters.filter(article => article.fm.status !== 'draft')
+
   return {
     props: {
-      knownFiles: frontmatters,
+      knownFiles: publishedArticles,
     },
   }
 }

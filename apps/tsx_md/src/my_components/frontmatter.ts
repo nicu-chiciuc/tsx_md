@@ -3,6 +3,7 @@ import { InferGood, object, optional, string } from '@robolex/sure'
 export const sureArticleFrontmatter = object({
   title: string,
   description: string,
+  status: optional(string),
 })
 
 export const assertArticleFrontmatter = (data: unknown): SureArticleFrontmatter => {
