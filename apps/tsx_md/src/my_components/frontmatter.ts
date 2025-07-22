@@ -9,6 +9,12 @@ export const sureArticleFrontmatter = object({
 export const assertArticleFrontmatter = (data: unknown): SureArticleFrontmatter => {
   const [ok, value] = sureArticleFrontmatter(data)
 
+  console.log({
+    data,
+    ok,
+    value,
+  })
+
   if (!ok) {
     throw new Error('Invalid article frontmatter: ' + JSON.stringify(data))
   }
