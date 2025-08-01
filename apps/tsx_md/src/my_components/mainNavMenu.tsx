@@ -19,7 +19,7 @@ export function MainNavigationMenu() {
 
         <NavigationMenuItem>
           <Link href="/blog" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog</NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog & Apps</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
 
