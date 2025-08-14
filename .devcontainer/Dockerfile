@@ -1,5 +1,5 @@
 # Contains "node" non-root user
-FROM mcr.microsoft.com/devcontainers/javascript-node:18-bookworm
+FROM mcr.microsoft.com/devcontainers/javascript-node:24-bookworm
 # Install the xz-utils package
 RUN apt-get update && apt-get install -y xz-utils
 
