@@ -38,7 +38,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
     {
       name: 'WorkFir',
       url: 'https://workfir.com',
-      description: 'If Notion and Obsidian had a baby.',
+      description: 'If Notion and Obsidian had a baby. (real-time collaborative git worktree)',
       favicon: 'https://workfir.com/workfir.svg',
     },
   ]
