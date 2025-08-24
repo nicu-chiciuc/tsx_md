@@ -35,6 +35,12 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
       description: 'Chess game inspired by Chess Plus, but with slightly different rules.',
       favicon: 'https://chessmerge.com/bishop_horse.svg',
     },
+    {
+      name: 'WorkFir',
+      url: 'https://workfir.com',
+      description: 'If Notion and Obsidian had a baby.',
+      favicon: 'https://workfir.com/workfir.svg',
+    },
   ]
 
   return (
