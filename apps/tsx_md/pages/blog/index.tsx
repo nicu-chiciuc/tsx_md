@@ -76,7 +76,7 @@ export default function Page(props: InferGetStaticPropsType<typeof getStaticProp
                   <div className="flex items-center gap-4">
                     <AppFavicon favicon={app.favicon} name={app.name} />
                     <div className="flex-1">
-                      <CardTitle className="text-lg">{app.name}</CardTitle>
+                      <CardTitle className="text-lg">{app.url.replace('https://', '')}</CardTitle>
                       <CardDescription className="mt-1">{app.description}</CardDescription>
                     </div>
                   </div>
