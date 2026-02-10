@@ -1,8 +1,27 @@
 import { Editor, EditorProps } from '@monaco-editor/react'
 import { createATA } from './ata'
 import { JsxEmit } from 'typescript'
+import type { Monaco } from '@monaco-editor/react'
 
 export const typeHelper = createATA()
+
+// Register the receivedFile listener once globally (not per editor).
+// All editors share the same typescriptDefaults, so a single listener is sufficient.
+// Registering per editor caused N × addExtraLib calls per file, each triggering
+// a full re-validation of all models, which caused visible flickering.
+let ataListenerRegistered = false
+
+function ensureATAListener(monaco: Monaco) {
+  if (ataListenerRegistered) return
+  ataListenerRegistered = true
+
+  const defaults = monaco.languages.typescript.typescriptDefaults
+
+  typeHelper.addListener('receivedFile', (code: string, _path: string) => {
+    const path = 'file://' + _path
+    defaults.addExtraLib(code, path)
+  })
+}
 
 export const onEditorMount: EditorProps['onMount'] = (editor, monaco) => {
   setupEditorATA(editor, monaco)
@@ -20,11 +39,6 @@ export const onEditorMount: EditorProps['onMount'] = (editor, monaco) => {
 }
 
 export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['onMount']> = (editor, monaco) => {
-  // acquireType on initial load
-  editor.onDidChangeModelContent(() => {
-    typeHelper.acquireType(editor.getValue())
-  })
-
   const defaults = monaco.languages.typescript.typescriptDefaults
 
   defaults.setCompilerOptions({
@@ -35,20 +49,13 @@ export const setupEditorATA: NonNullable<React.ComponentProps<typeof Editor>['on
     exactOptionalPropertyTypes: true,
   })
 
-  const addLibraryToRuntime = (code: string, _path: string) => {
-    const path = 'file://' + _path
-    defaults.addExtraLib(code, path)
+  // Register the global ATA listener (idempotent, only runs once)
+  ensureATAListener(monaco)
 
-    // console.log('added library to runtime', path)
-
-    // don't need to open the file in the editor
-    // const uri = monaco.Uri.file(path);
-    // if (monaco.editor.getModel(uri) === null) {
-    //   monaco.editor.createModel(code, 'javascript', uri);
-    // }
-  }
-
-  typeHelper.addListener('receivedFile', addLibraryToRuntime)
+  // acquireType on content change
+  editor.onDidChangeModelContent(() => {
+    typeHelper.acquireType(editor.getValue())
+  })
 
   typeHelper.acquireType(editor.getValue())
 
