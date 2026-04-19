@@ -1,0 +1,34 @@
+{
+  "name": "solid_start",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "start": "vite preview",
+    "preview": "vite preview",
+    "lint": "eslint",
+    "format": "prettier --check .",
+    "check": "prettier --write . && eslint --fix"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/router-plugin": "^1.133.21",
+    "@tanstack/solid-router": "latest",
+    "@tanstack/solid-start": "latest",
+    "class-variance-authority": "0.7.0",
+    "clsx": "2.0.0",
+    "solid-js": "^1.9.11",
+    "tailwindcss": "^4.1.18",
+    "tailwind-merge": "2.0.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-config": "latest",
+    "eslint": "latest",
+    "prettier": "^3.8.1",
+    "typescript": "^5.7.2",
+    "vite": "^7.3.1",
+    "vite-plugin-solid": "^2.11.10"
+  }
+}
