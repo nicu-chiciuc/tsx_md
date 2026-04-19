@@ -16,11 +16,11 @@
     "@tanstack/router-plugin": "^1.133.21",
     "@tanstack/solid-router": "latest",
     "@tanstack/solid-start": "latest",
-    "class-variance-authority": "0.7.0",
-    "clsx": "2.0.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
     "solid-js": "^1.9.11",
     "tailwindcss": "^4.1.18",
-    "tailwind-merge": "2.0.0",
+    "tailwind-merge": "^2.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
