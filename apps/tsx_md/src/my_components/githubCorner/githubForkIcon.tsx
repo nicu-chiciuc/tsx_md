@@ -1,6 +1,10 @@
-import { MAIN_REPO } from "@/constants";
+import { MAIN_REPO, SHOW_GITHUB_CORNER } from "@/constants";
 
 export function GithubCorner({ href = MAIN_REPO }: { href?: string }) {
+  if (!SHOW_GITHUB_CORNER) {
+    return null;
+  }
+
   return (
     <a className="github-corner absolute right-0 top-0" href={href}>
       <svg
