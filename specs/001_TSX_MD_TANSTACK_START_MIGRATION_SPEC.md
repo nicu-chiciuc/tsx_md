@@ -104,6 +104,14 @@ Later target:
 
 - Cloudflare Workers, choosing between static-assets SPA and Start server entry
   after the app runs on TanStack Start.
+- The first Workers contract uses Static Assets SPA routing:
+  `wrangler.jsonc` owns `dist/client`, SPA fallback, and preview URLs.
+- The Cloudflare dashboard build command stays `pnpm run build`.
+- `build` delegates to `build:cloudflare`, while `build:app` remains the plain
+  static TanStack build.
+- `deploy` and `deploy:preview` wrap Wrangler and read the Worker name from
+  `WRANGLER_CI_OVERRIDE_NAME` in Workers Builds or `CLOUDFLARE_WORKER_NAME`
+  locally.
 
 Remove:
 
@@ -123,6 +131,7 @@ Remove:
 - [x] Drop `/_testing` or move it out of production routing.
 - [x] Replace Next/Vercel scripts and dependencies.
 - [x] Drop Netlify as a first-pass compatibility constraint.
+- [x] Add the Noter-style Cloudflare Workers build/deploy contract.
 - [x] Remove tracked generated Next output.
 - [x] Validate typecheck/build.
 - [x] Run browser route smoke checks.
@@ -170,3 +179,10 @@ Use this section as the migration uncovers concrete breakpoints.
   `/blog/valid_form`, `/github.com`,
   `/github.com/robolex-app/public_ts/blob/main/README.md`, and a missing
   route.
+- 2026-05-18: The Workers contract now follows the Noter / `notermd/app`
+  shape: `build` delegates to a Cloudflare-aware script, `build:app` remains
+  the local static build, `wrangler.jsonc` avoids hard-coded Worker names and
+  build commands, and deploy wrappers pass the Worker name to Wrangler.
+- 2026-05-18: Installing Wrangler in this workspace pulled `sharp`, which
+  attempted a source build. `node-addon-api` and `node-gyp` are explicit
+  dev dependencies so `pnpm install` can complete in the current environment.

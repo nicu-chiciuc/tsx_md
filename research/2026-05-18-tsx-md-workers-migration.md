@@ -14,6 +14,10 @@ Update after implementation started: the operator clarified that Netlify
 compatibility is not required. Netlify findings below remain historical context,
 not a migration constraint.
 
+Update after Workers follow-up: the PR now adds the Noter-style Workers Static
+Assets contract for `apps/tsx_md`, including `wrangler.jsonc`,
+`build:cloudflare`, and deploy wrappers.
+
 ## Executive Summary
 
 `tsx_md` is not only the current white homepage that links to
