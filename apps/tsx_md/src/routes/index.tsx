@@ -1,12 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
 import { GithubCorner } from "@/my_components/githubCorner/githubForkIcon";
 import { MainNavigationMenu } from "@/my_components/mainNavMenu";
 
-const landingLinks = {
-  linkedin: "https://www.linkedin.com/in/chiciuc/",
-  noter: "https://noter.md",
-  x: "https://x.com/nicu_tsx",
-} as const;
+const landingMarkdown = `
+Hi, my name is Nicu.
+
+I'm currently building [noter.md](https://noter.md).
+
+You can follow me on [x.com/nicu_tsx](https://x.com/nicu_tsx), or if you're feeling formal on [linkedin.com/in/chiciuc](https://www.linkedin.com/in/chiciuc/).
+`;
 
 function IndexPage() {
   return (
@@ -19,16 +24,12 @@ function IndexPage() {
       <main className="flex w-full flex-1 flex-col px-5 pb-20 pt-12">
         <section className="mx-auto w-full max-w-3xl">
           <div className="prose">
-            <p>Hi, my name is Nicu.</p>
-            <p>
-              I&apos;m currently building{" "}
-              <a href={landingLinks.noter}>noter.md</a>.
-            </p>
-            <p>
-              You can follow me on <a href={landingLinks.x}>x.com/nicu_tsx</a>,
-              or if you&apos;re feeling formal on{" "}
-              <a href={landingLinks.linkedin}>linkedin.com/in/chiciuc</a>.
-            </p>
+            <ReactMarkdown
+              rehypePlugins={[rehypeSanitize]}
+              remarkPlugins={[remarkGfm]}
+            >
+              {landingMarkdown}
+            </ReactMarkdown>
           </div>
         </section>
 
