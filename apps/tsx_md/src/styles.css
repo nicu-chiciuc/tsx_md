@@ -25,9 +25,10 @@ a {
 }
 
 .tsx-md-wordmark {
+  display: inline-block;
   margin: 0;
   color: #111827;
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 800;
   line-height: 1;
   transform: perspective(400px) rotateX(0) rotateY(0);
@@ -71,7 +72,7 @@ a {
 
 @media (max-width: 500px) {
   .tsx-md-wordmark {
-    font-size: 3.25rem;
+    font-size: 3rem;
   }
 
   .github-corner:hover .octo-arm {
