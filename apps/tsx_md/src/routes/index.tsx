@@ -1,10 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { GithubCorner } from "@/my_components/githubCorner/githubForkIcon";
+import { MainNavigationMenu } from "@/my_components/mainNavMenu";
 
 function IndexPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white">
-      <a href="https://noter.md">https://noter.md</a>
-    </main>
+    <div className="relative flex min-h-screen flex-col items-center bg-white">
+      <GithubCorner />
+      <MainNavigationMenu />
+
+      <main className="flex flex-1 items-center justify-center px-6 pb-24">
+        <h1 className="tsx-md-wordmark">tsx.md</h1>
+      </main>
+    </div>
   );
 }
 

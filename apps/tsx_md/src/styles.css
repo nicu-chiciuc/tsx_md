@@ -24,6 +24,32 @@ a {
   color: inherit;
 }
 
+.tsx-md-wordmark {
+  margin: 0;
+  color: #111827;
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  transform: perspective(400px) rotateX(0) rotateY(0);
+  text-shadow:
+    0.08rem 0.08rem 0 #d1d5db,
+    0.16rem 0.16rem 0 #9ca3af,
+    0.24rem 0.24rem 0 #6b7280,
+    0.32rem 0.32rem 0 #374151;
+  transition:
+    transform 160ms ease,
+    text-shadow 160ms ease;
+}
+
+.tsx-md-wordmark:hover {
+  transform: perspective(400px) rotateX(8deg) rotateY(-12deg);
+  text-shadow:
+    0.1rem 0.08rem 0 #d1d5db,
+    0.2rem 0.16rem 0 #9ca3af,
+    0.3rem 0.24rem 0 #6b7280,
+    0.4rem 0.32rem 0 #374151;
+}
+
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
@@ -44,6 +70,10 @@ a {
 }
 
 @media (max-width: 500px) {
+  .tsx-md-wordmark {
+    font-size: 3.25rem;
+  }
+
   .github-corner:hover .octo-arm {
     animation: none;
   }
