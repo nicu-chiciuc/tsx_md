@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
@@ -16,6 +17,28 @@ or if you're feeling formal on [linkedin.com/in/chiciuc](https://www.linkedin.co
 
 or if you're feeling technical on [github.com/nicu-chiciuc](https://github.com/nicu-chiciuc)
 `;
+
+const wordmarkMaxRotation = 14;
+
+function handleWordmarkPointerMove(event: ReactPointerEvent<HTMLElement>) {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width - 0.5;
+  const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+  event.currentTarget.style.setProperty(
+    "--tsx-md-wordmark-rotate-x",
+    `${(-y * wordmarkMaxRotation).toFixed(2)}deg`,
+  );
+  event.currentTarget.style.setProperty(
+    "--tsx-md-wordmark-rotate-y",
+    `${(x * wordmarkMaxRotation).toFixed(2)}deg`,
+  );
+}
+
+function resetWordmarkPointer(event: ReactPointerEvent<HTMLElement>) {
+  event.currentTarget.style.setProperty("--tsx-md-wordmark-rotate-x", "0deg");
+  event.currentTarget.style.setProperty("--tsx-md-wordmark-rotate-y", "0deg");
+}
 
 function IndexPage() {
   return (
@@ -35,7 +58,11 @@ function IndexPage() {
           </div>
         </section>
 
-        <section className="mx-auto flex w-full max-w-3xl flex-1 items-center justify-center">
+        <section
+          className="tsx-md-wordmark-stage mx-auto flex w-full max-w-3xl flex-1 items-center justify-center"
+          onPointerLeave={resetWordmarkPointer}
+          onPointerMove={handleWordmarkPointerMove}
+        >
           <h1 className="tsx-md-wordmark">tsx.md</h1>
         </section>
       </main>

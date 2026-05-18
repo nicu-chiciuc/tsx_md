@@ -24,6 +24,11 @@ a {
   color: inherit;
 }
 
+.tsx-md-wordmark-stage {
+  --tsx-md-wordmark-rotate-x: 0deg;
+  --tsx-md-wordmark-rotate-y: 0deg;
+}
+
 .tsx-md-wordmark {
   display: inline-block;
   margin: 0;
@@ -31,19 +36,19 @@ a {
   font-size: 4rem;
   font-weight: 800;
   line-height: 1;
-  transform: perspective(400px) rotateX(0) rotateY(0);
+  transform: perspective(400px) rotateX(var(--tsx-md-wordmark-rotate-x))
+    rotateY(var(--tsx-md-wordmark-rotate-y));
   text-shadow:
     0.08rem 0.08rem 0 #d1d5db,
     0.16rem 0.16rem 0 #9ca3af,
     0.24rem 0.24rem 0 #6b7280,
     0.32rem 0.32rem 0 #374151;
   transition:
-    transform 160ms ease,
+    transform 80ms ease-out,
     text-shadow 160ms ease;
 }
 
-.tsx-md-wordmark:hover {
-  transform: perspective(400px) rotateX(8deg) rotateY(-12deg);
+.tsx-md-wordmark-stage:hover .tsx-md-wordmark {
   text-shadow:
     0.1rem 0.08rem 0 #d1d5db,
     0.2rem 0.16rem 0 #9ca3af,
