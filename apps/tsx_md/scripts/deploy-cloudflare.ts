@@ -60,7 +60,7 @@ function run(command: string, args: readonly string[]) {
 const [modeArg, ...extraArgs] = process.argv.slice(2);
 if (!isMode(modeArg)) {
   throw new Error(
-    "Usage: pnpm run deploy[:preview][:dry-run] -- [wrangler flags]",
+    "Usage: vp run deploy[:preview][:dry-run] -- [wrangler flags]",
   );
 }
 
@@ -75,7 +75,7 @@ const isWorkersBuild =
   process.env.WORKERS_CI === "1" || process.env.WORKERS_CI === "true";
 
 if (!isWorkersBuild) {
-  await run("pnpm", ["run", "build:cloudflare"]);
+  await run("vp", ["run", "build:cloudflare"]);
 }
 
 await run("wrangler", [...modes[modeArg], "--name", workerName, ...extraArgs]);

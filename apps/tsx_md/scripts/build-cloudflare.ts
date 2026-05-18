@@ -41,7 +41,7 @@ export async function main(env: NodeJS.ProcessEnv = process.env) {
     );
   }
 
-  await run("pnpm", ["run", "build:app"], env);
+  await run("vp", ["run", "build:app"], env);
 }
 
 const entrypoint = process.argv[1];

@@ -1,20 +1,16 @@
-import { ClientOnly } from '@tanstack/react-router'
-import React from 'react'
-import { onEditorMount } from './monaco_types/setupEditor'
+import { ClientOnly } from "@tanstack/react-router";
+import React from "react";
+import { onEditorMount } from "./monaco_types/setupEditor";
 
-import Editor from '@monaco-editor/react'
+import Editor from "@monaco-editor/react";
 
-const monacoLanguages = new Set(['ts', 'tsx', 'typescript'])
+const monacoLanguages = new Set(["ts", "tsx", "typescript"]);
 
 function CodeFallback(props: {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }) {
-  return (
-    <code className={props.className}>
-      {props.children}
-    </code>
-  )
+  return <code className={props.className}>{props.children}</code>;
 }
 
 /**
@@ -22,37 +18,44 @@ Renders TypeScript code fences with Monaco so article examples keep hoverable
 types without making every Markdown language pay the editor cost.
 */
 export function MarkdownCode(props: {
-  children?: React.ReactNode
-  className?: string
+  children?: React.ReactNode;
+  className?: string;
 }) {
-  const editorId = React.useId().replace(/[^a-zA-Z0-9_-]/g, '-')
-  const match = /language-(\w+)/.exec(props.className || '')
-  const language = match?.[1]
+  const editorId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "-");
+  const match = /language-(\w+)/.exec(props.className || "");
+  const language = match?.[1];
 
   if (!language || !monacoLanguages.has(language)) {
-    return (
-      <code className={props.className}>
-        {props.children}
-      </code>
-    )
+    return <code className={props.className}>{props.children}</code>;
   }
 
-  const source = `\n${String(props.children).replace(/\n$/, '')}\n`
+  const source = `\n${String(props.children).replace(/\n$/, "")}\n`;
 
   return (
     <div className="not-prose my-5">
-      <ClientOnly fallback={<CodeFallback className={props.className}>{props.children}</CodeFallback>}>
-        <MyEditor defaultValue={source} file={`markdown-${editorId}.tsx`} lang="typescript" projectFiles={[]} />
+      <ClientOnly
+        fallback={
+          <CodeFallback className={props.className}>
+            {props.children}
+          </CodeFallback>
+        }
+      >
+        <MyEditor
+          defaultValue={source}
+          file={`markdown-${editorId}.tsx`}
+          lang="typescript"
+          projectFiles={[]}
+        />
       </ClientOnly>
     </div>
-  )
+  );
 }
 
 export const MyEditor = (props: {
-  lang?: string
-  file: string
-  defaultValue: string
-  projectFiles: { small: string; content: string }[]
+  lang?: string;
+  file: string;
+  defaultValue: string;
+  projectFiles: { small: string; content: string }[];
 }) => {
   return (
     <Editor
@@ -78,7 +81,7 @@ export const MyEditor = (props: {
         // wrappingStrategy: 'advanced',
 
         // disable line numbers
-        lineNumbers: 'off',
+        lineNumbers: "off",
       }}
       theme="vs-dark"
       // height={'100px'}
@@ -91,5 +94,5 @@ export const MyEditor = (props: {
       onMount={onEditorMount}
       defaultValue={props.defaultValue}
     />
-  )
-}
+  );
+};

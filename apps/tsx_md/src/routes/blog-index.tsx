@@ -5,19 +5,22 @@ import { getPublishedArticles } from "@/lib/articles";
 
 const myApps = [
   {
-    description: "Simple weight tracker that allows text-based import/export of data.",
+    description:
+      "Simple weight tracker that allows text-based import/export of data.",
     favicon: "https://weight.tsx.md/favicon.png",
     name: "Weight Tracker",
     url: "https://weight.tsx.md",
   },
   {
-    description: "Chess game inspired by Chess Plus, but with slightly different rules.",
+    description:
+      "Chess game inspired by Chess Plus, but with slightly different rules.",
     favicon: "https://chessmerge.com/bishop_horse.svg",
     name: "Chess Merge",
     url: "https://chessmerge.com",
   },
   {
-    description: "If Notion and Obsidian had a baby. (real-time collaborative git worktree)",
+    description:
+      "If Notion and Obsidian had a baby. (real-time collaborative git worktree)",
     favicon: "https://noter.md/logo-static.svg",
     name: "WorkFir",
     url: "https://noter.md",
@@ -73,7 +76,9 @@ function BlogIndexPage() {
                     <div className="text-lg font-medium text-gray-900">
                       {app.url.replace("https://", "")}
                     </div>
-                    <p className="mt-1 text-sm text-gray-600">{app.description}</p>
+                    <p className="mt-1 text-sm text-gray-600">
+                      {app.description}
+                    </p>
                   </div>
                 </div>
               </a>

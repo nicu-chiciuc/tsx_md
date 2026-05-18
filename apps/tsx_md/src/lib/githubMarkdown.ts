@@ -16,7 +16,9 @@ function decodePathSegment(segment: string): string {
   }
 }
 
-export function parseGithubMarkdownPath(pathname: string): GithubMarkdownTarget {
+export function parseGithubMarkdownPath(
+  pathname: string,
+): GithubMarkdownTarget {
   const prefix = "/github.com/";
   if (!pathname.startsWith(prefix)) {
     return { kind: "invalid" };

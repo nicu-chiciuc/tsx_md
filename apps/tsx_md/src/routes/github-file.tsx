@@ -62,7 +62,8 @@ function GithubFilePage() {
 
         setState({
           kind: "error",
-          message: error instanceof Error ? error.message : "Could not load Markdown.",
+          message:
+            error instanceof Error ? error.message : "Could not load Markdown.",
         });
       });
 
@@ -77,7 +78,10 @@ function GithubFilePage() {
       <main className="w-full px-5 pb-20">
         <article className="prose mx-auto mb-14 break-words">
           {state.kind === "idle" || state.kind === "loading" ? (
-            <p>Loading {state.kind === "loading" ? state.displayPath : "Markdown"}...</p>
+            <p>
+              Loading{" "}
+              {state.kind === "loading" ? state.displayPath : "Markdown"}...
+            </p>
           ) : null}
 
           {state.kind === "error" ? <p>{state.message}</p> : null}
@@ -94,6 +98,8 @@ function GithubFilePage() {
   );
 }
 
-export const Route = createFileRoute("/github.com/$owner/$repo/blob/$branch/$")({
-  component: GithubFilePage,
-});
+export const Route = createFileRoute("/github.com/$owner/$repo/blob/$branch/$")(
+  {
+    component: GithubFilePage,
+  },
+);

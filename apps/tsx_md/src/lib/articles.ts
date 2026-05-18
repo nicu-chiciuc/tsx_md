@@ -35,7 +35,8 @@ function readFrontmatter(data: unknown): ArticleFrontmatter {
     throw new Error("Article frontmatter must be an object.");
   }
 
-  const status = Reflect.get(data, "status") === "draft" ? "draft" : "published";
+  const status =
+    Reflect.get(data, "status") === "draft" ? "draft" : "published";
   return {
     description: readStringField(data, "description"),
     status,
@@ -96,5 +97,7 @@ export function getPublishedArticles(): Article[] {
 }
 
 export function getPublishedArticle(slug: string): Article | null {
-  return getPublishedArticles().find((article) => article.slug === slug) ?? null;
+  return (
+    getPublishedArticles().find((article) => article.slug === slug) ?? null
+  );
 }

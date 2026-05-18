@@ -2,34 +2,25 @@
   "name": "@aaa/ui",
   "private": true,
   "license": "MIT",
-  "sideEffects": false,
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "tsc",
+    "build": "vp pack src/index.tsx --dts --format esm --sourcemap",
     "clean": "rm -rf dist",
-    "dev": "tsc --watch",
-    "lint": "eslint \"src/**/*.ts*\"",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "jest-presets/jest/node"
-  },
-  "devDependencies": {
-    "@types/jest": "29.5.8",
-    "@types/react": "18.2.37",
-    "@types/react-dom": "18.2.15",
-    "eslint": "8.53.0",
-    "eslint-config-custom": "workspace:*",
-    "jest": "29.5.0",
-    "jest-presets": "workspace:*",
-    "tsconfig": "workspace:*",
-    "typescript": "5.3.3"
+    "dev": "vp pack src/index.tsx --dts --format esm --sourcemap --watch",
+    "test": "vp test"
   },
   "dependencies": {
-    "react-dom": "18.2.0",
-    "react": "18.2.0"
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "5.9.2",
+    "vite-plus": "0.1.18"
   }
 }

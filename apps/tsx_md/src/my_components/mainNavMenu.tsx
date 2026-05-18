@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { Link } from "@tanstack/react-router";
 
 export function MainNavigationMenu() {
   return (
@@ -13,5 +13,5 @@ export function MainNavigationMenu() {
         github.com
       </Link>
     </nav>
-  )
+  );
 }

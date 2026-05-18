@@ -1,36 +1,40 @@
-import { setupTypeAcquisition, ATABootstrapConfig } from '@typescript/ata'
-import ts from 'typescript'
+import { setupTypeAcquisition, ATABootstrapConfig } from "@typescript/ata";
+import ts from "typescript";
 
-const delegateListener = createDelegate()
+const delegateListener = createDelegate();
 
 const ata = setupTypeAcquisition({
-  projectName: 'monaco-ts',
+  projectName: "monaco-ts",
   typescript: ts,
   logger: console,
   fetcher(input, init) {
-    return fetch(input, init)
+    return fetch(input, init);
   },
   delegate: {
     receivedFile: (code, path) => {
-      delegateListener.receivedFile.forEach(fn => fn(code, path))
+      delegateListener.receivedFile.forEach((fn) => fn(code, path));
     },
     progress: (downloaded, total) => {
-      delegateListener.progress.forEach(fn => fn(downloaded, total))
+      delegateListener.progress.forEach((fn) => fn(downloaded, total));
     },
     started: () => {
-      delegateListener.started.forEach(fn => fn())
+      delegateListener.started.forEach((fn) => fn());
     },
-    finished: _f => {
-      delegateListener.finished.forEach(fn => fn(_f))
+    finished: (_f) => {
+      delegateListener.finished.forEach((fn) => fn(_f));
     },
   },
-})
+});
 
 type DelegateListener = Required<{
-  [k in keyof ATABootstrapConfig['delegate']]: Set<NonNullable<ATABootstrapConfig['delegate'][k]>>
-}>
+  [k in keyof ATABootstrapConfig["delegate"]]: Set<
+    NonNullable<ATABootstrapConfig["delegate"][k]>
+  >;
+}>;
 
-type ReceivedFileListener = NonNullable<ATABootstrapConfig['delegate']['receivedFile']>
+type ReceivedFileListener = NonNullable<
+  ATABootstrapConfig["delegate"]["receivedFile"]
+>;
 
 function createDelegate() {
   const delegate: DelegateListener = {
@@ -39,21 +43,21 @@ function createDelegate() {
     errorMessage: new Set(),
     finished: new Set(),
     started: new Set(),
-  }
+  };
 
-  return delegate
+  return delegate;
 }
 
 export function createATA() {
-  const acquireType = (code: string) => ata(code)
+  const acquireType = (code: string) => ata(code);
 
   const addReceivedFileListener = (handler: ReceivedFileListener) => {
-    delegateListener.receivedFile.add(handler)
-  }
+    delegateListener.receivedFile.add(handler);
+  };
 
   const removeReceivedFileListener = (handler: ReceivedFileListener) => {
-    delegateListener.receivedFile.delete(handler)
-  }
+    delegateListener.receivedFile.delete(handler);
+  };
 
   return {
     acquireType,
@@ -61,8 +65,8 @@ export function createATA() {
     removeReceivedFileListener,
     dispose: () => {
       for (const key in delegateListener) {
-        delegateListener[key as keyof DelegateListener].clear()
+        delegateListener[key as keyof DelegateListener].clear();
       }
     },
-  }
+  };
 }
