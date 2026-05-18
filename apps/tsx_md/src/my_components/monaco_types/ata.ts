@@ -8,11 +8,7 @@ const ata = setupTypeAcquisition({
   typescript: ts,
   logger: console,
   fetcher(input, init) {
-    return fetch(
-      // @ts-expect-error TODO: figure out
-      input,
-      init
-    )
+    return fetch(input, init)
   },
   delegate: {
     receivedFile: (code, path) => {
@@ -34,6 +30,8 @@ type DelegateListener = Required<{
   [k in keyof ATABootstrapConfig['delegate']]: Set<NonNullable<ATABootstrapConfig['delegate'][k]>>
 }>
 
+type ReceivedFileListener = NonNullable<ATABootstrapConfig['delegate']['receivedFile']>
+
 function createDelegate() {
   const delegate: DelegateListener = {
     receivedFile: new Set(),
@@ -46,25 +44,21 @@ function createDelegate() {
   return delegate
 }
 
-type InferSet<T> = T extends Set<infer U> ? U : never
-
 export function createATA() {
   const acquireType = (code: string) => ata(code)
-  const addListener = <T extends keyof DelegateListener>(event: T, handler: InferSet<DelegateListener[T]>) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    delegateListener[event].add(handler)
+
+  const addReceivedFileListener = (handler: ReceivedFileListener) => {
+    delegateListener.receivedFile.add(handler)
   }
 
-  const removeListener = <T extends keyof DelegateListener>(event: T, handler: InferSet<DelegateListener[T]>) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    delegateListener[event].delete(handler)
+  const removeReceivedFileListener = (handler: ReceivedFileListener) => {
+    delegateListener.receivedFile.delete(handler)
   }
+
   return {
     acquireType,
-    addListener,
-    removeListener,
+    addReceivedFileListener,
+    removeReceivedFileListener,
     dispose: () => {
       for (const key in delegateListener) {
         delegateListener[key as keyof DelegateListener].clear()

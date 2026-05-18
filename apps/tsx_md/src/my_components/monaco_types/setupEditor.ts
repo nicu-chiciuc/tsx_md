@@ -17,7 +17,7 @@ function ensureATAListener(monaco: Monaco) {
 
   const defaults = monaco.languages.typescript.typescriptDefaults
 
-  typeHelper.addListener('receivedFile', (code: string, _path: string) => {
+  typeHelper.addReceivedFileListener((code: string, _path: string) => {
     const path = 'file://' + _path
     defaults.addExtraLib(code, path)
   })

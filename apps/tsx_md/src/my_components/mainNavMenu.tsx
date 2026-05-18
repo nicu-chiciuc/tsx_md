@@ -1,34 +1,17 @@
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
-import Link from 'next/link'
+import { Link } from '@tanstack/react-router'
 
 export function MainNavigationMenu() {
   return (
-    <NavigationMenu className="grow-0 p-7">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>tsx.md</NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/blog" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog & Apps</NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/github.com" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>github.com</NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <nav className="flex gap-4 px-7 py-6 text-sm">
+      <Link to="/" className="underline-offset-4 hover:underline">
+        tsx.md
+      </Link>
+      <Link to="/blog" className="underline-offset-4 hover:underline">
+        Blog & Apps
+      </Link>
+      <Link to="/github.com" className="underline-offset-4 hover:underline">
+        github.com
+      </Link>
+    </nav>
   )
 }
