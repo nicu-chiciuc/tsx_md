@@ -186,3 +186,9 @@ Use this section as the migration uncovers concrete breakpoints.
 - 2026-05-18: Installing Wrangler in this workspace pulled `sharp`, which
   attempted a source build. `node-addon-api` and `node-gyp` are explicit
   dev dependencies so `pnpm install` can complete in the current environment.
+- 2026-05-18: GitHub Actions runs root `syncpack list-mismatches`. `tsx_md` is
+  intentionally on the newer TanStack/Workers dependency family while the
+  sibling legacy apps remain on the old stack, so the repo syncpack config
+  ignores those version families for `tsx_md` only.
+- 2026-05-18: The workflow still calls `pnpm -F tsx_md run tsc:ci`, so `tsx_md`
+  keeps a `tsc:ci` alias to make that step run a real typecheck.

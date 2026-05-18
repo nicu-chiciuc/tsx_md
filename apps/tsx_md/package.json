@@ -15,7 +15,8 @@
     "dev": "vp dev --host 127.0.0.1 --port 3020",
     "lint": "pnpm run check",
     "preview": "vp preview --host 127.0.0.1 --port 3020",
-    "start": "pnpm run preview"
+    "start": "pnpm run preview",
+    "tsc:ci": "tsc --noEmit"
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",
