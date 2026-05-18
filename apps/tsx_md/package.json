@@ -12,7 +12,7 @@
     "deploy:dry-run": "node ./scripts/deploy-cloudflare.ts deploy --dry-run",
     "deploy:preview": "node ./scripts/deploy-cloudflare.ts preview",
     "deploy:preview:dry-run": "node ./scripts/deploy-cloudflare.ts preview --dry-run",
-    "dev": "vp dev",
+    "dev": "vite dev",
     "lint": "vp lint",
     "preview": "vp preview",
     "start": "vp run preview",

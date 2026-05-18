@@ -10,18 +10,20 @@ Hi, my name is Nicu.
 
 I'm currently building [noter.md](https://noter.md).
 
-You can follow me on [x.com/nicu_tsx](https://x.com/nicu_tsx), or if you're feeling formal on [linkedin.com/in/chiciuc](https://www.linkedin.com/in/chiciuc/).
+You can follow me on [x.com/nicu_tsx](https://x.com/nicu_tsx),
+
+or if you're feeling formal on [linkedin.com/in/chiciuc](https://www.linkedin.com/in/chiciuc/)
+
+or if you're feeling technical on [github.com/nicu-chiciuc](https://github.com/nicu-chiciuc)
 `;
 
 function IndexPage() {
   return (
     <div className="relative flex min-h-screen flex-col bg-white">
       <GithubCorner />
-      <div className="tsx-md-landing-nav">
-        <MainNavigationMenu />
-      </div>
+      <MainNavigationMenu />
 
-      <main className="flex w-full flex-1 flex-col px-5 pb-20 pt-12">
+      <main className="flex w-full flex-1 flex-col px-5 pt-12">
         <section className="mx-auto w-full max-w-3xl">
           <div className="prose">
             <ReactMarkdown
@@ -33,7 +35,7 @@ function IndexPage() {
           </div>
         </section>
 
-        <section className="mx-auto mt-auto flex w-full max-w-3xl justify-center pt-24">
+        <section className="mx-auto flex w-full max-w-3xl flex-1 items-center justify-center">
           <h1 className="tsx-md-wordmark">tsx.md</h1>
         </section>
       </main>
