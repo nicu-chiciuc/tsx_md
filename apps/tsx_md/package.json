@@ -12,9 +12,9 @@
     "deploy:dry-run": "node ./scripts/deploy-cloudflare.ts deploy --dry-run",
     "deploy:preview": "node ./scripts/deploy-cloudflare.ts preview",
     "deploy:preview:dry-run": "node ./scripts/deploy-cloudflare.ts preview --dry-run",
-    "dev": "vp dev --host 127.0.0.1 --port 3020",
+    "dev": "vite dev",
     "lint": "vp lint",
-    "preview": "vp preview --host 127.0.0.1 --port 3020",
+    "preview": "vp preview",
     "start": "vp run preview",
     "tsc:ci": "tsc --noEmit"
   },
