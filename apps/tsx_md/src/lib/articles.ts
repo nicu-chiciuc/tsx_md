@@ -30,16 +30,27 @@ function readStringField(data: object, key: string): string {
   return value;
 }
 
+function readStatusField(data: object): ArticleStatus {
+  const value = Reflect.get(data, "status");
+  if (value === undefined) {
+    return "published";
+  }
+  if (value === "draft" || value === "published") {
+    return value;
+  }
+  throw new Error(
+    'Article frontmatter field "status" must be "draft" or "published".',
+  );
+}
+
 function readFrontmatter(data: unknown): ArticleFrontmatter {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     throw new Error("Article frontmatter must be an object.");
   }
 
-  const status =
-    Reflect.get(data, "status") === "draft" ? "draft" : "published";
   return {
     description: readStringField(data, "description"),
-    status,
+    status: readStatusField(data),
     title: readStringField(data, "title"),
   };
 }

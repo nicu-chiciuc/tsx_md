@@ -26,10 +26,19 @@ export function MarkdownCode(props: {
   const language = match?.[1];
 
   if (!language || !monacoLanguages.has(language)) {
+    if (language) {
+      return (
+        <pre>
+          <code className={props.className}>{props.children}</code>
+        </pre>
+      );
+    }
+
     return <code className={props.className}>{props.children}</code>;
   }
 
   const source = `\n${String(props.children).replace(/\n$/, "")}\n`;
+  const fileExtension = language === "tsx" ? "tsx" : "ts";
 
   return (
     <div className="not-prose my-5">
@@ -42,7 +51,7 @@ export function MarkdownCode(props: {
       >
         <MyEditor
           defaultValue={source}
-          file={`markdown-${editorId}.tsx`}
+          file={`markdown-${editorId}.${fileExtension}`}
           lang="typescript"
           projectFiles={[]}
         />

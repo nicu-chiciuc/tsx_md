@@ -7,6 +7,8 @@ import { parseGithubMarkdownPath } from "@/lib/githubMarkdown";
 import { GithubCorner } from "@/my_components/githubCorner/githubForkIcon";
 import { MainNavigationMenu } from "@/my_components/mainNavMenu";
 
+const remoteMarkdownTimeoutMs = 20_000;
+
 type RemoteMarkdownState =
   | {
       kind: "idle";
@@ -41,6 +43,12 @@ function GithubFilePage() {
     }
 
     const controller = new AbortController();
+    let didTimeout = false;
+    const timeout = window.setTimeout(() => {
+      didTimeout = true;
+      controller.abort();
+    }, remoteMarkdownTimeoutMs);
+
     setState({ kind: "loading", displayPath: target.displayPath });
 
     fetch(target.sourceUrl, { signal: controller.signal })
@@ -56,18 +64,28 @@ function GithubFilePage() {
         });
       })
       .catch((error: unknown) => {
-        if (controller.signal.aborted) {
+        if (controller.signal.aborted && !didTimeout) {
           return;
         }
 
         setState({
           kind: "error",
           message:
-            error instanceof Error ? error.message : "Could not load Markdown.",
+            didTimeout && controller.signal.aborted
+              ? "GitHub Markdown request timed out."
+              : error instanceof Error
+                ? error.message
+                : "Could not load Markdown.",
         });
+      })
+      .finally(() => {
+        window.clearTimeout(timeout);
       });
 
-    return () => controller.abort();
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
   }, [target]);
 
   return (

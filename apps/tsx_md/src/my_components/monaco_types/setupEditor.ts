@@ -1,6 +1,5 @@
 import { Editor, EditorProps } from "@monaco-editor/react";
 import { createATA } from "./ata";
-import { JsxEmit } from "typescript";
 import type { Monaco } from "@monaco-editor/react";
 
 export const typeHelper = createATA();
@@ -44,7 +43,7 @@ export const setupEditorATA: NonNullable<
   const defaults = monaco.languages.typescript.typescriptDefaults;
 
   defaults.setCompilerOptions({
-    jsx: JsxEmit.React,
+    jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
     esModuleInterop: true,
 
     strict: true,

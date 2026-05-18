@@ -4,10 +4,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "monaco-editor/esm/vs/editor/editor.api": [
-        "../../node_modules/monaco-editor/esm/vs/editor/editor.api.d.ts"
-      ]
+      "@/*": ["./src/*"]
     },
     "types": ["vite/client", "node"]
   },
