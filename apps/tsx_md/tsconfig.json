@@ -1,20 +1,12 @@
 {
-  "exclude": ["node_modules"],
-  "extends": "tsconfig/nextjs.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-
-    "paths": {
-      "@/*": ["./src/*"],
-    },
-
-    "plugins": [
-      {
-        "name": "next",
-      },
-    ],
+    "baseUrl": ".",
     "esModuleInterop": true,
-    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client", "node"]
   },
-  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts", "pages", "app", "lib"],
+  "include": ["scripts", "src", "vite.config.ts"]
 }

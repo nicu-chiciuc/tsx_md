@@ -1,5 +1,8 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'config-packages/*'
-  - 'experiments/*'
+  - "apps/*"
+  - "packages/*"
+  - "experiments/*"
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
