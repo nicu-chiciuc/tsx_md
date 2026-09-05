@@ -12,6 +12,8 @@ export function SamebaseAttribution() {
           src="/assets/samebase.svg"
           alt=""
           aria-hidden="true"
+          width={16}
+          height={16}
           className="size-4"
         />
         <span>Samebase</span>
