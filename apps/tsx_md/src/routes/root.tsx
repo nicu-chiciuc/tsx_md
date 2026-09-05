@@ -6,11 +6,13 @@ import {
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import "@/styles.css";
+import { SamebaseAttribution } from "@/components/SamebaseAttribution";
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
+      <SamebaseAttribution />
     </RootDocument>
   );
 }
