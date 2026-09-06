@@ -12,7 +12,9 @@ function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
-      <SamebaseAttribution />
+      <footer className="px-4 py-3 text-center">
+        <SamebaseAttribution />
+      </footer>
     </RootDocument>
   );
 }

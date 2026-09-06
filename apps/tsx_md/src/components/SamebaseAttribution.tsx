@@ -1,23 +1,30 @@
 export function SamebaseAttribution() {
   return (
-    <footer className="flex justify-center px-4 py-4 text-sm text-gray-500">
-      <a
-        href="https://samebase.com"
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex min-h-11 items-center gap-2 rounded px-3 py-2 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-      >
-        <span>Managed with</span>
-        <img
-          src="/assets/samebase.svg"
-          alt=""
+    <a
+      href="https://samebase.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group inline-flex min-h-11 items-center text-xs focus-visible:outline-current"
+    >
+      <span className="flex items-center gap-1 border-b border-transparent group-hover:border-current">
+        Managed with{" "}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 60 60"
+          width={15}
+          height={15}
+          shapeRendering="crispEdges"
           aria-hidden="true"
-          width={16}
-          height={16}
-          className="size-4"
-        />
-        <span>Samebase</span>
-      </a>
-    </footer>
+        >
+          <rect width="60" height="60" fill="#ffffff" />
+          <path
+            d="M6 6h48v48H6z M22 22h16v16H22z"
+            fill="#394447"
+            fillRule="evenodd"
+          />
+        </svg>
+        <b>Samebase</b>
+      </span>
+    </a>
   );
 }
