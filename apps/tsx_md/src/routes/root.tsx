@@ -13,7 +13,7 @@ function RootComponent() {
     <RootDocument>
       <div className="flex min-h-screen flex-col">
         <Outlet />
-        <footer className="px-4 py-3 text-center">
+        <footer className="mx-auto w-full max-w-3xl px-5 py-3 text-right text-gray-500">
           <SamebaseAttribution />
         </footer>
       </div>
