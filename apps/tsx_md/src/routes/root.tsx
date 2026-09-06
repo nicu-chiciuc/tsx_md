@@ -6,11 +6,17 @@ import {
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import "@/styles.css";
+import { SamebaseAttribution } from "@/components/SamebaseAttribution";
 
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <Outlet />
+        <footer className="mx-auto w-full max-w-3xl px-5 py-3 text-right text-gray-500">
+          <SamebaseAttribution />
+        </footer>
+      </div>
     </RootDocument>
   );
 }
@@ -31,7 +37,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
 function NotFoundPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white px-6">
+    <main className="flex flex-1 items-center justify-center bg-white px-6">
       <div className="max-w-prose">
         <p className="text-sm uppercase tracking-wide text-gray-500">404</p>
         <h1 className="mt-2 text-2xl font-semibold text-gray-900">Not found</h1>

@@ -14,7 +14,7 @@ function BlogArticlePage() {
     : { mapping: "specific" as const, term: "dev: trying giscus" };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex-1">
       <GithubCorner href={sourceLink} />
       <MainNavigationMenu />
 

@@ -42,7 +42,7 @@ function resetWordmarkPointer(event: ReactPointerEvent<HTMLElement>) {
 
 function IndexPage() {
   return (
-    <div className="relative flex min-h-screen flex-col bg-white">
+    <div className="relative flex flex-1 flex-col bg-white">
       <GithubCorner />
       <MainNavigationMenu />
 
