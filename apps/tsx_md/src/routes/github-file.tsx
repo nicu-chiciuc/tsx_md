@@ -89,7 +89,7 @@ function GithubFilePage() {
   }, [target]);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex-1">
       <GithubCorner href={link} />
       <MainNavigationMenu />
 

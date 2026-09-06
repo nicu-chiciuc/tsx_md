@@ -31,7 +31,7 @@ function BlogIndexPage() {
   const articles = Route.useLoaderData();
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex-1">
       <GithubCorner />
       <MainNavigationMenu />
 

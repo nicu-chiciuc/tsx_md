@@ -25,7 +25,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="flex min-h-screen flex-col">
         {children}
         <Scripts />
       </body>
@@ -35,7 +35,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
 function NotFoundPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white px-6">
+    <main className="flex flex-1 items-center justify-center bg-white px-6">
       <div className="max-w-prose">
         <p className="text-sm uppercase tracking-wide text-gray-500">404</p>
         <h1 className="mt-2 text-2xl font-semibold text-gray-900">Not found</h1>
