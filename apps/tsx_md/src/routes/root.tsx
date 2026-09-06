@@ -11,10 +11,12 @@ import { SamebaseAttribution } from "@/components/SamebaseAttribution";
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
-      <footer className="px-4 py-3 text-center">
-        <SamebaseAttribution />
-      </footer>
+      <div className="flex min-h-screen flex-col">
+        <Outlet />
+        <footer className="px-4 py-3 text-center">
+          <SamebaseAttribution />
+        </footer>
+      </div>
     </RootDocument>
   );
 }
@@ -25,7 +27,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body className="flex min-h-screen flex-col">
+      <body>
         {children}
         <Scripts />
       </body>
