@@ -9,7 +9,7 @@
     "check": "vp check",
     "clean": "rm -rf dist .tanstack routeTree.gen.ts src/routeTree.gen.ts",
     "deploy": "wrangler deploy",
-    "deploy:dry-run": "wrangler deploy --dry-run",
+    "deploy:dry-run": "vp run build:cloudflare && wrangler deploy --dry-run",
     "deploy:preview": "wrangler preview",
     "dev": "vite dev",
     "lint": "vp lint",

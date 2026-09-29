@@ -15,8 +15,9 @@ and restore the commands above after Cloudflare replaces the preview command.
 Keep the existing build root and enable non-production branch builds. Verify the
 new preview URL and application before completing the rollout.
 
-Build before any manual deploy. To check the production package without an upload,
-run `pnpm exec wrangler deploy --dry-run --name <connected-worker-name>` after the build.
+Build before any manual deploy. From `apps/tsx_md`, run
+`pnpm run deploy:dry-run --name <connected-worker-name>` to build and check the production
+package without an upload. This keeps the Cloudflare Pages rejection in the build step.
 Worker Previews has no dry-run mode. For a manual preview, use
 `pnpm run deploy:preview --worker-name <connected-worker-name>`.
 

@@ -115,6 +115,9 @@ Later target:
   deployment and pass `--worker-name` with the connected Worker name for a
   manual preview. The existing provider connection needs the one-time Worker
   Previews setup described in the README.
+- `deploy:dry-run` runs `build:cloudflare` before the production Wrangler
+  dry-run. It keeps the local build and Cloudflare Pages rejection from the
+  former wrapper.
 
 Remove:
 
