@@ -109,9 +109,12 @@ Later target:
 - The Cloudflare dashboard build command stays `pnpm run build`.
 - `build` delegates to `build:cloudflare`, while `build:app` remains the plain
   static TanStack build.
-- `deploy` and `deploy:preview` wrap Wrangler and read the Worker name from
-  `WRANGLER_CI_OVERRIDE_NAME` in Workers Builds or `CLOUDFLARE_WORKER_NAME`
-  locally.
+- `deploy` runs `wrangler deploy`; `deploy:preview` runs `wrangler preview`.
+  Wrangler reads `WRANGLER_CI_OVERRIDE_NAME` in Workers Builds. The empty
+  `previews` config enables assets-only Worker Previews. Build before manual
+  deployment and pass `--worker-name` with the connected Worker name for a
+  manual preview. The existing provider connection needs the one-time Worker
+  Previews setup described in the README.
 
 Remove:
 
