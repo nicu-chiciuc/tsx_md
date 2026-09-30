@@ -1,6 +1,8 @@
 import { spawn } from "node:child_process";
 import process from "node:process";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+const vitePlusEntrypoint = fileURLToPath(import.meta.resolve("vite-plus/bin"));
 
 function isEnabled(value: string | undefined) {
   return value === "1" || value === "true";
@@ -10,9 +12,9 @@ function isPagesBuild(env: NodeJS.ProcessEnv) {
   return isEnabled(env.CF_PAGES) || Boolean(env.CF_PAGES_BRANCH);
 }
 
-function run(command: string, args: readonly string[], env: NodeJS.ProcessEnv) {
+function run(args: readonly string[], env: NodeJS.ProcessEnv) {
   return new Promise<void>((resolve, reject) => {
-    const child = spawn(command, [...args], {
+    const child = spawn(process.execPath, [vitePlusEntrypoint, ...args], {
       env,
       stdio: "inherit",
     });
@@ -20,7 +22,7 @@ function run(command: string, args: readonly string[], env: NodeJS.ProcessEnv) {
     child.on("error", reject);
     child.on("exit", (code, signal) => {
       if (signal) {
-        reject(new Error(`${command} ${args.join(" ")} exited with ${signal}`));
+        reject(new Error(`vp ${args.join(" ")} exited with ${signal}`));
         return;
       }
 
@@ -29,7 +31,7 @@ function run(command: string, args: readonly string[], env: NodeJS.ProcessEnv) {
         return;
       }
 
-      reject(new Error(`${command} ${args.join(" ")} exited with ${code}`));
+      reject(new Error(`vp ${args.join(" ")} exited with ${code}`));
     });
   });
 }
@@ -41,7 +43,7 @@ export async function main(env: NodeJS.ProcessEnv = process.env) {
     );
   }
 
-  await run("vp", ["run", "build:app"], env);
+  await run(["run", "build:app"], env);
 }
 
 const entrypoint = process.argv[1];

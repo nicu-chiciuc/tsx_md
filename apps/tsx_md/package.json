@@ -3,15 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vp run build:cloudflare",
+    "build": "node ./scripts/build-cloudflare.ts",
     "build:app": "tsc --noEmit && vp build",
-    "build:cloudflare": "node ./scripts/build-cloudflare.ts",
     "check": "vp check",
     "clean": "rm -rf dist .tanstack routeTree.gen.ts src/routeTree.gen.ts",
-    "deploy": "node ./scripts/deploy-cloudflare.ts deploy",
-    "deploy:dry-run": "node ./scripts/deploy-cloudflare.ts deploy --dry-run",
-    "deploy:preview": "node ./scripts/deploy-cloudflare.ts preview",
-    "deploy:preview:dry-run": "node ./scripts/deploy-cloudflare.ts preview --dry-run",
+    "deploy": "wrangler deploy",
+    "deploy:dry-run": "pnpm run build && wrangler deploy --dry-run",
+    "deploy:preview": "wrangler preview",
     "dev": "vite dev",
     "lint": "vp lint",
     "preview": "vp preview",
@@ -47,6 +45,6 @@
     "tailwindcss": "4.3.0",
     "vite": "8.0.16",
     "vite-plus": "0.1.24",
-    "wrangler": "4.118.0"
+    "wrangler": "4.136.2"
   }
 }
