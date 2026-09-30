@@ -16,11 +16,11 @@
     "@robolex/sure": "0.9.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "formik": "^2.4.5",
+    "formik": "^2.4.9",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "tailwind-merge": "^3.6.0",
-    "validator": "^13.11.0",
+    "validator": "^13.15.35",
     "yup": "^1.3.3",
     "zod": "3.22.4"
   },
@@ -34,7 +34,7 @@
     "jsdom": "^24.0.0",
     "tailwindcss": "4.3.0",
     "typescript": "5.9.2",
-    "vite": "8.0.13",
-    "vite-plus": "0.1.18"
+    "vite": "8.0.16",
+    "vite-plus": "0.1.24"
   }
 }

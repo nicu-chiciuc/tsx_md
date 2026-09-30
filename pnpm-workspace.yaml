@@ -6,3 +6,16 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+overrides:
+  sharp@>=0.35.0 <0.35.4: 0.35.4
+  monaco-editor>dompurify: 3.4.13
+  undici@>=6.0.0 <6.28.1: 6.28.1
+  undici@>=7.0.0 <7.29.1: 7.29.1
+  "@babel/core@>=7.0.0 <7.29.6": 7.29.7
+  baseline-browser-mapping@>=2.0.0 <2.11.0: 2.11.26
+  braces@>=3.0.0 <3.0.3: 3.0.3
+  browserslist@>=4.0.0 <4.28.7: 4.29.3
+  form-data@>=4.0.0 <4.0.6: 4.0.6
+  js-yaml@>=4.0.0 <4.3.2: 4.3.2
+  picomatch@>=2.0.0 <2.3.2: 2.3.2
+  tar@>=7.0.0 <7.5.21: 7.5.21
