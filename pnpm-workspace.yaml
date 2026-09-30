@@ -8,7 +8,7 @@ allowBuilds:
   workerd: true
 overrides:
   sharp@>=0.35.0 <0.35.4: 0.35.4
-  monaco-editor>dompurify: 3.4.13
+  monaco-editor>dompurify: 3.4.16
   undici@>=6.0.0 <6.28.1: 6.28.1
   undici@>=7.0.0 <7.29.1: 7.29.1
   "@babel/core@>=7.0.0 <7.29.6": 7.29.7
