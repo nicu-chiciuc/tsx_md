@@ -1,6 +1,5 @@
 1234
 
-
 ## Cloudflare Worker Previews
 
 Use `apps/tsx_md` as the Workers Builds root. Install workspace dependencies from the repository root.
@@ -16,10 +15,10 @@ Keep the existing build root and enable non-production branch builds. Verify the
 new preview URL and application before completing the rollout.
 
 Build before any manual deploy. From `apps/tsx_md`, run
-`pnpm run deploy:dry-run --name <connected-worker-name>` to build and check the production
+`pnpm run deploy:dry-run --name tsx-tsx-md` to build and check the production
 package without an upload. This keeps the Cloudflare Pages rejection in the build step.
 Worker Previews has no dry-run mode. For a manual preview, use
-`pnpm run deploy:preview --worker-name <connected-worker-name>`.
+`pnpm run deploy:preview --worker-name tsx-tsx-md`.
 
 See the [Worker Previews configuration](https://developers.cloudflare.com/workers/previews/configuration/)
 and [existing Worker setup](https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/#existing-workers-connected-to-builds).
