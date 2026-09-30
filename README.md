@@ -23,3 +23,5 @@ Worker Previews has no dry-run mode. For a manual preview, use
 
 See the [Worker Previews configuration](https://developers.cloudflare.com/workers/previews/configuration/)
 and [existing Worker setup](https://developers.cloudflare.com/workers/ci-cd/builds/build-branches/#existing-workers-connected-to-builds).
+The [Samebase migration guide](https://samebase.com/docs/cloudflare-previews-migration)
+describes the switch. This app does not need the Convex key steps.
