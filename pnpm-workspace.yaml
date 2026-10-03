@@ -6,6 +6,12 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+auditConfig:
+  ignoreGhsas:
+    # TODO(2026-10-17): Remove once braces publishes a fix. No patched release
+    # exists yet (latest is 3.0.3). braces only reaches build and dev tooling
+    # through chokidar and micromatch, not shipped Worker code.
+    - GHSA-vfj7-8cjw-p6xm
 overrides:
   sharp@>=0.35.0 <0.35.4: 0.35.4
   monaco-editor>dompurify: 3.4.16
