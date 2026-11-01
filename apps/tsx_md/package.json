@@ -7,9 +7,6 @@
     "build:app": "tsc --noEmit && vp build",
     "check": "vp check",
     "clean": "rm -rf dist .tanstack routeTree.gen.ts src/routeTree.gen.ts",
-    "deploy": "wrangler deploy",
-    "deploy:dry-run": "pnpm run build && wrangler deploy --dry-run",
-    "deploy:preview": "wrangler preview",
     "dev": "vite dev",
     "lint": "vp lint",
     "preview": "vp preview",
@@ -50,7 +47,6 @@
     "node-gyp": "13.1.0",
     "tailwindcss": "4.3.0",
     "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
-    "vite-plus": "1.4.0",
-    "wrangler": "4.156.0"
+    "vite-plus": "1.4.0"
   }
 }
