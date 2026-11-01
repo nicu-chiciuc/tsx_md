@@ -32,6 +32,4 @@ export const FormSchemaZod = object({
       path: ["iban"],
     });
   }
-
-  return true;
 });

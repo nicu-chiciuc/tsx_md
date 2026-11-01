@@ -22,7 +22,7 @@ const initialValues = {
 function createValidationResult(error: z.ZodError) {
   const result: Record<string, string> = {};
 
-  for (const x of error.errors) {
+  for (const x of error.issues) {
     result[x.path.filter(Boolean).join(".")] = x.message;
   }
 

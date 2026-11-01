@@ -8,7 +8,7 @@ allowBuilds:
   workerd: true
 overrides:
   sharp@>=0.35.0 <0.35.4: 0.35.4
-  monaco-editor>dompurify: 3.4.16
+  monaco-editor>dompurify: 3.4.17
   undici@>=6.0.0 <6.28.1: 6.28.1
   undici@>=7.0.0 <7.29.1: 7.29.1
   "@babel/core@>=7.0.0 <7.29.6": 7.29.7
@@ -19,3 +19,4 @@ overrides:
   js-yaml@>=4.0.0 <4.3.2: 4.3.2
   picomatch@>=2.0.0 <2.3.2: 2.3.2
   tar@>=7.0.0 <7.5.21: 7.5.21
+  "@tailwindcss/typography>postcss-selector-parser": 6.1.5

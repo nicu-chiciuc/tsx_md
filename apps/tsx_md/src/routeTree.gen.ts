@@ -9,15 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/root";
-import { Route as githubIndexRouteImport } from "./routes/github-index";
-import { Route as blogIndexRouteImport } from "./routes/blog-index";
 import { Route as indexRouteImport } from "./routes/index";
+import { Route as blogIndexRouteImport } from "./routes/blog-index";
+import { Route as githubIndexRouteImport } from "./routes/github-index";
 import { Route as blogSlugRouteImport } from "./routes/blog-slug";
 import { Route as githubFileRouteImport } from "./routes/github-file";
 
-const githubIndexRoute = githubIndexRouteImport.update({
-  id: "/github.com",
-  path: "/github.com",
+const indexRoute = indexRouteImport.update({
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
 } as any);
 const blogIndexRoute = blogIndexRouteImport.update({
@@ -25,9 +25,9 @@ const blogIndexRoute = blogIndexRouteImport.update({
   path: "/blog",
   getParentRoute: () => rootRouteImport,
 } as any);
-const indexRoute = indexRouteImport.update({
-  id: "/",
-  path: "/",
+const githubIndexRoute = githubIndexRouteImport.update({
+  id: "/github.com",
+  path: "/github.com",
   getParentRoute: () => rootRouteImport,
 } as any);
 const blogSlugRoute = blogSlugRouteImport.update({
@@ -97,11 +97,11 @@ export interface RootRouteChildren {
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/github.com": {
-      id: "/github.com";
-      path: "/github.com";
-      fullPath: "/github.com";
-      preLoaderRoute: typeof githubIndexRouteImport;
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof indexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/blog": {
@@ -111,11 +111,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof blogIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof indexRouteImport;
+    "/github.com": {
+      id: "/github.com";
+      path: "/github.com";
+      fullPath: "/github.com";
+      preLoaderRoute: typeof githubIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/blog/$slug": {
