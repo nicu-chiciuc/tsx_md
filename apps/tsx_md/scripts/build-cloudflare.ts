@@ -39,7 +39,7 @@ function run(args: readonly string[], env: NodeJS.ProcessEnv) {
 export async function main(env: NodeJS.ProcessEnv = process.env) {
   if (isPagesBuild(env)) {
     throw new Error(
-      "Cloudflare Pages builds are not the deployment target for tsx.md. Use Cloudflare Workers Builds.",
+      "Cloudflare Pages builds are not the deployment target for tsx.md. Deploy with Alchemy from GitHub Actions.",
     );
   }
 
