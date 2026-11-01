@@ -1,4 +1,5 @@
 import {
+  ClientOnly,
   HeadContent,
   Outlet,
   Scripts,
@@ -12,7 +13,9 @@ function RootComponent() {
   return (
     <RootDocument>
       <div className="flex min-h-screen flex-col">
-        <Outlet />
+        <ClientOnly>
+          <Outlet />
+        </ClientOnly>
         <footer className="mx-auto w-full max-w-3xl px-5 py-3 text-right text-gray-500">
           <SamebaseAttribution />
         </footer>
