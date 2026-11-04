@@ -129,7 +129,7 @@ better left for [validator.js](https://github.com/validatorjs/validator.js) sinc
 for string validation.
 
 Here's the implementation of `string` in `zod`:
-[https://github.com/colinhacks/zod/blob/master/src/types.ts#L626](https://github.com/colinhacks/zod/blob/master/src/types.ts#L626)
+[https://github.com/colinhacks/zod/blob/e5e8619/src/types.ts#L626](https://github.com/colinhacks/zod/blob/e5e8619/src/types.ts#L626)
 
 It sits at just 443 lines of code, which can also be mostly delegated to `validator.js`.
 
@@ -197,7 +197,7 @@ Of course, adding metadata and more sophisticated type-safety is possible using 
 which are part of the core:
 
 ```ts
-// https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/core.js
+// https://github.com/robolex-app/public_ts/blob/63449f4/packages/sure/esm/core.js
 export function sure(insure, meta) {
   return Object.assign(insure, { meta })
 }
@@ -221,7 +221,7 @@ because the api design was made before Typescript was mainstream. The current ve
 retrofitted to allow a property to know about a different property before the whole object schema is
 defined. Zod handles this by providing `coerce`, `refine`, `transform`, `superRefine`, `pipe`...
 
-[https://zod.dev/?id=refine](https://zod.dev/?id=refine)
+[https://v3.zod.dev/?id=refine](https://v3.zod.dev/?id=refine)
 
 Using Zod for custom scenarios seemed too complex for me.
 
@@ -306,7 +306,7 @@ validation might return.
 ## Remember the initial form requirements?
 
 You can check the tests cases and the validation here:
-[github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/components/view/form_validation.test.ts](https://github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/components/view/form_validation.test.ts)
+[github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/src/components/view/form_validation.test.ts](https://github.com/nicu-chiciuc/tsx_md/blob/main/apps/validate_form/src/components/view/form_validation.test.ts)
 
 Here's a glimpse of the schemas
 
@@ -416,7 +416,7 @@ export const FormSchemaZod = object({
 Sure replaces `refine()` with `after()` but the logic is mostly the same. Also, here's the
 implementation of `after()`
 
-[https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js](https://github.com/robolex-app/public_ts/blob/main/packages/sure/esm/after.js)
+[https://github.com/robolex-app/public_ts/blob/63449f4/packages/sure/esm/after.js](https://github.com/robolex-app/public_ts/blob/63449f4/packages/sure/esm/after.js)
 
 It's a little harder than `string`, but basically, it runs the first function, and if it's good,
 runs the second one. Otherwise, it returns the bad.
@@ -492,7 +492,7 @@ real-life project I have multiple definitions that are not yet added to the core
 example `orUndef` which allows a value to be `undefined`.
 
 > Regarding `optional`, it also supports `exactOptionalPropertyTypes` as compared to `zod` >
-> [https://github.com/colinhacks/zod/issues/635]([https://github.com/colinhacks/zod/issues/635])
+> [https://github.com/colinhacks/zod/issues/635](https://github.com/colinhacks/zod/issues/635)
 
 But all of them are implemented on this minuscule core.
 

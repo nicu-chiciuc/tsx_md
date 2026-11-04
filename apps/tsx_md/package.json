@@ -7,7 +7,7 @@
     "build:app": "tsc --noEmit && vp build",
     "check": "vp check",
     "clean": "rm -rf dist .tanstack routeTree.gen.ts src/routeTree.gen.ts",
-    "dev": "vite dev",
+    "dev": "vp dev",
     "lint": "vp lint",
     "preview": "vp preview",
     "start": "vp run preview",

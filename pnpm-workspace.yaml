@@ -1,7 +1,6 @@
 packages:
   - "apps/*"
   - "packages/*"
-  - "experiments/*"
 allowBuilds:
   esbuild: true
   sharp: true

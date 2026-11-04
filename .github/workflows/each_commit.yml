@@ -37,7 +37,6 @@ jobs:
         run: pnpm install --frozen-lockfile
       - run: pnpm exec vp check
       - run: pnpm exec vp test
-      - run: pnpm exec vp run --filter @aaa/ui build
       - run: pnpm exec vp run --filter tsx_md tsc:ci
       - run: pnpm exec vp run --filter tsx_md build
       - run: pnpm exec vp run --filter gif_md build

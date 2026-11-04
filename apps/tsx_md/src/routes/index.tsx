@@ -9,7 +9,7 @@ import { MainNavigationMenu } from "@/my_components/mainNavMenu";
 const landingMarkdown = `
 Hi, my name is Nicu.
 
-I'm currently building [noter.md](https://noter.md).
+I'm currently building [samebase.com](https://samebase.com), an opinionated way to use [Alchemy](https://alchemy.run).
 
 You can follow me on [x.com/nicu_tsx](https://x.com/nicu_tsx),
 

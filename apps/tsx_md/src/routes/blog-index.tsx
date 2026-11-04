@@ -6,10 +6,10 @@ import { getPublishedArticles } from "@/lib/articles";
 const myApps = [
   {
     description:
-      "Simple weight tracker that allows text-based import/export of data.",
-    favicon: "https://weight.tsx.md/favicon.png",
-    name: "Weight Tracker",
-    url: "https://weight.tsx.md",
+      "Give your coding agent a working app: a GitHub repo, a Convex project, and a live URL, deployed by Alchemy.",
+    favicon: "https://samebase.com/icon-192.png",
+    name: "Samebase",
+    url: "https://samebase.com",
   },
   {
     description:
@@ -17,13 +17,6 @@ const myApps = [
     favicon: "https://chessmerge.com/bishop_horse.svg",
     name: "Chess Merge",
     url: "https://chessmerge.com",
-  },
-  {
-    description:
-      "If Notion and Obsidian had a baby. (real-time collaborative git worktree)",
-    favicon: "https://noter.md/logo-static.svg",
-    name: "WorkFir",
-    url: "https://noter.md",
   },
 ];
 

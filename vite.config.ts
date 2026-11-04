@@ -8,7 +8,6 @@ export default defineConfig({
       "apps/example_node/index.js",
       "apps/tsx_md/articles/enable_noUncheckedIndexedAccess.md",
       "apps/tsx_md/articles/valid_form.md",
-      "docker-compose.yml",
       "research/2026-05-18-tsx-md-workers-migration.md",
     ],
     printWidth: 80,

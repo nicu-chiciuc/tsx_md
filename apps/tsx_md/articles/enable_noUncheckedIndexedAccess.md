@@ -1,6 +1,6 @@
 ---
 title: How to live with `noUncheckedIndexedAccess`
-description: Real-life tips to write write code with `noUncheckedIndexedAccess` without getting tons of type errors.
+description: Real-life tips to write code with `noUncheckedIndexedAccess` without getting tons of type errors.
 status: draft
 ---
 

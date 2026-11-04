@@ -10,7 +10,7 @@ jobs:
     with:
       {
         adopt: "${{ inputs.adopt == true }}",
-        build: "pnpm --filter @aaa/ui build && pnpm run build",
+        build: "pnpm run build",
         detect-drift: true,
         directory: apps/tsx_md,
       }
