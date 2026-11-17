@@ -1,19 +1,23 @@
 import {
   LOGO_PRESENTATION_TILT_DEFAULT_RADIUS_SCALE,
   LOGO_PRESENTATION_TILT_DEFAULT_STRENGTH_SCALE,
+} from "@samebase/logo-model/logo-presentation-tilt";
+import type { LogoViewState } from "@samebase/logo-model/logo-view-drag";
+import {
   MENGER_AUTOMATIC_PROBE_DEFAULT_SETTINGS,
-  MENGER_HOVER_DEFAULT_REVEAL_RADIUS,
+  type MengerAutomaticProbeMotionSettings,
+} from "@samebase/logo-model/menger-automatic-probe";
+import { MENGER_HOVER_DEFAULT_REVEAL_RADIUS } from "@samebase/logo-model/menger-hover";
+import type { HexColor } from "@samebase/logo-model/menger-sponge";
+import {
   MENGER_TYPE_GPU_DEFAULT_ANTIALIASING,
   MENGER_TYPE_GPU_DEFAULT_DEPTH,
-  type HexColor,
-  type LogoViewState,
-  type MengerAutomaticProbeMotionSettings,
-} from "@samebase/menger-sponge/settings";
+} from "@samebase/logo-model/menger-type-gpu-settings";
 import { lazy, Suspense, useState } from "react";
 
 // The scene and TypeGPU load in their own chunk.
 const MengerSponge = lazy(() =>
-  import("@samebase/menger-sponge").then((module) => ({
+  import("@samebase/logo-model/menger-sponge").then((module) => ({
     default: module.MengerSponge,
   })),
 );
