@@ -83,8 +83,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(monaco-editor@0.55.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@samebase/logo-model':
-        specifier: file:./vendor/samebase-logo-model-0.1.0.tgz
-        version: file:apps/tsx_md/vendor/samebase-logo-model-0.1.0.tgz(react@19.2.6)
+        specifier: 0.1.0
+        version: 0.1.0(react@19.2.6)
       '@tanstack/react-router':
         specifier: 1.170.41
         version: 1.170.41(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -1359,9 +1359,8 @@ packages:
       convex: ^1.48.0
       effect: ^4.1.0
 
-  '@samebase/logo-model@file:apps/tsx_md/vendor/samebase-logo-model-0.1.0.tgz':
-    resolution: {integrity: sha512-NF6Z95ONuhNnH4ulHjPXHtJt51PBX9llACGn4A2rpQ20mrOuHaKOTpYrZY3J2vYSug9+TiPEJQqbVzRxXGl8kA==, tarball: file:apps/tsx_md/vendor/samebase-logo-model-0.1.0.tgz}
-    version: 0.1.0
+  '@samebase/logo-model@0.1.0':
+    resolution: {integrity: sha512-NF6Z95ONuhNnH4ulHjPXHtJt51PBX9llACGn4A2rpQ20mrOuHaKOTpYrZY3J2vYSug9+TiPEJQqbVzRxXGl8kA==}
     peerDependencies:
       react: '>=19.2.0 <20'
 
@@ -4163,7 +4162,7 @@ snapshots:
       convex: 1.48.0(react@19.2.6)
       effect: 4.1.2
 
-  '@samebase/logo-model@file:apps/tsx_md/vendor/samebase-logo-model-0.1.0.tgz(react@19.2.6)':
+  '@samebase/logo-model@0.1.0(react@19.2.6)':
     dependencies:
       react: 19.2.6
       typegpu: 0.12.7
