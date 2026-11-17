@@ -13,7 +13,7 @@ import {
   MENGER_TYPE_GPU_DEFAULT_ANTIALIASING,
   MENGER_TYPE_GPU_DEFAULT_DEPTH,
 } from "@samebase/logo-model/menger-type-gpu-settings";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
 // The scene and TypeGPU load in their own chunk.
 const MengerSponge = lazy(() =>
@@ -24,11 +24,65 @@ const MengerSponge = lazy(() =>
 
 const fallbackSrc = "/menger-sponge.svg";
 const backgroundColor: HexColor = "#ffffff";
-const faceColors = {
-  left: "#3178c6",
-  right: "#111827",
-  top: "#e5e7eb",
-} satisfies Record<string, HexColor>;
+// The hue turns once every 40 seconds. Each face keeps its own saturation
+// and lightness, so the top stays light and the right face stays dark.
+// The first frame is the TypeScript blue of the static image.
+const hueTurnMilliseconds = 40_000;
+const startHue = 212;
+
+function hslToHex(
+  hue: number,
+  saturation: number,
+  lightness: number,
+): HexColor {
+  const s = saturation / 100;
+  const l = lightness / 100;
+  const a = s * Math.min(l, 1 - l);
+  const channel = (n: number) => {
+    const k = (n + hue / 30) % 12;
+    const value = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+    return Math.round(value * 255)
+      .toString(16)
+      .padStart(2, "0");
+  };
+  return `#${channel(0)}${channel(8)}${channel(4)}`;
+}
+
+function faceColorsAt(hue: number) {
+  return {
+    left: hslToHex(hue, 60, 48),
+    right: hslToHex(hue, 39, 11),
+    top: hslToHex(hue, 13, 91),
+  };
+}
+
+function useCyclingFaceColors() {
+  const [faceColors, setFaceColors] = useState(() => faceColorsAt(startHue));
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const start = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const hue = startHue + ((now - start) / hueTurnMilliseconds) * 360;
+      const next = faceColorsAt(hue % 360);
+      // A new object only when a color changes, so React skips the rest.
+      setFaceColors((current) =>
+        current.left === next.left &&
+        current.right === next.right &&
+        current.top === next.top
+          ? current
+          : next,
+      );
+      frame = requestAnimationFrame(tick);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return faceColors;
+}
+
 const initialView: LogoViewState = {
   elevationDegrees: 35.26438968,
   rotationDegrees: 45,
@@ -50,6 +104,7 @@ function readAutomaticProbe(): MengerAutomaticProbeMotionSettings {
 export function HomeSponge() {
   const [view, setView] = useState(initialView);
   const [automaticProbe] = useState(readAutomaticProbe);
+  const faceColors = useCyclingFaceColors();
 
   return (
     <Suspense
