@@ -3,6 +3,7 @@ import {
   LOGO_PRESENTATION_TILT_DEFAULT_STRENGTH_SCALE,
 } from "@samebase/logo-model/logo-presentation-tilt";
 import type { LogoViewState } from "@samebase/logo-model/logo-view-drag";
+import { LOGO_VIEW_SNAP_DRAG_CONFIG } from "@samebase/logo-model/logo-view-snap";
 import {
   MENGER_AUTOMATIC_PROBE_DEFAULT_SETTINGS,
   type MengerAutomaticProbeMotionSettings,
@@ -136,7 +137,7 @@ export function HomeSponge() {
         resolutionScale={1}
         revealRadius={MENGER_HOVER_DEFAULT_REVEAL_RADIUS}
         rotationDegrees={view.rotationDegrees}
-        viewDragConfig={undefined}
+        viewDragConfig={LOGO_VIEW_SNAP_DRAG_CONFIG}
       />
     </Suspense>
   );
