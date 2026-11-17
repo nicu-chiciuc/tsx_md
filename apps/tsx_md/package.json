@@ -16,6 +16,7 @@
   "dependencies": {
     "@giscus/react": "^3.1.0",
     "@monaco-editor/react": "^4.7.0",
+    "@samebase/logo-model": "0.1.0",
     "@tanstack/react-router": "1.170.41",
     "@tanstack/react-start": "1.168.60",
     "@typescript/ata": "^0.9.8",
