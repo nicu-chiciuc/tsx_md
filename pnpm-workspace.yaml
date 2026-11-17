@@ -1,6 +1,12 @@
 packages:
   - "apps/*"
   - "packages/*"
+auditConfig:
+  ignoreGhsas:
+    # TODO(2026-11-17): Remove once picomatch publishes 4.0.8, the fixed release the advisory
+    # names (latest is 4.0.7). The flaw needs a crafted extglob pattern. picomatch only reaches
+    # build tooling (TanStack Start, tinyglobby) on patterns from this repository.
+    - GHSA-fc5q-39xc-vjpf
 allowBuilds:
   esbuild: true
   sharp: true
