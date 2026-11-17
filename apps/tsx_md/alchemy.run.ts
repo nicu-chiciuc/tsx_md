@@ -7,7 +7,7 @@ export default Alchemy.Stack(
   "nicu-chiciuc/tsx_md/apps/tsx_md",
   {
     providers: Cloudflare.providers(),
-    state: Convex.state({ team: "nicu" }),
+    state: Convex.withRunRecord(Convex.state()),
   },
   Effect.gen(function* () {
     const { stage } = yield* Alchemy.Stack;
