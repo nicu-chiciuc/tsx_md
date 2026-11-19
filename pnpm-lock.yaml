@@ -91,9 +91,6 @@ importers:
       '@tanstack/react-start':
         specifier: 1.168.60
         version: 1.168.60(@voidzero-dev/vite-plus-core@1.4.0(@types/node@20.19.41)(esbuild@0.27.0)(jiti@2.7.0)(typescript@5.9.2)(yaml@2.9.0))(esbuild@0.27.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(rolldown@1.2.16)
-      '@typescript/ata':
-        specifier: ^0.9.8
-        version: 0.9.8(typescript@5.9.2)
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
@@ -112,9 +109,9 @@ importers:
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+      semver:
+        specifier: 7.8.5
+        version: 7.8.5
       yaml:
         specifier: ^2.8.3
         version: 2.9.0
@@ -149,6 +146,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
+      '@types/semver':
+        specifier: ^7.8.0
+        version: 7.8.0
       '@vitejs/plugin-react':
         specifier: 6.0.2
         version: 6.0.2(@voidzero-dev/vite-plus-core@1.4.0(@types/node@20.19.41)(esbuild@0.27.0)(jiti@2.7.0)(typescript@5.9.2)(yaml@2.9.0))
@@ -170,6 +170,9 @@ importers:
       tailwindcss:
         specifier: 4.3.0
         version: 4.3.0
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
       vite:
         specifier: npm:@voidzero-dev/vite-plus-core@1.4.0
         version: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@20.19.41)(esbuild@0.27.0)(jiti@2.7.0)(typescript@5.9.2)(yaml@2.9.0)'
@@ -1656,6 +1659,9 @@ packages:
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
 
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
+
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
@@ -1670,11 +1676,6 @@ packages:
 
   '@types/ws@8.18.2':
     resolution: {integrity: sha512-67MQl+fpWKVTT1NYdnmo3U4sc/xPo/zQBncVnI74qmQa0z/b+1g6iYqNmGCPbxO+zz2aklb08a0oHfegiVd0/w==}
-
-  '@typescript/ata@0.9.8':
-    resolution: {integrity: sha512-+M815CeDRJS5H5ciWfhFCKp25nNfF+LFWawWAaBhNlquFb2wS5IIMDI+2bKWN3GuU6mpj+FzySsOD29M4nG8Xg==}
-    peerDependencies:
-      typescript: '>=4.4.4'
 
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
@@ -4550,6 +4551,8 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
+  '@types/semver@7.8.0': {}
+
   '@types/trusted-types@2.0.7': {}
 
   '@types/unist@2.0.10': {}
@@ -4561,10 +4564,6 @@ snapshots:
   '@types/ws@8.18.2':
     dependencies:
       '@types/node': 20.19.41
-
-  '@typescript/ata@0.9.8(typescript@5.9.2)':
-    dependencies:
-      typescript: 5.9.2
 
   '@ungap/structured-clone@1.2.0': {}
 

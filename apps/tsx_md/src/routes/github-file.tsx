@@ -107,7 +107,10 @@ function GithubFilePage() {
           {state.kind === "loaded" ? (
             <>
               <p className="text-sm text-gray-500">{state.displayPath}</p>
-              <MarkdownView markdown={state.markdown} />
+              <MarkdownView
+                markdown={state.markdown}
+                typePin={target.kind === "valid" ? target.typePin : undefined}
+              />
             </>
           ) : null}
         </article>
