@@ -20,6 +20,7 @@ type RemoteMarkdownState =
   | {
       kind: "loaded";
       displayPath: string;
+      githubUrl: string;
       markdown: string;
     }
   | {
@@ -60,6 +61,7 @@ function GithubFilePage() {
         setState({
           kind: "loaded",
           displayPath: target.displayPath,
+          githubUrl: target.githubUrl,
           markdown,
         });
       })
@@ -106,7 +108,11 @@ function GithubFilePage() {
 
           {state.kind === "loaded" ? (
             <>
-              <p className="text-sm text-gray-500">{state.displayPath}</p>
+              <p className="text-sm">
+                <a className="text-gray-500" href={state.githubUrl}>
+                  {state.displayPath}
+                </a>
+              </p>
               <MarkdownView
                 markdown={state.markdown}
                 typePin={target.kind === "valid" ? target.typePin : undefined}

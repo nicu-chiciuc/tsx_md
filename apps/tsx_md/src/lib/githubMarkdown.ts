@@ -7,6 +7,7 @@ export type GithubMarkdownTarget =
   | {
       kind: "valid";
       displayPath: string;
+      githubUrl: string;
       sourceUrl: string;
       typePin: VersionPin | undefined;
     };
@@ -66,14 +67,14 @@ export function parseGithubMarkdownPath(
     return { kind: "invalid" };
   }
 
-  const rawPath = [owner, repo, branch, ...filePath]
-    .map((segment) => encodeURIComponent(segment))
-    .join("/");
+  const encode = (parts: ReadonlyArray<string>) =>
+    parts.map((segment) => encodeURIComponent(segment)).join("/");
 
   return {
     kind: "valid",
     displayPath: segments.join("/"),
-    sourceUrl: `https://raw.githubusercontent.com/${rawPath}`,
+    githubUrl: `https://github.com/${encode([owner, repo])}/blob/${encode([branch, ...filePath])}`,
+    sourceUrl: `https://raw.githubusercontent.com/${encode([owner, repo, branch, ...filePath])}`,
     typePin: versionPin(owner, repo, filePath),
   };
 }
