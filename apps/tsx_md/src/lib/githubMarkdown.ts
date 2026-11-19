@@ -72,7 +72,7 @@ export function parseGithubMarkdownPath(
 
   return {
     kind: "valid",
-    displayPath: segments.join("/"),
+    displayPath: `https://github.com/${owner}/${repo}/blob/${[branch, ...filePath].join("/")}`,
     githubUrl: `https://github.com/${encode([owner, repo])}/blob/${encode([branch, ...filePath])}`,
     sourceUrl: `https://raw.githubusercontent.com/${encode([owner, repo, branch, ...filePath])}`,
     typePin: versionPin(owner, repo, filePath),
