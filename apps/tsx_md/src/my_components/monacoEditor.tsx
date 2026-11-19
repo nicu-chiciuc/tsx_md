@@ -1,10 +1,15 @@
 import { ClientOnly } from "@tanstack/react-router";
 import React from "react";
-import { onEditorMount } from "./monaco_types/setupEditor";
+import { editorMount } from "./monaco_types/setupEditor";
+import type { VersionPin } from "./monaco_types/typeLoader";
 
 import Editor from "@monaco-editor/react";
 
 const monacoLanguages = new Set(["ts", "tsx", "typescript"]);
+
+export const TypePinContext = React.createContext<VersionPin | undefined>(
+  undefined,
+);
 
 function CodeFallback(props: {
   children: React.ReactNode;
@@ -22,6 +27,7 @@ export function MarkdownCode(props: {
   className?: string;
 }) {
   const editorId = React.useId().replace(/[^a-zA-Z0-9_-]/g, "-");
+  const typePin = React.useContext(TypePinContext);
   const match = /language-(\w+)/.exec(props.className || "");
   const language = match?.[1];
 
@@ -54,6 +60,7 @@ export function MarkdownCode(props: {
           file={`markdown-${editorId}.${fileExtension}`}
           lang="typescript"
           projectFiles={[]}
+          typePin={typePin}
         />
       </ClientOnly>
     </div>
@@ -65,7 +72,12 @@ export const MyEditor = (props: {
   file: string;
   defaultValue: string;
   projectFiles: { small: string; content: string }[];
+  typePin?: VersionPin | undefined;
 }) => {
+  const onMount = React.useMemo(
+    () => editorMount(props.typePin),
+    [props.typePin],
+  );
   return (
     <Editor
       language={props.lang}
@@ -100,7 +112,7 @@ export const MyEditor = (props: {
       // beforeMount={willMount}
       defaultPath={props.file}
       path={props.file}
-      onMount={onEditorMount}
+      onMount={onMount}
       defaultValue={props.defaultValue}
     />
   );

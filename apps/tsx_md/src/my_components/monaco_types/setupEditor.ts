@@ -1,69 +1,77 @@
-import { Editor, EditorProps } from "@monaco-editor/react";
-import { createATA } from "./ata";
-import type { Monaco } from "@monaco-editor/react";
+import type { Monaco, OnMount } from "@monaco-editor/react";
+import { createTypeLoader, type VersionPin } from "./typeLoader";
 
-export const typeHelper = createATA();
+type TypeLoader = ReturnType<typeof createTypeLoader>;
 
-// Register the receivedFile listener once globally (not per editor).
-// All editors share the same typescriptDefaults, so a single listener is sufficient.
-// Registering per editor caused N × addExtraLib calls per file, each triggering
-// a full re-validation of all models, which caused visible flickering.
-let ataListenerRegistered = false;
+// All editors share one `typescriptDefaults`, so one loader per pin feeds it.
+// The loader of the most recently mounted editor owns the extra libs.
+const loaders = new Map<string, TypeLoader>();
+let activeKey: string | undefined;
 
-function ensureATAListener(monaco: Monaco) {
-  if (ataListenerRegistered) return;
-  ataListenerRegistered = true;
+// TypeScript's `ModuleResolutionKind.Bundler`; Monaco's enum stops at NodeJs.
+const bundlerResolution: number = 100;
 
-  const defaults = monaco.languages.typescript.typescriptDefaults;
-
-  typeHelper.addReceivedFileListener((code: string, _path: string) => {
-    const path = "file://" + _path;
-    defaults.addExtraLib(code, path);
-  });
+function setLibs(monaco: Monaco, files: ReadonlyMap<string, string>) {
+  monaco.languages.typescript.typescriptDefaults.setExtraLibs(
+    [...files].map(([path, content]) => ({
+      filePath: `file://${path}`,
+      content,
+    })),
+  );
 }
 
-export const onEditorMount: EditorProps["onMount"] = (editor, monaco) => {
-  setupEditorATA(editor, monaco);
-
-  const updateHeight = () => {
-    const container = editor.getDomNode();
-    if (!container) return;
-
-    const contentHeight = Math.min(1000, editor.getContentHeight());
-
-    container.style.height = `${contentHeight}px`;
-  };
-  editor.onDidContentSizeChange(updateHeight);
-  updateHeight();
-};
-
-export const setupEditorATA: NonNullable<
-  React.ComponentProps<typeof Editor>["onMount"]
-> = (editor, monaco) => {
-  const defaults = monaco.languages.typescript.typescriptDefaults;
-
-  defaults.setCompilerOptions({
-    jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-    esModuleInterop: true,
-
-    strict: true,
-    exactOptionalPropertyTypes: true,
-  });
-
-  // Register the global ATA listener (idempotent, only runs once)
-  ensureATAListener(monaco);
-
-  // acquireType on content change
-  editor.onDidChangeModelContent(() => {
-    typeHelper.acquireType(editor.getValue());
-  });
-
-  typeHelper.acquireType(editor.getValue());
-
-  // auto adjust the height fits the content
-  const element = editor.getDomNode();
-  const height = editor.getScrollHeight();
-  if (element) {
-    element.style.height = `${height}px`;
+function typeLoaderFor(monaco: Monaco, pin: VersionPin | undefined) {
+  const key = pin ? `${pin.major}:${pin.names.join(",")}` : "";
+  let loader = loaders.get(key);
+  if (!loader) {
+    loader = createTypeLoader({
+      pin,
+      onFiles: (files) => {
+        if (activeKey === key) setLibs(monaco, files);
+      },
+    });
+    loaders.set(key, loader);
   }
-};
+  if (activeKey !== key) {
+    activeKey = key;
+    setLibs(monaco, loader.files);
+  }
+  return loader;
+}
+
+export function editorMount(pin: VersionPin | undefined): OnMount {
+  return (editor, monaco) => {
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+      jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
+      target: monaco.languages.typescript.ScriptTarget.ESNext,
+      module: monaco.languages.typescript.ModuleKind.ESNext,
+      moduleResolution: bundlerResolution,
+      esModuleInterop: true,
+      allowNonTsExtensions: true,
+
+      strict: true,
+      exactOptionalPropertyTypes: true,
+    });
+
+    const loader = typeLoaderFor(monaco, pin);
+    loader.load(editor.getValue());
+
+    // Wait for a pause in typing so half-typed imports are not looked up.
+    let typing: ReturnType<typeof setTimeout> | undefined;
+    editor.onDidChangeModelContent(() => {
+      clearTimeout(typing);
+      typing = setTimeout(() => loader.load(editor.getValue()), 750);
+    });
+
+    const updateHeight = () => {
+      const container = editor.getDomNode();
+      if (!container) return;
+
+      const contentHeight = Math.min(1000, editor.getContentHeight());
+
+      container.style.height = `${contentHeight}px`;
+    };
+    editor.onDidContentSizeChange(updateHeight);
+    updateHeight();
+  };
+}

@@ -1,7 +1,8 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
-import { MarkdownCode } from "@/my_components/monacoEditor";
+import { MarkdownCode, TypePinContext } from "@/my_components/monacoEditor";
+import type { VersionPin } from "@/my_components/monaco_types/typeLoader";
 
 const markdownComponents = {
   pre({ children }) {
@@ -13,14 +14,22 @@ const markdownComponents = {
   },
 } satisfies Components;
 
-export function MarkdownView({ markdown }: { markdown: string }) {
+export function MarkdownView({
+  markdown,
+  typePin,
+}: {
+  markdown: string;
+  typePin?: VersionPin | undefined;
+}) {
   return (
-    <ReactMarkdown
-      components={markdownComponents}
-      rehypePlugins={[rehypeSanitize]}
-      remarkPlugins={[remarkGfm]}
-    >
-      {markdown}
-    </ReactMarkdown>
+    <TypePinContext value={typePin}>
+      <ReactMarkdown
+        components={markdownComponents}
+        rehypePlugins={[rehypeSanitize]}
+        remarkPlugins={[remarkGfm]}
+      >
+        {markdown}
+      </ReactMarkdown>
+    </TypePinContext>
   );
 }
