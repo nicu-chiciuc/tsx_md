@@ -4,11 +4,10 @@ export type ProjectGlyph =
   | "gears"
   | "impossible"
   | "iterseg"
-  | "miner"
   | "planable"
+  | "push"
   | "spiro"
-  | "triangles"
-  | "voxel";
+  | "triangles";
 
 export interface AppProject {
   description: string;
@@ -64,6 +63,14 @@ export const APPS: readonly AppProject[] = [
 
 export const TRINKETS: readonly TrinketProject[] = [
   {
+    description:
+      "3D digital twin for a USB-tethered Ableton Push 3 in the browser",
+    glyph: "push",
+    name: "Push 3 Twin",
+    url: "https://push.tsx.md",
+    year: 2026,
+  },
+  {
     description: "shared Game of Life in APL on a Durable Object",
     glyph: "apl",
     name: "Built in APL",
@@ -83,20 +90,6 @@ export const TRINKETS: readonly TrinketProject[] = [
     name: "Fourfold",
     url: "https://majestic-cormorant-166.eu-west-1.convex.site",
     year: 2026,
-  },
-  {
-    description: "browser voxel physics prototype (WebGL2 + Rust WASM)",
-    glyph: "voxel",
-    name: "Noita 3D",
-    url: "https://teardown-noita-3d.pfp.workers.dev",
-    year: 2026,
-  },
-  {
-    description: "Phaser coal mining game",
-    glyph: "miner",
-    name: "Event Miner",
-    url: "https://event-miner.pfp.workers.dev",
-    year: 2025,
   },
 ];
 

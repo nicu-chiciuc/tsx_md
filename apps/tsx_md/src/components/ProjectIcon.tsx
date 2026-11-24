@@ -25,36 +25,24 @@ function GlyphMark({ glyph, size }: { glyph?: ProjectGlyph; size: number }) {
           <rect x="10.5" y="10" width="3" height="3" />
         </svg>
       );
-    case "voxel":
+    case "push":
       return (
         <svg
           width={size}
           height={size}
           viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinejoin="round"
+          fill="currentColor"
           aria-hidden="true"
         >
-          <polygon points="8,2 13.5,5.2 8,8.4 2.5,5.2" />
-          <path d="M2.5 5.2v5.6L8 14l5.5-3.2V5.2M8 8.4V14" />
-        </svg>
-      );
-    case "miner":
-      return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.3"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <polygon points="8,2.5 11.5,8.5 4.5,8.5" />
-          <path d="M2 13.5l3.5-2.5 2.5 1.5 3-2 3 3" />
+          <rect x="2" y="2" width="3" height="3" rx="0.5" />
+          <rect x="6.5" y="2" width="3" height="3" rx="0.5" />
+          <rect x="11" y="2" width="3" height="3" rx="0.5" />
+          <rect x="2" y="6.5" width="3" height="3" rx="0.5" />
+          <rect x="6.5" y="6.5" width="3" height="3" rx="0.5" />
+          <rect x="11" y="6.5" width="3" height="3" rx="0.5" />
+          <rect x="2" y="11" width="3" height="3" rx="0.5" />
+          <rect x="6.5" y="11" width="3" height="3" rx="0.5" />
+          <rect x="11" y="11" width="3" height="3" rx="0.5" />
         </svg>
       );
     case "planable":
