@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ProjectIcon } from "@/components/ProjectIcon";
 import {
   APPS,
@@ -32,8 +32,8 @@ function TrinketList({ items }: { items: readonly TrinketProject[] }) {
                 className={inlineLinkClassName}
               >
                 {item.name}
-              </a>{" "}
-              <span className="text-gray-500">— {item.description}</span>
+              </a>
+              <span className="text-gray-500">: {item.description}</span>
             </span>
           </div>
           <span className="shrink-0 pt-[1px] text-[13px] tabular-nums text-gray-400">
@@ -52,7 +52,7 @@ function IndexPage() {
       <MainNavigationMenu />
 
       <main className="mx-auto w-full max-w-[600px] flex-1 px-5 pt-8 pb-16">
-        <h1 className="sr-only">tsx.md — Nicu Chiciuc</h1>
+        <h1 className="sr-only">tsx.md</h1>
 
         <section className="space-y-2.5 text-[15px] leading-relaxed text-gray-800">
           <p className="m-0">
@@ -159,21 +159,6 @@ function IndexPage() {
             Small things I wrote by hand before AI.
           </p>
           <TrinketList items={PRE_AI_TRINKETS} />
-        </section>
-
-        <section className="mt-12 border-t border-gray-100 pt-5 text-[13px] text-gray-500">
-          <Link
-            to="/blog/$slug"
-            params={{ slug: "valid_form" }}
-            className={inlineLinkClassName}
-          >
-            I need to validate a form
-          </Link>{" "}
-          (blog) ·{" "}
-          <Link to="/github.com" className={inlineLinkClassName}>
-            tsx.md/github.com/…
-          </Link>{" "}
-          renders GitHub Markdown with TypeScript hover types.
         </section>
       </main>
     </div>
