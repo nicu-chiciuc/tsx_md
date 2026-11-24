@@ -3,23 +3,6 @@ import { GithubCorner } from "@/my_components/githubCorner/githubForkIcon";
 import { MainNavigationMenu } from "@/my_components/mainNavMenu";
 import { getPublishedArticles } from "@/lib/articles";
 
-const myApps = [
-  {
-    description:
-      "Give your coding agent a working app: a GitHub repo, a Convex project, and a live URL, deployed by Alchemy.",
-    favicon: "https://samebase.com/icon-192.png",
-    name: "Samebase",
-    url: "https://samebase.com",
-  },
-  {
-    description:
-      "Chess game inspired by Chess Plus, but with slightly different rules.",
-    favicon: "https://chessmerge.com/bishop_horse.svg",
-    name: "Chess Merge",
-    url: "https://chessmerge.com",
-  },
-];
-
 function BlogIndexPage() {
   const articles = Route.useLoaderData();
 
@@ -45,38 +28,6 @@ function BlogIndexPage() {
               </li>
             ))}
           </ul>
-        </section>
-
-        <section className="mt-20">
-          <h1 className="text-2xl font-semibold text-gray-900">Apps</h1>
-          <div className="mt-5 flex flex-col gap-4">
-            {myApps.map((app) => (
-              <a
-                key={app.name}
-                href={app.url}
-                rel="noopener noreferrer"
-                target="_blank"
-                className="border border-gray-200 p-4 no-underline hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={app.favicon}
-                    alt={`${app.name} favicon`}
-                    width={64}
-                    height={64}
-                  />
-                  <div>
-                    <div className="text-lg font-medium text-gray-900">
-                      {app.url.replace("https://", "")}
-                    </div>
-                    <p className="mt-1 text-sm text-gray-600">
-                      {app.description}
-                    </p>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
         </section>
       </main>
     </div>
