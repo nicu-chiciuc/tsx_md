@@ -5,7 +5,6 @@ export type ProjectGlyph =
   | "impossible"
   | "iterseg"
   | "planable"
-  | "push"
   | "spiro"
   | "triangles";
 
@@ -59,17 +58,17 @@ export const APPS: readonly AppProject[] = [
     name: "TrailScout",
     url: "https://scout.samebase.com",
   },
+  {
+    description:
+      "Movies, a singing voice and games on an Ableton Push 3 over WebUSB, with a 3D twin of the Push in the browser.",
+    host: "push.tsx.md",
+    icon: "https://push.tsx.md/favicon.svg",
+    name: "Push 3 Twin",
+    url: "https://push.tsx.md",
+  },
 ];
 
 export const TRINKETS: readonly TrinketProject[] = [
-  {
-    description:
-      "3D digital twin for a USB-tethered Ableton Push 3 in the browser",
-    glyph: "push",
-    name: "Push 3 Twin",
-    url: "https://push.tsx.md",
-    year: 2026,
-  },
   {
     description: "shared Game of Life in APL on a Durable Object",
     glyph: "apl",

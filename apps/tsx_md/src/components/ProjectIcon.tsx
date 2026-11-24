@@ -25,26 +25,6 @@ function GlyphMark({ glyph, size }: { glyph?: ProjectGlyph; size: number }) {
           <rect x="10.5" y="10" width="3" height="3" />
         </svg>
       );
-    case "push":
-      return (
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 16 16"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <rect x="2" y="2" width="3" height="3" rx="0.5" />
-          <rect x="6.5" y="2" width="3" height="3" rx="0.5" />
-          <rect x="11" y="2" width="3" height="3" rx="0.5" />
-          <rect x="2" y="6.5" width="3" height="3" rx="0.5" />
-          <rect x="6.5" y="6.5" width="3" height="3" rx="0.5" />
-          <rect x="11" y="6.5" width="3" height="3" rx="0.5" />
-          <rect x="2" y="11" width="3" height="3" rx="0.5" />
-          <rect x="6.5" y="11" width="3" height="3" rx="0.5" />
-          <rect x="11" y="11" width="3" height="3" rx="0.5" />
-        </svg>
-      );
     case "planable":
       return (
         <svg
